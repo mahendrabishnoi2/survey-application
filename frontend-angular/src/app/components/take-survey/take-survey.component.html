@@ -1,0 +1,30 @@
+<p>take-survey works!</p>
+
+{{ headers?.id }}
+{{ headers?.surveyName }}
+
+<!-- {{ getSurvey() }} -->
+
+<br>
+Number of questions: {{ questions.length }}
+<br>
+
+<p *ngFor="let question of questions">
+    {{ question.id  }} &nbsp;&nbsp;&nbsp;&nbsp;
+    {{ question.questionName }}
+</p>
+
+<br>
+
+<p *ngFor="let type of questionTypes">
+    {{ type.id  }} &nbsp;&nbsp;&nbsp;&nbsp;
+    {{ type.inputTypeName }}
+</p>
+
+
+<div *ngFor="let option of questionOptions">
+    <div *ngFor="let o of option">
+        {{ o.id }}
+        {{ o.optionName }}
+    </div>
+</div>

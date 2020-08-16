@@ -1,0 +1,6 @@
+--insert into admin (email, first_name, last_name, primary_admin, password) values ('m@m.com', 'mahendra', 'bishnoi', '1', 'password');
+--
+--INSERT INTO input_types (input_type) VALUES ('radio');
+--INSERT INTO input_types (input_type) VALUES ('checkbox_multiselect');
+--INSERT INTO input_types (input_type) VALUES ('oneline');
+--INSERT INTO input_types (input_type) VALUES ('multiline');

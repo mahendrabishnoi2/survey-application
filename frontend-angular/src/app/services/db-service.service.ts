@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { SurveyHeader } from '../common/survey-header';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Questions } from '../common/questions';
+import { InputTypes } from '../common/input-types';
+import { QuestionsOptions } from '../common/questions-options';
 
 @Injectable({
   providedIn: 'root'
@@ -9,4 +15,62 @@ export class DbServiceService {
   baseUrl: string = "http://localhost:8080/api/";
 
   constructor(private httpClient: HttpClient) { }
+
+  getSurveyList(): Observable<SurveyHeader[]> {
+    return this.httpClient.get<GetResponseSurveyList>(`${this.baseUrl}surveys`).pipe(
+      map(response => response._embedded.surveyHeader)
+    );
+  }
+
+  getSurveyHeaderById(id: number): Observable<SurveyHeader> {
+    return this.httpClient.get<SurveyHeader>(`${this.baseUrl}surveys/${id}`)
+    // .pipe(map(response => response.surveyHeader))
+    ;
+  }
+
+  getQuestions(id: number): Observable<Questions[]> {
+    return this.httpClient.get<GetQuestionsList>(`${this.baseUrl}surveys/${id}/questions`).pipe(
+      map(response => response._embedded.questions)
+    );
+  }
+
+  // get input type of given question 
+  getInputType(id: number): Observable<InputTypes> {
+    return this.httpClient.get<InputTypes>(`${this.baseUrl}questions/${id}/inputTypeId`)
+    // .pipe(map(response => response._embedded.inputTypes))
+    ;
+  }
+
+  // get options of a given question id
+  getQuestionsOptions(id: number): Observable<QuestionsOptions[]> {
+    return this.httpClient.get<GetQuestionsOptionsList>(`${this.baseUrl}questions/${id}/questionsOptions`).pipe(
+      map(response => response._embedded.questionsOptions)
+    );
+  }
+}
+
+interface GetResponseSurveyList {
+  _embedded: {
+    surveyHeader: SurveyHeader[];
+  }
+}
+
+// interface GetResponseSurveyHeader {
+//   surveyHeader: SurveyHeader;
+// }
+
+interface GetQuestionsList {
+  _embedded: {
+    questions: Questions[];
+  }
+}
+
+// interface GetInputType {
+//   inputTypes: InputTypes;
+// }
+
+interface GetQuestionsOptionsList {
+  _embedded: {
+    questionsOptions: QuestionsOptions[];
+  }
 }

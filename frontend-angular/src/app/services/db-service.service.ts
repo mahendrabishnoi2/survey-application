@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Questions } from '../common/questions';
 import { InputTypes } from '../common/input-types';
 import { QuestionsOptions } from '../common/questions-options';
+import { SurveyFull } from '../common/survey-full';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,18 @@ export class DbServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
+  verifyUser(id: number, user: any): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}respondant/new/${id}`, user);
+  }
+
   getSurveyList(): Observable<SurveyHeader[]> {
     return this.httpClient.get<GetResponseSurveyList>(`${this.baseUrl}surveys`).pipe(
       map(response => response._embedded.surveyHeader)
     );
+  }
+
+  getSurvey(id: number): Observable<SurveyFull> {
+    return this.httpClient.get<SurveyFull>(`${this.baseUrl}/surveys/${id}`);
   }
 
   getSurveyHeaderById(id: number): Observable<SurveyHeader> {

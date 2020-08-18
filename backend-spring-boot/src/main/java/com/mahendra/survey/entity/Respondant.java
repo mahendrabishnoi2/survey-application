@@ -1,5 +1,6 @@
 package com.mahendra.survey.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -23,6 +24,7 @@ public class Respondant {
 
   private String email;
   private String fullName;
+  private Date takenOn;
 
   @ManyToOne
   @JoinColumn(name = "survey_id")
@@ -31,21 +33,12 @@ public class Respondant {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "respondant", fetch = FetchType.EAGER)
   private Set<Answers> answers;
 
-  public void setSurveyHeader(SurveyHeader surveyHeader) {
-    if (surveyHeader != null) {
-      if (surveyHeader.getRespondants() == null) {
-        surveyHeader.setRespondants(new HashSet<>());
-      }
-      surveyHeader.getRespondants().add(this);
-    }
-    this.surveyHeader = surveyHeader;
+  public Date getTakenOn() {
+    return takenOn;
   }
 
-  public void setAnswers(Set<Answers> answers) {
-    this.answers = answers;
-    for (Answers answer: answers) {
-      answer.setRespondant(this);
-    }
+  public void setTakenOn(Date takenOn) {
+    this.takenOn = takenOn;
   }
 
   public void addAnswer(Answers answers) {
@@ -80,7 +73,24 @@ public class Respondant {
     return surveyHeader;
   }
 
+  public void setSurveyHeader(SurveyHeader surveyHeader) {
+    if (surveyHeader != null) {
+      if (surveyHeader.getRespondants() == null) {
+        surveyHeader.setRespondants(new HashSet<>());
+      }
+      surveyHeader.getRespondants().add(this);
+    }
+    this.surveyHeader = surveyHeader;
+  }
+
   public Set<Answers> getAnswers() {
     return answers;
+  }
+
+  public void setAnswers(Set<Answers> answers) {
+    this.answers = answers;
+    for (Answers answer : answers) {
+      answer.setRespondant(this);
+    }
   }
 }

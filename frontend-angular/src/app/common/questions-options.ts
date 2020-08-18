@@ -1,4 +1,4 @@
 export class QuestionsOptions {
     id: number;
-    optionName: string;
+    name: string;
 }

@@ -9,6 +9,9 @@ import { UserSurveyComponent } from './components/user-survey/user-survey.compon
 import { AdminComponent } from './components/admin/admin.component';
 import { ListSurveysComponent } from './components/list-surveys/list-surveys.component';
 import { TakeSurveyComponent } from './components/take-survey/take-survey.component';
+import { TakeSurveyQuestionsComponent } from './components/take-survey-questions/take-survey-questions.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { QuestionComponent } from './components/question/question.component';
 
 @NgModule({
   declarations: [
@@ -17,12 +20,16 @@ import { TakeSurveyComponent } from './components/take-survey/take-survey.compon
     UserSurveyComponent,
     AdminComponent,
     ListSurveysComponent,
-    TakeSurveyComponent
+    TakeSurveyComponent,
+    TakeSurveyQuestionsComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

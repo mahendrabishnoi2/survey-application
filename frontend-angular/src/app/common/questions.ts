@@ -1,8 +1,13 @@
+import { QuestionsOptions } from './questions-options';
+import { InputTypes } from './input-types';
+
 export class Questions {
     constructor(id: number, questionName: string) {
         this.id = id;
-        this.questionName = questionName;
+        this.question = questionName;
     }
     id: number;
-    questionName: string;
+    question: string;
+    type: InputTypes;
+    options: QuestionsOptions[];
 }

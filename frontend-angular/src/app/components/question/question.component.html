@@ -1,0 +1,39 @@
+<!-- <p>question works!</p> -->
+<div [formGroup]="form">
+
+    <div [ngSwitch]="question.controlType">
+        <div *ngSwitchCase="'textbox'">
+            <label> {{question.label}}
+                <input [formControlName]="question.key" [id]="question.key" [type]="question.type">
+            </label>
+        </div>
+
+
+        <div *ngSwitchCase="'radio'">
+            <label>{{question.label}}</label>
+            <label *ngFor="let option of question.options">
+                {{option.value}}
+                <input [formControlName]="question.key" [id]="option.key" type="radio" [value]="option.key">
+            </label>
+        </div>
+
+        <!-- <div *ngSwitchCase="'dropdown'">
+            <label>
+                {{question.label}}
+                <select [id]="question.key" [formControlName]="question.key">
+                    <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+                </select>
+            </label>
+        </div> -->
+
+
+        <div *ngSwitchCase="'checkbox'">
+            <label formArrayName="{{question.key}}" *ngFor="let option of question.options; let i = index">
+                <input type="checkbox" [formControlName]="i">
+                {{question.options[i].value}}
+            </label>
+        </div>
+
+        <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
+    </div>
+</div>

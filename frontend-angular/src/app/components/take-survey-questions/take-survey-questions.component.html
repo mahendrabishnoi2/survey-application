@@ -1,0 +1,41 @@
+<p>take-survey-questions works!</p>
+
+<!-- <div *ngIf="survey">
+    survey available: {{ survey | json}}
+    <br>
+    {{ survey.questions | json }}
+</div>
+
+<div *ngIf="details">
+    details available: {{ details.value | json }}
+</div> -->
+
+<div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+  
+      <div *ngFor="let question of questions" class="form-row">
+        <app-question [question]="question" [form]="form"></app-question>
+      </div> 
+  
+      <div class="form-row">
+        <button type="submit" [disabled]="!form.valid">Save</button>
+      </div>
+    </form>
+  
+    <div *ngIf="payLoad" class="form-row">
+      <strong>Saved the following values</strong><br>{{payLoad}}
+    </div>
+  </div>
+
+<!-- <h4>
+    <small>Survey Name : </small>{{surveyForm.value.surveyName}}
+    <br>
+    <br>
+    <small>Date : </small>{{ date|date:'mediumDate' }}
+</h4> -->
+
+<!-- <form [formGroup]="surveyForm">
+    <div formArrayName="questions">
+
+    </div>
+</form> -->

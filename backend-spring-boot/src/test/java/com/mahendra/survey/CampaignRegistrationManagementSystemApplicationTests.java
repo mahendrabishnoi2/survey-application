@@ -17,6 +17,8 @@ import com.mahendra.survey.entity.Questions;
 import com.mahendra.survey.entity.QuestionsOptions;
 import com.mahendra.survey.entity.Respondant;
 import com.mahendra.survey.entity.SurveyHeader;
+import com.mahendra.survey.response.SurveyFull;
+import com.mahendra.survey.service.SurveyService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,10 +39,17 @@ class CampaignRegistrationManagementSystemApplicationTests {
   @Autowired private QuestionsOptionsRepository questionsOptionsRepository;
   @Autowired private AnswersRepository answersRepository;
   @Autowired private RespondantRepository respondantRepository;
+  @Autowired private SurveyService surveyService;
 
   @Test
   void contextLoads() {}
 
+  @Test
+  void testSurveyService() {
+    SurveyFull surveyFull = surveyService.getSurvey(1L);
+    //    9545163336
+    System.out.println(surveyFull.getId());
+  }
 
   // let's try adding an answer to our database
   @Test

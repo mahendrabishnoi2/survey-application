@@ -7,6 +7,7 @@ import { Questions } from '../common/questions';
 import { InputTypes } from '../common/input-types';
 import { QuestionsOptions } from '../common/questions-options';
 import { SurveyFull } from '../common/survey-full';
+import { SurveyResponse } from '../common/survey-response';
 
 @Injectable({
   providedIn: 'root'
@@ -44,17 +45,22 @@ export class DbServiceService {
   }
 
   // get input type of given question 
-  getInputType(id: number): Observable<InputTypes> {
-    return this.httpClient.get<InputTypes>(`${this.baseUrl}questions/${id}/inputTypeId`)
-    // .pipe(map(response => response._embedded.inputTypes))
-    ;
-  }
+  // getInputType(id: number): Observable<InputTypes> {
+  //   return this.httpClient.get<InputTypes>(`${this.baseUrl}questions/${id}/inputTypeId`)
+  //   // .pipe(map(response => response._embedded.inputTypes))
+  //   ;
+  // }
 
   // get options of a given question id
   getQuestionsOptions(id: number): Observable<QuestionsOptions[]> {
     return this.httpClient.get<GetQuestionsOptionsList>(`${this.baseUrl}questions/${id}/questionsOptions`).pipe(
       map(response => response._embedded.questionsOptions)
     );
+  }
+
+  saveSurveyResponse(surveyResponse: SurveyResponse): Observable<any> {
+    const url = `${this.baseUrl}/surveys/response`;
+    return this.httpClient.post(url, surveyResponse);
   }
 }
 

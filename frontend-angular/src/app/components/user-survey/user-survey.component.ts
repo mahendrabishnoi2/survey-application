@@ -8,10 +8,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserSurveyComponent implements OnInit {
 
+
+  // using this component when successfully saved survey response
   surveyId: number;
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    // this.surveyId = +this.route.snapshot.paramMap.get('id');
   }
 
 }

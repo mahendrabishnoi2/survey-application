@@ -34,6 +34,17 @@ public class Answers {
   @JoinColumn(name = "respondant_id")
   private Respondant respondant;
 
+  @Column(name = "selected_options")
+  private String selectedOptions;
+
+  public String getSelectedOptions() {
+    return selectedOptions;
+  }
+
+  public void setSelectedOptions(String selectedOptions) {
+    this.selectedOptions = selectedOptions;
+  }
+
   public void setRespondant(Respondant respondant) {
     if (respondant != null) {
       if (respondant.getAnswers() == null) {

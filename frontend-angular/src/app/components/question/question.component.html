@@ -28,9 +28,11 @@
 
 
         <div *ngSwitchCase="'checkbox'">
-            <label formArrayName="{{question.key}}" *ngFor="let option of question.options; let i = index">
-                <input type="checkbox" [formControlName]="i">
-                {{question.options[i].value}}
+            <label>{{question.label}}
+                <ng-container formArrayName="{{question.key}}" *ngFor="let option of question.options; let i = index">
+                    <input type="checkbox" [formControlName]="i">
+                    {{question.options[i].value}}
+                </ng-container>
             </label>
         </div>
 

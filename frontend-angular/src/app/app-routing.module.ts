@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'takeSurvey/:id', component:  TakeSurveyComponent},
   { path: 'login', component: AdminLoginComponent},
   { path: 'admin', component: AdminComponent },
-  { path: 'survey/:id', component: UserSurveyComponent },
+  { path: 'surveycompleted', component: UserSurveyComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
 ];

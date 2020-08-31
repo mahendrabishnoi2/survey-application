@@ -1,6 +1,7 @@
 package com.mahendra.survey.controller;
 
 import com.mahendra.survey.entity.Respondant;
+import com.mahendra.survey.newresponse.SurveyUserResponse;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,12 @@ public class SurveyController {
   @PostMapping("/respondant/new/{surveyId}")
   public boolean verifyRespondant(
       @RequestBody Respondant respondant, @PathVariable("surveyId") Long surveyId) {
-      return surveyService.verifyRespondant(respondant, surveyId);
+    return surveyService.verifyRespondant(respondant, surveyId);
+  }
+
+  @PostMapping("/surveys/response")
+  public boolean saveSurveyResponse(@RequestBody SurveyUserResponse surveyUserResponse) {
+    System.out.println(surveyUserResponse);
+    return surveyService.saveSurveyResponse(surveyUserResponse);
   }
 }

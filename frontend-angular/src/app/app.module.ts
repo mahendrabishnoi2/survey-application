@@ -12,6 +12,11 @@ import { TakeSurveyComponent } from './components/take-survey/take-survey.compon
 import { TakeSurveyQuestionsComponent } from './components/take-survey-questions/take-survey-questions.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuestionComponent } from './components/question/question.component';
+import { CreateSurveyComponent } from './components/create-survey/create-survey.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddQuestionComponent } from './components/add-question/add-question.component';
+import { AddOptionsComponent } from './components/add-options/add-options.component';
+
 
 @NgModule({
   declarations: [
@@ -22,14 +27,19 @@ import { QuestionComponent } from './components/question/question.component';
     ListSurveysComponent,
     TakeSurveyComponent,
     TakeSurveyQuestionsComponent,
-    QuestionComponent
+    QuestionComponent,
+    CreateSurveyComponent,
+    AddQuestionComponent,
+    AddOptionsComponent,
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

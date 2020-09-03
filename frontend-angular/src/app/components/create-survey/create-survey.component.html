@@ -1,0 +1,42 @@
+<p>create-survey works!</p>
+<ng-container *ngIf="getEnabledComponent()==='create-survey'">
+    <form [formGroup]="newSurveyForm">
+        <div>
+            <label>
+                Survey Name:
+                <input type="text" formControlName="surveyName">
+            </label>
+        </div>
+        <div>
+            <label>
+                Valid Till:
+                <input type="date" formControlName="validTill" [attr.min]="minDate">
+            </label>
+        </div>
+        <div>
+            <label>
+                Description:
+                <textarea formControlName="description" rows="4"></textarea>
+            </label>
+        </div>
+    </form>
+
+    <div>
+        <div>
+            <button (click)="addQuestion()" [disabled]="surveyQuestionFormArray.controls.length >= 5">Add New
+                Question</button>
+        </div>
+        <div>
+            <button (click)="submitSurvey()"
+                [disabled]="newSurveyForm.invalid || surveyQuestionFormArray.controls.length === 0">Create
+                Survey</button>
+        </div>
+        <div>
+            <button (click)="showForm()">show form</button>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="getEnabledComponent()==='add-question'">
+    <app-add-question [surveyQuestionFormArray]="surveyQuestionFormArray" [qType]="qTypeMap" [valType]="validationMap">
+    </app-add-question>
+</ng-container>

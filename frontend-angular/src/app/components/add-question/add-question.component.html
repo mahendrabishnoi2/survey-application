@@ -1,0 +1,83 @@
+<p>add-question works!</p>
+<div>
+    <form [formGroup]="questionForm" (ngSubmit)="addQuestion()">
+        <div>
+            <label>
+                Enter Question:
+                <input type="text" formControlName="question">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Select Question Type:
+                <select formControlName="questionType">
+                    <option *ngFor="let type of qType | keyvalue" [value]="type.key">{{ type.value }}</option>
+                </select>
+            </label>
+        </div>
+
+        <!-- take validation type from user if question needs text input from user -->
+        <!-- TODO: check issue while clicking checkboxes, DONE: using label instead of div works -->
+        <ng-container
+            *ngIf="questionForm.value.questionType === 'oneline' || questionForm.value.questionType === 'multiline'">
+            <div>
+                <label>
+                    Validation:
+                    <label *ngFor="let validation of valType | keyvalue">
+                        <input type="radio" formControlName="validation" [value]="validation.key">
+                        {{ validation.value }}
+                    </label>
+                </label>
+            </div>
+        </ng-container>
+
+        <ng-container
+            *ngIf="questionForm.value.questionType === 'radio' || questionForm.value.questionType === 'checkbox_multiselect'">
+
+            <!-- show added options -->
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>option</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let option of options; index as i">
+                        <th>{{ i+1 }} </th>
+                        <th>{{ option }}</th>
+                        <th><button (click)="deleteOption(i)">X</button></th>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- add option -->
+            <div>
+                <form #optionForm="ngForm">
+                    <label>
+                        Add option:
+                        <input type="text" [(ngModel)]="newOption" name="option">
+                    </label>
+                    <button [disabled]="options.length>=4 || newOption.length === 0" (click)="addOption()">Add New
+                        Option</button>
+                    <ng-container *ngIf="isDuplicate == true">
+                        {{ duplicateMessage }}
+                    </ng-container>
+                </form>
+            </div>
+        </ng-container>
+
+        <div>
+            <button [disabled]="questionForm.invalid" (click)="addQuestion()">Add</button>
+        </div>
+        <ng-container *ngIf="hasError">
+            {{ errorMessage }}
+        </ng-container>
+
+        <div>
+            <button (click)="showForm()">Show</button>
+        </div>
+    </form>
+</div>

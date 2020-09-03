@@ -1,0 +1,33 @@
+<p>add-options works!</p>
+
+<!-- show added options -->
+<table border="1">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>option</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let option of options; index as i">
+            <th>{{ i+1 }} </th>
+            <th>{{ option }}</th>
+            <th><button>delete</button></th>
+        </tr>
+    </tbody>
+</table>
+
+<!-- add option -->
+<div>
+    <form #optionForm="ngForm">
+        <label>
+            Add option:
+            <input type="text" [(ngModel)]="newOption" name="option">
+        </label>
+        <button [disabled]="options.length>=4 || newOption.length === 0" (click)="addOption()">Add New Option</button>
+        <ng-container *ngIf="isDuplicate == true">
+            {{ duplicateMessage }}
+        </ng-container>
+    </form>
+</div>

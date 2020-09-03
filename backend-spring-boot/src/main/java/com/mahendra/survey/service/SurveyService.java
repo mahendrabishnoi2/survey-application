@@ -16,6 +16,7 @@ import com.mahendra.survey.response.Question;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.response.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,8 +30,7 @@ public class SurveyService {
 
   @Autowired SurveyHeaderRepository surveyHeaderRepository;
   @Autowired RespondantRepository respondantRepository;
-  @Autowired
-  QuestionsRepository questionsRepository;
+  @Autowired QuestionsRepository questionsRepository;
 
   public SurveyFull getSurvey(Long surveyId) {
 
@@ -66,9 +66,12 @@ public class SurveyService {
           options.add(option);
         }
       }
+
+      options.sort(Comparator.comparingInt(a -> (int) a.getId()));;
       question.setOptions(options);
       questionList.add(question);
     }
+    questionList.sort(Comparator.comparingInt(a -> (int) a.getId()));
     surveyFull.setQuestions(questionList);
 
     return surveyFull;
@@ -89,7 +92,7 @@ public class SurveyService {
       SurveyHeader surveyHeader = surveyHeaderOptional.get();
       respondant.setSurveyHeader(surveyHeader);
       Set<Answers> answers = new HashSet<>();
-      for (AnswerSingleQuestion answerSingleQuestion: answerSingleQuestionList) {
+      for (AnswerSingleQuestion answerSingleQuestion : answerSingleQuestionList) {
         Answers newAnswer = new Answers();
         newAnswer.setRespondant(respondant);
         // for now leave question options id and add an string field - selectedOptions
@@ -109,7 +112,7 @@ public class SurveyService {
     } catch (NoSuchElementException e) {
       System.out.println("Exception: Response to a survey that does not exist");
     }
-    
+
     return true;
   }
 

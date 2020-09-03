@@ -4,9 +4,11 @@ import { UserSurveyComponent } from './components/user-survey/user-survey.compon
 import { AdminComponent } from './components/admin/admin.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { TakeSurveyComponent } from './components/take-survey/take-survey.component';
+import { CreateSurveyComponent } from './components/create-survey/create-survey.component';
 
 
 const routes: Routes = [
+  { path: 'createSurvey', component: CreateSurveyComponent }, 
   { path: 'takeSurvey/:id', component:  TakeSurveyComponent},
   { path: 'login', component: AdminLoginComponent},
   { path: 'admin', component: AdminComponent },

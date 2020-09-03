@@ -12,8 +12,8 @@
         <div *ngSwitchCase="'radio'">
             <label>{{question.label}}</label>
             <label *ngFor="let option of question.options">
-                {{option.value}}
                 <input [formControlName]="question.key" [id]="option.key" type="radio" [value]="option.key">
+                {{option.value}}
             </label>
         </div>
 

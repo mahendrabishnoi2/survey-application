@@ -3,6 +3,7 @@ import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { InputTypes } from 'src/app/common/input-types';
 import { CreateNewFormService } from 'src/app/services/create-new-form.service';
 import { QuestionsOptions } from 'src/app/common/questions-options';
+import { Questions } from 'src/app/common/questions';
 
 @Component({
   selector: 'app-add-question',
@@ -29,7 +30,7 @@ export class AddQuestionComponent implements OnInit {
   constructor(private fb: FormBuilder, private newFormService: CreateNewFormService) { }
 
   ngOnInit(): void {
-    this.formInit(new Ques());
+    this.formInit(new Questions(0, ""));
   }
 
   addOption() {
@@ -43,7 +44,7 @@ export class AddQuestionComponent implements OnInit {
     }
   }
 
-  formInit(question: Ques) {
+  formInit(question: Questions) {
     let options = new FormArray([]);
     this.questionForm = this.fb.group({
       question: [question.question, [Validators.required]],
@@ -109,12 +110,4 @@ export class AddQuestionComponent implements OnInit {
   deleteOption(index: number) {
     this.options.splice(index, 1);
   }
-}
-
-class Ques {
-  id: number;
-  question: string;
-  type: string;
-  options: QuestionsOptions[];
-  validation: string;
 }

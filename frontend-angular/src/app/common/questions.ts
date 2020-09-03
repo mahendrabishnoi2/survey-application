@@ -10,4 +10,5 @@ export class Questions {
     question: string;
     type: InputTypes;
     options: QuestionsOptions[];
+    validation: string;
 }

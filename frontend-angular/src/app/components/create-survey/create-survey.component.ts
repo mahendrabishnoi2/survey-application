@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, Form } from '@angular/forms';
 import { QuestionsOptions } from 'src/app/common/questions-options';
 import { InputTypes } from 'src/app/common/input-types';
 import { CreateNewFormService } from 'src/app/services/create-new-form.service';
+import { SurveyFull } from 'src/app/common/survey-full';
+import { Questions } from 'src/app/common/questions';
+import { DbServiceService } from 'src/app/services/db-service.service';
 
 
 @Component({
@@ -18,7 +21,7 @@ export class CreateSurveyComponent implements OnInit {
   maxDate: Date;
   componentToShow: string;
 
-  constructor(private fb: FormBuilder, private newFormService: CreateNewFormService) { }
+  constructor(private fb: FormBuilder, private newFormService: CreateNewFormService, private dbService: DbServiceService) { }
 
   newSurveyForm: FormGroup;
   surveyQuestionFormArray: FormArray;
@@ -26,11 +29,11 @@ export class CreateSurveyComponent implements OnInit {
   ngOnInit(): void {
     this.initMap();
     this.minDate = this.getMinDate();
-    this.formInit(new SurveyTemp());
+    this.formInit(new SurveyFull());
     this.componentToShow = "create-survey";
   }
 
-  formInit(survey: SurveyTemp) {
+  formInit(survey: SurveyFull) {
 
     this.surveyQuestionFormArray = new FormArray([]);
 
@@ -86,6 +89,8 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   submitSurvey(): void {
+    let survey = this.createSurveyObjectFromForm();
+    this.dbService.saveNewSurvey(survey).subscribe();
   }
 
   addQuestion(): void {
@@ -93,28 +98,43 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   showForm() {
-    console.log(this.newSurveyForm);
+    console.log(this.newSurveyForm.value);
   }
 
   getEnabledComponent(): string {
     return this.newFormService.enabledComponent();
   }
-}
 
-class Ques {
-  id: number;
-  question: string;
-  type: string;
-  options: string[];
-  validation: string;
-}
+  createSurveyObjectFromForm(): SurveyFull {
+    let survey: SurveyFull = new SurveyFull();
+    survey.created = new Date();
+    survey.name  = this.newSurveyForm.value.surveyName;
+    survey.description = this.newSurveyForm.value.description;
+    survey.validTill = this.newSurveyForm.value.validTill;
+    survey.questions = [];
 
-class SurveyTemp {
-  id: number;
-  name: string;
-  questions: Ques[];
-  created: Date;
-  validTill: Date;
-  description: string;
-}
+    let questionsArray = this.newSurveyForm.value.questions.value;
 
+    questionsArray.forEach((question, index) => {
+      let q: Questions = new Questions(index, question.question);
+      let type: InputTypes = new InputTypes();
+      type.id = 0;
+      type.typeName = question.questionType
+      q.type = type;
+      q.validation = question.validation;
+      let optionArray = question.options.value;
+      q.options = [];
+
+      optionArray.forEach((opt, id) => {
+        let o: QuestionsOptions = new QuestionsOptions();
+        o.id = opt.id;
+        o.name = opt.name;
+        q.options.push(o);
+      })
+
+      survey.questions.push(q);
+    });
+
+    return survey;
+  }
+}

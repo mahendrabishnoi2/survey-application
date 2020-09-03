@@ -21,6 +21,15 @@
         </div>
     </form>
 
+    <!-- show added questions -->
+    <ng-container *ngIf="">
+        <table border="1">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </ng-container>
+    
+
     <div>
         <div>
             <button (click)="addQuestion()" [disabled]="surveyQuestionFormArray.controls.length >= 5">Add New

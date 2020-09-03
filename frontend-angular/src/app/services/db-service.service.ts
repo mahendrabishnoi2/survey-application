@@ -62,6 +62,11 @@ export class DbServiceService {
     const url = `${this.baseUrl}/surveys/response`;
     return this.httpClient.post(url, surveyResponse);
   }
+
+  saveNewSurvey(survey: SurveyFull): Observable<any> {
+    const url =  `${this.baseUrl}/surveys/create`;
+    return this.httpClient.post(url, survey);
+  }
 }
 
 interface GetResponseSurveyList {

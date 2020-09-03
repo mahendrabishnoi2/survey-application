@@ -7,12 +7,14 @@ public class Question {
   String question;
   Type type;
   List<Option> options;
+  String validation;
 
-  public Question(long id, String question, Type type, List<Option> options) {
+  public Question(long id, String question, Type type, List<Option> options, String validation) {
     this.id = id;
     this.question = question;
     this.type = type;
     this.options = options;
+    this.validation = validation;
   }
 
   public Question() {}
@@ -47,5 +49,31 @@ public class Question {
 
   public void setOptions(List<Option> options) {
     this.options = options;
+  }
+
+  public String getValidation() {
+    return validation;
+  }
+
+  public void setValidation(String validation) {
+    this.validation = validation;
+  }
+
+  @Override
+  public String toString() {
+    return "Question{"
+        + "id="
+        + id
+        + ", question='"
+        + question
+        + '\''
+        + ", type="
+        + type
+        + ", options="
+        + options
+        + ", validation='"
+        + validation
+        + '\''
+        + '}';
   }
 }

@@ -9,9 +9,7 @@ public class Type {
     this.typeName = typeName;
   }
 
-  public Type() {
-
-  }
+  public Type() {}
 
   public long getId() {
     return id;
@@ -27,5 +25,10 @@ public class Type {
 
   public void setTypeName(String typeName) {
     this.typeName = typeName;
+  }
+
+  @Override
+  public String toString() {
+    return "Type{" + "id=" + id + ", typeName='" + typeName + '\'' + '}';
   }
 }

@@ -26,6 +26,9 @@ public class Questions {
   @Column(name = "question_name")
   private String questionName;
 
+  @Column(name = "validation")
+  private String validation;
+
   @ManyToOne
   @JoinColumn(name = "input_type_id")
   private InputTypes inputTypeId;

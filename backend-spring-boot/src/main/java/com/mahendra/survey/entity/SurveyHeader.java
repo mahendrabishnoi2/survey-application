@@ -1,5 +1,6 @@
 package com.mahendra.survey.entity;
 
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,39 @@ public class SurveyHeader {
 
   @Column(name = "survey_name")
   private String surveyName;
+
+  @Column(name = "creation_date")
+  private Date created;
+
+  @Column(name = "valid_till")
+  private Date validTill;
+
+  @Column(name = "description")
+  private String description;
+
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(Date created) {
+    this.created = created;
+  }
+
+  public Date getValidTill() {
+    return validTill;
+  }
+
+  public void setValidTill(Date validTill) {
+    this.validTill = validTill;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
   @OneToMany(mappedBy = "surveyHeader", fetch = FetchType.EAGER)
   private Set<Questions> questions;

@@ -104,4 +104,17 @@ public class SurveyHeader {
   public Set<Respondant> getRespondants() {
     return respondants;
   }
+
+  @Override
+  public String toString() {
+    return "SurveyHeader{" +
+        "id=" + id +
+        ", surveyName='" + surveyName + '\'' +
+        ", created=" + created +
+        ", validTill=" + validTill +
+        ", description='" + description + '\'' +
+        ", questions=" + questions +
+        ", respondants=" + respondants +
+        '}';
+  }
 }

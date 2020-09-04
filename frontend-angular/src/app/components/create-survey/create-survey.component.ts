@@ -69,6 +69,7 @@ export class CreateSurveyComponent implements OnInit {
     this.validationMap.set("alpha", "Alphabets Only");
     this.validationMap.set("alpha-numeric", "Alpha Numberic Values");
     this.validationMap.set("numeric", "Numbers only");
+    this.validationMap.set("", "No Validation");
   }
 
   getMinDate(): string {

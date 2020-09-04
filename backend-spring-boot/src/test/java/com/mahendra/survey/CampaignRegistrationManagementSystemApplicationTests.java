@@ -21,6 +21,7 @@ import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.service.SurveyService;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -126,13 +127,13 @@ class CampaignRegistrationManagementSystemApplicationTests {
     admin.setPassword("b");
     admin.setIsPrimaryAdmin((short) 0);
     adminRepository.save(admin);
-//
-//    Optional<Admin> optionalAdmin = adminRepository.findById(1L);
-//    assertNotNull(optionalAdmin);
-//    admin = optionalAdmin.get();
-//    assertEquals(admin.getFirstName(), "Mahendra");
-//    assertEquals(admin.getLastName(), "Bishnoi");
-//    assertEquals(admin.getEmail(), "m");
+    //
+    //    Optional<Admin> optionalAdmin = adminRepository.findById(1L);
+    //    assertNotNull(optionalAdmin);
+    //    admin = optionalAdmin.get();
+    //    assertEquals(admin.getFirstName(), "Mahendra");
+    //    assertEquals(admin.getLastName(), "Bishnoi");
+    //    assertEquals(admin.getEmail(), "m");
   }
 
   @Test
@@ -156,5 +157,16 @@ class CampaignRegistrationManagementSystemApplicationTests {
       int id = t.getId().intValue();
       assertEquals(inputTypes.get(id - 1).getInputTypeName(), t.getInputTypeName());
     }
+  }
+
+  @Test
+  void testSaveNewSurvey() {
+    SurveyHeader surveyHeader = new SurveyHeader();
+    surveyHeader.setSurveyName("test survey");
+    surveyHeader.setCreated(new Date());
+    surveyHeader.setValidTill(new Date());
+    surveyHeader.setDescription("description of survey");
+
+    SurveyHeader savedHeader = surveyHeaderRepository.save(surveyHeader);
   }
 }

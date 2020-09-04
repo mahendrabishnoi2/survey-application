@@ -40,5 +40,6 @@ public class SurveyController {
   @PostMapping("/surveys/create")
   public void createNewSurvey(@RequestBody SurveyFull survey) {
     System.out.println(survey);
+    surveyService.saveSurvey(survey);
   }
 }

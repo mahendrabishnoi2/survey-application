@@ -1,5 +1,7 @@
 package com.mahendra.survey.service;
 
+import com.mahendra.survey.dao.InputTypesRepository;
+import com.mahendra.survey.dao.QuestionsOptionsRepository;
 import com.mahendra.survey.dao.QuestionsRepository;
 import com.mahendra.survey.dao.RespondantRepository;
 import com.mahendra.survey.dao.SurveyHeaderRepository;
@@ -31,6 +33,8 @@ public class SurveyService {
   @Autowired SurveyHeaderRepository surveyHeaderRepository;
   @Autowired RespondantRepository respondantRepository;
   @Autowired QuestionsRepository questionsRepository;
+  @Autowired InputTypesRepository inputTypesRepository;
+  @Autowired QuestionsOptionsRepository questionsOptionsRepository;
 
   public SurveyFull getSurvey(Long surveyId) {
 
@@ -67,7 +71,8 @@ public class SurveyService {
         }
       }
 
-      options.sort(Comparator.comparingInt(a -> (int) a.getId()));;
+      options.sort(Comparator.comparingInt(a -> (int) a.getId()));
+      ;
       question.setOptions(options);
       questionList.add(question);
     }
@@ -130,6 +135,52 @@ public class SurveyService {
     }
 
     return false;
+  }
+
+  // save a new survey to database
+  public void saveSurvey(SurveyFull survey) {
+    SurveyHeader surveyHeader = new SurveyHeader();
+    surveyHeader.setSurveyName(survey.getName());
+    surveyHeader.setCreated(survey.getCreated());
+    surveyHeader.setValidTill(survey.getValidTill());
+    surveyHeader.setDescription(survey.getDescription());
+
+    SurveyHeader savedHeader = surveyHeaderRepository.save(surveyHeader);
+
+    for (Question question : survey.getQuestions()) {
+      Questions newQuestion = new Questions();
+      newQuestion.setSurveyHeader(savedHeader);
+      InputTypes inputType = getInputTypeObjectByName(question.getType().getTypeName());
+      if (inputType != null) {
+        newQuestion.setInputTypeId(inputType);
+      }
+      newQuestion.setQuestionName(question.getQuestion());
+      newQuestion.setValidation(question.getValidation());
+
+      Questions savedQuestion = questionsRepository.save(newQuestion);
+
+      // if question contains options - i.e. question of type checkbox or radio
+      if (question.getOptions().size() > 0) {
+        for (Option option : question.getOptions()) {
+          QuestionsOptions newOption = new QuestionsOptions();
+          newOption.setOptionName(option.getName());
+          newOption.setQuestionId(savedQuestion);
+          questionsOptionsRepository.save(newOption);
+        }
+      }
+      System.out.println(surveyHeaderRepository.findById(savedHeader.getId()).get());
+    }
+  }
+
+  private InputTypes getInputTypeObjectByName(String givenType) {
+    List<InputTypes> inputTypes = inputTypesRepository.findAll();
+
+    for (InputTypes type : inputTypes) {
+      if (type.getInputTypeName().equalsIgnoreCase(givenType)) {
+        return type;
+      }
+    }
+    return null;
   }
 }
 

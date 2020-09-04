@@ -95,4 +95,12 @@ public class Questions {
       questionsOption.setQuestionId(this);
     }
   }
+
+  public String getValidation() {
+    return validation;
+  }
+
+  public void setValidation(String validation) {
+    this.validation = validation;
+  }
 }

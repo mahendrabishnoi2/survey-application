@@ -2,7 +2,7 @@
 <div style="text-align:center;font-weight:bold; font-size: 25px;"> Surveys</div>
 <br>
 
-<div style="font-size: 130%; color: #dc3545;" *ngIf="surveyHeaders.length === 0; else elseBlock">
+<div style="font-size: 130%; color: #dc3545;" *ngIf="surveyHeaders?.length === 0; else elseBlock">
     <label scope="row">No surveys available.</label></div>
 <ng-template #elseBlock>
 <table class="table">

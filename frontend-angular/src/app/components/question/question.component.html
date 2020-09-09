@@ -2,9 +2,16 @@
 <div [formGroup]="form">
 
     <div [ngSwitch]="question.controlType">
-        <div *ngSwitchCase="'textbox'">
+        <div *ngSwitchCase="'oneline'">
             <label> {{question.label}}
                 <input [formControlName]="question.key" [id]="question.key" [type]="question.type">
+            </label>
+        </div>
+
+        <div *ngSwitchCase="'multiline'">
+            <label> {{question.label}}
+                <!-- <input [formControlName]="question.key" [id]="question.key" [type]="question.type"> -->
+                <textarea [formControlName]="question.key" cols="30" rows="5"></textarea>
             </label>
         </div>
 
@@ -36,6 +43,20 @@
             </label>
         </div>
 
-        <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
+        <!-- TODO: add message for required -->
+        <div style="font-size: 80%;color: #dc3545;"
+            *ngIf="question.validation.length > 0 && form.controls[question.key].hasError('pattern')">
+            <ng-container *ngIf="question.validation==='alpha'">
+                Only Alphabets allowed
+            </ng-container>
+            <ng-container *ngIf="question.validation==='alpha-numeric'">
+                Only Alphanumeric allowed
+            </ng-container>
+            <ng-container *ngIf="question.validation==='numeric'">
+                Only Numbers allowed
+            </ng-container>
+        </div>
+
+        <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div> -->
     </div>
 </div>

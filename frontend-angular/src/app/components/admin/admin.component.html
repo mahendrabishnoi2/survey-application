@@ -1,2 +1,2 @@
-<p>admin works!</p>
+<ng-container *ngIf="!isLoggedIn()">{{ redirect() }}</ng-container>
 <app-list-surveys></app-list-surveys>

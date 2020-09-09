@@ -6,6 +6,7 @@ import { QuestionRadio } from '../common/question-radio';
 import { SurveyFull } from '../common/survey-full';
 import { QuestionsOptions } from '../common/questions-options';
 import { FormArray, FormControl, Validators, FormGroup } from '@angular/forms';
+import { QuestionMultiLine } from '../common/question-multi-line';
 
 @Injectable({
   providedIn: 'root'
@@ -23,21 +24,30 @@ export class QuestionControlService {
       // multiline
       // radio
       // checkbox_multiselect
-      if (q.type.typeName === "oneline" || q.type.typeName === "multiline") {
+      if (q.type.typeName === "oneline") {
         ques = new QuestionText({
           key: q.id.toString(),
+          validation: q.validation,
           label: q.question,
         });
-      } else if (q.type.typeName === "checkbox_multiselect") {
+      } else if(q.type.typeName === "multiline") {
+        ques = new QuestionMultiLine({
+          key: q.id.toString(),
+          validation: q.validation,
+          label: q.question,
+        });
+      }else if (q.type.typeName === "checkbox_multiselect") {
         ques = new QuestionCheckbox({
           key: q.id.toString(),
           label: q.question,
+          validation: q.validation,
           options: this.getOptions(q.options)
         })
       } else if (q.type.typeName === "radio") {
         ques = new QuestionRadio({
           key: q.id.toString(),
           label: q.question,
+          validation: q.validation,
           options: this.getOptions(q.options)
         })
       }
@@ -64,9 +74,17 @@ export class QuestionControlService {
         group[question.key] = new FormArray([]);
         this.addCheckboxes(question.options, group[question.key]);
       } else {
-        group[question.key] = question.required
-          ? new FormControl(question.value || "", Validators.required)
-          : new FormControl(question.value || "");
+        if (question.validation != "" || question.validation != null) {
+          if (question.validation === "alpha") {
+            group[question.key] = new FormControl(question.value || "", [Validators.required, Validators.pattern('[a-zA-Z ]+')]);
+          } else if (question.validation === "numeric") {
+            group[question.key] = new FormControl(question.value || "", [Validators.required, Validators.pattern('[0-9]+')]);
+          } else {  // alpha-numeric
+            group[question.key] = new FormControl(question.value || "", [Validators.required, Validators.pattern('[a-zA-Z0-9_]+')]);
+          }
+        } else {
+          group[question.key] = new FormControl(question.value || "", Validators.required);
+        }
       }
     });
     return new FormGroup(group);

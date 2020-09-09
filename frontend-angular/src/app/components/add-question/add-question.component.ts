@@ -49,7 +49,7 @@ export class AddQuestionComponent implements OnInit {
     this.questionForm = this.fb.group({
       question: [question.question, [Validators.required]],
       questionType: [question.type, [Validators.required]],
-      validation: [question.validation],
+      validation: [""],
       options: [options],
       id: [question.id]
     });
@@ -100,7 +100,7 @@ export class AddQuestionComponent implements OnInit {
   }
 
   private clearValidation() {
-    this.questionForm.controls.validation.setValue(null);
+    this.questionForm.controls.validation.setValue("");
   }
 
   private clearOptions() {

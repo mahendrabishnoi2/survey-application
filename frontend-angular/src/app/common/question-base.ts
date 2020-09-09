@@ -3,6 +3,7 @@ export class QuestionBase<T> {
     key: string;    // we can keep it as id of question
     label: string;  // question itself
     required: boolean;
+    validation: string;
     // order: number;
     controlType: string;       // text or radio or checkbox
     type: string;   // input type such as email or anything else
@@ -13,6 +14,7 @@ export class QuestionBase<T> {
         key?: string;
         label?: string;
         required?: boolean;
+        validation?: string;
         // order?: number;
         controlType?: string;
         type?: string;
@@ -22,6 +24,7 @@ export class QuestionBase<T> {
         this.key = options.key || '';
         this.label = options.label || '';
         this.required = !!options.required;
+        this.validation = options.validation || '';
         //   this.order = options.order === undefined ? 1 : options.order;
         this.controlType = options.controlType || '';
         this.type = options.type || '';

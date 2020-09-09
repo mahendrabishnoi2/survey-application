@@ -1,10 +1,12 @@
 package com.mahendra.survey.service;
 
+import com.mahendra.survey.dao.AdminRepository;
 import com.mahendra.survey.dao.InputTypesRepository;
 import com.mahendra.survey.dao.QuestionsOptionsRepository;
 import com.mahendra.survey.dao.QuestionsRepository;
 import com.mahendra.survey.dao.RespondantRepository;
 import com.mahendra.survey.dao.SurveyHeaderRepository;
+import com.mahendra.survey.entity.Admin;
 import com.mahendra.survey.entity.Answers;
 import com.mahendra.survey.entity.InputTypes;
 import com.mahendra.survey.entity.Questions;
@@ -35,6 +37,20 @@ public class SurveyService {
   @Autowired QuestionsRepository questionsRepository;
   @Autowired InputTypesRepository inputTypesRepository;
   @Autowired QuestionsOptionsRepository questionsOptionsRepository;
+  @Autowired AdminRepository adminRepository;
+
+  public Admin verifyAdminLogin(Admin admin) {
+    Admin adminRes = adminRepository.findByEmail(admin.getEmail());
+
+    if (adminRes != null) {
+      System.out.println(adminRes);
+      return adminRes;
+    }
+
+    Admin fake = new Admin();
+    fake.setId(-1l);
+    return fake;
+  }
 
   public SurveyFull getSurvey(Long surveyId) {
 
@@ -45,6 +61,9 @@ public class SurveyService {
     surveyFull.setId(sId);
     String sName = surveyHeader.getSurveyName();
     surveyFull.setName(sName);
+    surveyFull.setCreated(surveyHeader.getCreated());
+    surveyFull.setValidTill(surveyHeader.getValidTill());
+    surveyFull.setDescription(surveyHeader.getDescription());
     List<Question> questionList = new ArrayList<>();
 
     Set<Questions> questions = surveyHeader.getQuestions();
@@ -60,6 +79,7 @@ public class SurveyService {
       question.setId(questions1.getId());
       question.setQuestion(questions1.getQuestionName());
       question.setType(type);
+      question.setValidation(questions1.getValidation());
 
       List<Option> options = new ArrayList<>();
       if (!type.getTypeName().contains("line")) {
@@ -72,7 +92,7 @@ public class SurveyService {
       }
 
       options.sort(Comparator.comparingInt(a -> (int) a.getId()));
-      ;
+
       question.setOptions(options);
       questionList.add(question);
     }
@@ -168,7 +188,7 @@ public class SurveyService {
           questionsOptionsRepository.save(newOption);
         }
       }
-      System.out.println(surveyHeaderRepository.findById(savedHeader.getId()).get());
+      //      System.out.println(surveyHeaderRepository.findById(savedHeader.getId()).get());
     }
   }
 
@@ -183,20 +203,3 @@ public class SurveyService {
     return null;
   }
 }
-
-/*
-survey by id
-{
-  surveyHeader: {
-    id:
-    name:
-    other details:
-    questions:{
-      id:
-      question:
-      type:
-      options:
-    }
-  }
-}
- */

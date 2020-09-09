@@ -1,5 +1,6 @@
 package com.mahendra.survey.controller;
 
+import com.mahendra.survey.entity.Admin;
 import com.mahendra.survey.entity.Respondant;
 import com.mahendra.survey.newresponse.SurveyUserResponse;
 import com.mahendra.survey.response.SurveyFull;
@@ -19,6 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class SurveyController {
 
   @Autowired SurveyService surveyService;
+
+  @PostMapping("/login")
+  public Admin verifyAdminLogin(@RequestBody Admin admin) {
+    return surveyService.verifyAdminLogin(admin);
+  }
 
   @GetMapping("/surveys/{surveyId}")
   public SurveyFull getSurveyById(@PathVariable("surveyId") Long surveyId) {

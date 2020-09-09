@@ -8,6 +8,7 @@ import { InputTypes } from '../common/input-types';
 import { QuestionsOptions } from '../common/questions-options';
 import { SurveyFull } from '../common/survey-full';
 import { SurveyResponse } from '../common/survey-response';
+import { Admin } from '../common/admin';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,12 @@ export class DbServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
+  verifyLogin(admin: Admin): Observable<any> {
+    const url = `${this.baseUrl}/login`
+    return this.httpClient.post(url, admin);
+  }
+
+  // check if given user has already responded to survey
   verifyUser(id: number, user: any): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}respondant/new/${id}`, user);
   }
@@ -58,11 +65,13 @@ export class DbServiceService {
     );
   }
 
+  // if a user has not already responded to given survey, then save survey response to DB
   saveSurveyResponse(surveyResponse: SurveyResponse): Observable<any> {
     const url = `${this.baseUrl}/surveys/response`;
     return this.httpClient.post(url, surveyResponse);
   }
 
+  // save a new survey created by admin after logging in to application
   saveNewSurvey(survey: SurveyFull): Observable<any> {
     const url =  `${this.baseUrl}/surveys/create`;
     return this.httpClient.post(url, survey);

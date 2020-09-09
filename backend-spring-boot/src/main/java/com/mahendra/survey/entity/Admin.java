@@ -76,4 +76,26 @@ public class Admin {
   public void setIsPrimaryAdmin(short isPrimaryAdmin) {
     this.isPrimaryAdmin = isPrimaryAdmin;
   }
+
+  @Override
+  public String toString() {
+    return "Admin{"
+        + "id="
+        + id
+        + ", email='"
+        + email
+        + '\''
+        + ", firstName='"
+        + firstName
+        + '\''
+        + ", lastName='"
+        + lastName
+        + '\''
+        + ", password='"
+        + password
+        + '\''
+        + ", isPrimaryAdmin="
+        + isPrimaryAdmin
+        + '}';
+  }
 }

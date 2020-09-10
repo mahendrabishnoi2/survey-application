@@ -4,6 +4,7 @@ import com.mahendra.survey.entity.Admin;
 import com.mahendra.survey.entity.Respondant;
 import com.mahendra.survey.newresponse.SurveyUserResponse;
 import com.mahendra.survey.response.SurveyFull;
+import com.mahendra.survey.service.AdminService;
 import com.mahendra.survey.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SurveyController {
 
   @Autowired SurveyService surveyService;
+  @Autowired AdminService adminService;
 
   @PostMapping("/login")
   public Admin verifyAdminLogin(@RequestBody Admin admin) {
@@ -47,5 +49,10 @@ public class SurveyController {
   public void createNewSurvey(@RequestBody SurveyFull survey) {
     System.out.println(survey);
     surveyService.saveSurvey(survey);
+  }
+
+  @PostMapping("/admin/add")
+  public Admin addAdmin(@RequestBody Admin admin) {
+    return adminService.addAdmin(admin);
   }
 }

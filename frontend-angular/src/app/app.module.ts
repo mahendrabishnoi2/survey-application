@@ -16,6 +16,7 @@ import { CreateSurveyComponent } from './components/create-survey/create-survey.
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './components/add-question/add-question.component';
 import { AddOptionsComponent } from './components/add-options/add-options.component';
+import { AddAdminComponent } from './components/add-admin/add-admin.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { AddOptionsComponent } from './components/add-options/add-options.compon
     CreateSurveyComponent,
     AddQuestionComponent,
     AddOptionsComponent,
+    AddAdminComponent,
   ],
 
   imports: [

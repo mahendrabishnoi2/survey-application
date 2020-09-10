@@ -19,8 +19,13 @@ export class DbServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
+  addAdmin(admin: Admin): Observable<Admin> {
+    const url = `${this.baseUrl}admin/add`;
+    return this.httpClient.post<Admin>(url, admin);
+  }
+
   verifyLogin(admin: Admin): Observable<any> {
-    const url = `${this.baseUrl}/login`
+    const url = `${this.baseUrl}/login`;
     return this.httpClient.post(url, admin);
   }
 

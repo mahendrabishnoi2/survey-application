@@ -1,0 +1,40 @@
+<div *ngIf="!adminAdded; else addSuccess">
+    <form #f="ngForm" (ngSubmit)="addAdmin(f)">
+        <div>
+            <label>
+                First Name:
+                <input type="text" [(ngModel)]="newAdmin.firstName" name="firstName" required autocomplete="given-name">
+            </label>
+        </div>
+        <div>
+            <label>
+                Last Name:
+                <input type="text" [(ngModel)]="newAdmin.lastName" name="lastName" required autocomplete="family-name">
+            </label>
+        </div>
+        <div>
+            <label>
+                Email:
+                <input type="email" [(ngModel)]="newAdmin.email" name="email" required autocomplete="username">
+            </label>
+        </div>
+        <div>
+            <label>
+                Password:
+                <input type="password" [(ngModel)]="newAdmin.password" name="password" required
+                    autocomplete="new-password">
+            </label>
+        </div>
+        <div>
+            <button type="submit" [disabled]="!f.valid">Add</button>
+        </div>
+    </form>
+</div>
+<ng-template #addSuccess>
+    <div>
+        Admin Added Successfully
+    </div>
+    <div>
+        <button routerLink="/admin">Admin Home</button>
+    </div>
+</ng-template>

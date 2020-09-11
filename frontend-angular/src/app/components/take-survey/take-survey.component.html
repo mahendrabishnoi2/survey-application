@@ -1,27 +1,59 @@
-<h1>Survey: {{ survey?.name }}</h1>
+<div class="container width70">
+    <h1 class="text-center">
+        {{ survey?.name }}
+    </h1>
 
-<h3>Enter your details:</h3>
+    <div *ngIf="inputPersonalDetails" class="card pad20">
 
-<ng-container *ngIf="inputPersonalDetails">
-    <form [formGroup]="details" (ngSubmit)="onSubmit()">
-        <label for="">
-            Full Name:
-            <input type="text" formControlName="fullName">
-        </label>
-
-        <label for="">
-            Email:
-            <input type="text" formControlName="email">
-        </label>
-        <div>
-            <button type="submit" [disabled]="!this.details.valid">Next</button>
-            <div *ngIf="message?.length > 0" style="font-size: 80%;color: #dc3545;">
-                {{ message }}
-            </div>
+        <div class="text-center margin20">
+            <h3>Enter your details:</h3>
         </div>
-    </form>
-</ng-container>
 
-<div *ngIf="!inputPersonalDetails">
-    <app-take-survey-questions [survey]="survey" [details]="details" [questions]="questions"></app-take-survey-questions>
+        <form [formGroup]="details" (ngSubmit)="onSubmit()" class="form-horizontal container">
+
+            <div class="form-group row">
+                <label class="control-label col-sm-2 font-weight-bold" for="fullName">
+                    Full Name:
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" formControlName="fullName" id="fullName" class="form-control">
+                    <div *ngIf="details.controls.fullName.invalid && (details.controls.fullName.touched || details.controls.fullName.dirty)"
+                        class="alert alert-danger">
+                        Full Name is a required field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="control-label col-sm-2 font-weight-bold" for="email">
+                    Email:
+                </label>
+                <div class="col-sm-10">
+                    <input type="text" formControlName="email" id="email" class="form-control">
+                    <div *ngIf="details.controls.email.invalid && (details.controls.email.touched || details.controls.email.dirty)"
+                        class="alert alert-danger">
+                        Email is a required field
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <button type="submit" [disabled]="!this.details.valid"
+                        class="btn btn-success btn-block">Next</button>
+                </div>
+                <div *ngIf="message?.length > 0" class="alert alert-danger">
+                    {{ message }}
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div *ngIf="!inputPersonalDetails" class="container width70">
+    <app-take-survey-questions [survey]="survey" [details]="details" [questions]="questions">
+    </app-take-survey-questions>
 </div>

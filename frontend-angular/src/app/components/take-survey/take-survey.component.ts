@@ -5,6 +5,7 @@ import { SurveyFull } from 'src/app/common/survey-full';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionBase } from 'src/app/common/question-base';
 import { QuestionControlService } from 'src/app/services/question-control.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -28,10 +29,11 @@ export class TakeSurveyComponent implements OnInit {
   survey: SurveyFull;
 
   constructor(private route: ActivatedRoute, private dbService: DbServiceService,
-    private fb: FormBuilder, private qcs: QuestionControlService) {
+    private fb: FormBuilder, private qcs: QuestionControlService, private auth: AuthService) {
   }
 
   ngOnInit(): void {
+    this.auth.logout();
     this.surveyId = +this.route.snapshot.paramMap.get('id');
     this.getSurvey();
     this.createForm();

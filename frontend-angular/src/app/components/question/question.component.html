@@ -1,62 +1,85 @@
-<!-- <p>question works!</p> -->
-<div [formGroup]="form">
+<div>
+    <div [formGroup]="form">
 
-    <div [ngSwitch]="question.controlType">
-        <div *ngSwitchCase="'oneline'">
-            <label> {{question.label}}
-                <input [formControlName]="question.key" [id]="question.key" [type]="question.type">
+        <!-- <div class="form-group row">
+            <label class="control-label col-sm-2 font-weight-bold" for="fullName">
+                Full Name:
             </label>
-        </div>
-
-        <div *ngSwitchCase="'multiline'">
-            <label> {{question.label}}
-                <!-- <input [formControlName]="question.key" [id]="question.key" [type]="question.type"> -->
-                <textarea [formControlName]="question.key" cols="30" rows="5"></textarea>
-            </label>
-        </div>
-
-
-        <div *ngSwitchCase="'radio'">
-            <label>{{question.label}}</label>
-            <label *ngFor="let option of question.options">
-                <input [formControlName]="question.key" [id]="option.key" type="radio" [value]="option.key">
-                {{option.value}}
-            </label>
-        </div>
-
-        <!-- <div *ngSwitchCase="'dropdown'">
-            <label>
-                {{question.label}}
-                <select [id]="question.key" [formControlName]="question.key">
-                    <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
-                </select>
-            </label>
+            <div class="col-sm-10">
+                <input type="text" formControlName="fullName" id="fullName" class="form-control">
+                <div *ngIf="details.controls.fullName.invalid && (details.controls.fullName.touched || details.controls.fullName.dirty)"
+                    class="alert alert-danger">
+                    Full Name is a required field
+                </div>
+            </div>
         </div> -->
 
+        <div [ngSwitch]="question.controlType">
+            <div *ngSwitchCase="'oneline'" class="form-group pad-left pad-right">
+                <label class="control-label" for="question.key">
+                    Q{{ qNo+1 }}:&nbsp;&nbsp;{{question.label}}
+                </label>
+                <input [formControlName]="question.key" [id]="question.key" [type]="question.type" class="form-control">
+            </div>
 
-        <div *ngSwitchCase="'checkbox'">
-            <label>{{question.label}}
+            <div *ngSwitchCase="'multiline'" class="form-group pad-left pad-right">
+                <label class="control-label" for="question.key">
+                    Q{{ qNo+1 }}:&nbsp;&nbsp;{{question.label}}
+                </label>
+                <!-- <input [formControlName]="question.key" [id]="question.key" [type]="question.type"> -->
+                <textarea [formControlName]="question.key" cols="30" rows="5" id="question.key"
+                    class="form-control pad"></textarea>
+            </div>
+
+
+            <div *ngSwitchCase="'radio'" class="form-check">
+                Q{{ qNo+1 }}:&nbsp;&nbsp;{{question.label}} <br>
+                <div *ngFor="let option of question.options" class="pad-left">
+                    <input [formControlName]="question.key" [id]="option.key" type="radio" [value]="option.key"
+                        class="form-check-input">
+                    <label for="option.key" class="form-check-label">
+                        {{option.value}}
+                    </label>
+                </div>
+            </div>
+
+            <!-- <div *ngSwitchCase="'dropdown'">
+                <label>
+                    {{question.label}}
+                    <select [id]="question.key" [formControlName]="question.key">
+                        <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+                    </select>
+                </label>
+            </div> -->
+
+
+            <div *ngSwitchCase="'checkbox'" class="form-check">
+                Q{{ qNo+1 }}:&nbsp;&nbsp;{{question.label}} <br>
                 <ng-container formArrayName="{{question.key}}" *ngFor="let option of question.options; let i = index">
-                    <input type="checkbox" [formControlName]="i">
-                    {{question.options[i].value}}
+                    <div class="pad-left">
+                        <input type="checkbox" [formControlName]="i" class="form-check-input"
+                            id="{{question.options[i].value}}">
+                        <label for="{{question.options[i].value}}"
+                            class="form-check-label">{{question.options[i].value}}</label>
+                    </div>
                 </ng-container>
-            </label>
-        </div>
+            </div>
 
-        <!-- TODO: add message for required -->
-        <div style="font-size: 80%;color: #dc3545;"
-            *ngIf="question.validation.length > 0 && form.controls[question.key].hasError('pattern')">
-            <ng-container *ngIf="question.validation==='alpha'">
-                Only Alphabets allowed
-            </ng-container>
-            <ng-container *ngIf="question.validation==='alpha-numeric'">
-                Only Alphanumeric allowed
-            </ng-container>
-            <ng-container *ngIf="question.validation==='numeric'">
-                Only Numbers allowed
-            </ng-container>
-        </div>
+            <!-- TODO: add message for required -->
+            <!-- <div style="font-size: 80%;color: #dc3545;"
+                *ngIf="question.validation.length > 0 && form.controls[question.key].hasError('pattern')">
+                <ng-container *ngIf="question.validation==='alpha'">
+                    Only Alphabets allowed
+                </ng-container>
+                <ng-container *ngIf="question.validation==='alpha-numeric'">
+                    Only Alphanumeric allowed
+                </ng-container>
+                <ng-container *ngIf="question.validation==='numeric'">
+                    Only Numbers allowed
+                </ng-container>
+            </div> -->
 
-        <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div> -->
+            <!-- <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div> -->
+        </div>
     </div>
 </div>

@@ -1,5 +1,7 @@
-/* body {
-    padding: 10px;
+body {
+    background-color: beige;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
+
+.width70 {
+    width: 70%;
+}

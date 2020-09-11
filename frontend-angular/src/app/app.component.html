@@ -1,13 +1,15 @@
-<header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <div><a href="#" class="navbar-brand">{{ title }}</a></div>
-      <ul class="navbar-nav navbar-collapse justify-content-end">
-          <li>
-              <a *ngIf="isLoggedIn()" class="nav-link" href="#" (click)=logout()>Logout</a>
-          </li>
-      </ul>
-  </nav>
-</header>
+<div class="bg-main">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <div><a href="#" class="navbar-brand">{{ title }}</a></div>
+            <ul class="navbar-nav navbar-collapse justify-content-end">
+                <li>
+                    <a *ngIf="isLoggedIn()" class="nav-link" href="#" (click)=logout()>Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
 
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
+</div>

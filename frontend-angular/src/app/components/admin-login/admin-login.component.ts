@@ -19,6 +19,10 @@ export class AdminLoginComponent implements OnInit {
   admin: Admin = new Admin();
 
   ngOnInit(): void {
+    // if user is already logged in, then redirect to admin home page
+    if (this.authService.getIsLoggedIn()) {
+      this.router.navigate(['admin']);
+    }
     this.initForm();
   }
 

@@ -19,7 +19,7 @@ export class TakeSurveyQuestionsComponent implements OnInit {
   @Input() details: FormGroup;
   @Input() questions: QuestionBase<string>[];
   form: FormGroup;
-  payLoad = "";
+  // payLoad = "";
   surveyResponse: SurveyResponse;
   // questions: QuestionBase<string>[];
 
@@ -73,7 +73,7 @@ export class TakeSurveyQuestionsComponent implements OnInit {
             answerText += " | " + this.getValueFromKey(options, selectedOptions[i].toString());
           }
         }
-      } else if (qTypeText === "textbox") { // working
+      } else { // working
         answerText = this.form.get(id).value;
       }
 
@@ -90,19 +90,23 @@ export class TakeSurveyQuestionsComponent implements OnInit {
   }
 
   onSubmit() {
-    this.payLoad = JSON.stringify(this.form.getRawValue());
-
+    // log answers given by users
     console.log(this.form.value);
 
+    // create an object from form values, will be sent to database
     this.createObject();
 
+    // use dbservice to save user's response
     this.dbService.saveSurveyResponse(this.surveyResponse).subscribe(
       data => {
         console.log(data);
       }
     )
 
-    console.log(this.surveyResponse);
+    // the object which we send to db service
+    // console.log(this.surveyResponse);
+
+    // after survey is completed, redirect to a new page
     this.router.navigate(['surveycompleted']);
 
     // can we create a new array of response to questions

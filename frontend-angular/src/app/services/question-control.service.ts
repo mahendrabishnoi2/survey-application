@@ -79,8 +79,10 @@ export class QuestionControlService {
             group[question.key] = new FormControl(question.value || "", [Validators.required, Validators.pattern('[a-zA-Z ]+')]);
           } else if (question.validation === "numeric") {
             group[question.key] = new FormControl(question.value || "", [Validators.required, Validators.pattern('[0-9]+')]);
-          } else {  // alpha-numeric
+          } else if (question.validation === "alpha-numeric"){  // alpha-numeric
             group[question.key] = new FormControl(question.value || "", [Validators.required, Validators.pattern('[a-zA-Z0-9_]+')]);
+          } else {
+            group[question.key] = new FormControl(question.value || "", [Validators.required]);
           }
         } else {
           group[question.key] = new FormControl(question.value || "", Validators.required);

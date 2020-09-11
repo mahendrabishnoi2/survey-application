@@ -18,5 +18,8 @@ export class QuestionComponent implements OnInit {
   }
 
   get isValid() { return this.form.controls[this.question.key].valid; }
+  get isTouched() { return this.form.controls[this.question.key].touched; }
+  get isDirty() { return this.form.controls[this.question.key].dirty; }
+  get patternError() { return this.form.controls[this.question.key].hasError('pattern'); }
 
 }

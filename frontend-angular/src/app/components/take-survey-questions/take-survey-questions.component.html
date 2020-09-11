@@ -1,6 +1,8 @@
 <div class="card">
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
-
+    <div class="pad-left font-weight-light">
+      All questions marked with <span style="color: red;">*</span> are mandatory
+    </div>
     <div *ngFor="let question of questions; index as i">
 
       <p></p>

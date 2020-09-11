@@ -1,32 +1,40 @@
-<div *ngIf="!adminAdded; else addSuccess">
-    <form #f="ngForm" (ngSubmit)="addAdmin(f)">
-        <div>
-            <label>
+<div *ngIf="!adminAdded; else addSuccess" class="container width70 card">
+    <div>
+        <h3 class="text-center">
+            Add New Admin
+        </h3>
+    </div>
+    <form #f="ngForm" (ngSubmit)="addAdmin(f)" class="form-horizontal">
+        <div class="form-group">
+            <label for="firstName">
                 First Name:
-                <input type="text" [(ngModel)]="newAdmin.firstName" name="firstName" required autocomplete="given-name">
             </label>
+            <input type="text" [(ngModel)]="newAdmin.firstName" name="firstName" id="firstName" required
+                autocomplete="given-name" class="form-control">
         </div>
-        <div>
-            <label>
+        <div class="form-group">
+            <label for="lastName">
                 Last Name:
-                <input type="text" [(ngModel)]="newAdmin.lastName" name="lastName" required autocomplete="family-name">
             </label>
+            <input type="text" [(ngModel)]="newAdmin.lastName" name="lastName" id="lastName" required
+                autocomplete="family-name" class="form-control">
         </div>
-        <div>
-            <label>
+        <div class="form-group">
+            <label for="email">
                 Email:
-                <input type="email" [(ngModel)]="newAdmin.email" name="email" required autocomplete="username">
             </label>
+            <input type="email" [(ngModel)]="newAdmin.email" name="email" id="email" required autocomplete="username"
+                class="form-control">
         </div>
-        <div>
-            <label>
+        <div class="form-group">
+            <label for="password">
                 Password:
-                <input type="password" [(ngModel)]="newAdmin.password" name="password" required
-                    autocomplete="new-password">
             </label>
+            <input type="password" [(ngModel)]="newAdmin.password" name="password" id="password" required
+                autocomplete="new-password" class="form-control">
         </div>
-        <div>
-            <button type="submit" [disabled]="!f.valid">Add</button>
+        <div class="form-group">
+            <button type="submit" [disabled]="!f.valid" class="btn btn-block btn-success">Add</button>
         </div>
     </form>
 </div>
@@ -35,6 +43,6 @@
         Admin Added Successfully
     </div>
     <div>
-        <button routerLink="/admin">Admin Home</button>
+        <button routerLink="/admin" class="btn btn-block">Admin Home</button>
     </div>
 </ng-template>

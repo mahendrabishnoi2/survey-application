@@ -1,21 +1,28 @@
 <p></p>
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-    <ng-container *ngIf="errorMsg.length > 0">
-        {{ errorMsg }}
-    </ng-container>
-    <div>
-        <label>Email:
-            <input type="email" formControlName="email" autocomplete="username">
-        </label>
-    </div>
+<div class="card width70 container">
 
     <div>
-        <label>Password:
-            <input type="password" formControlName="password" autocomplete="current-password">
-        </label>
+        <h3 class="text-center">Admin Login</h3>
     </div>
 
-    <div>
-        <button type="submit" [disabled]="loginForm.invalid">Login</button>
-    </div>
-</form>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="form-horizontal">
+        <div *ngIf="errorMsg.length > 0" class="alert alert-danger">
+            {{ errorMsg }}
+        </div>
+        <div class="form-group form-row">
+            <label for="email" class="col-sm-2">Email:</label>
+            <input type="email" formControlName="email" autocomplete="username" class="form-control col-sm-10"
+                id="email">
+        </div>
+
+        <div class="form-group form-row">
+            <label for="password" class="col-sm-2">Password:</label>
+            <input type="password" formControlName="password" autocomplete="current-password"
+                class="form-control col-sm-10" id="password">
+        </div>
+
+        <div class="form-group">
+            <button type="submit" [disabled]="loginForm.invalid" class="btn btn-success btn-block">Login</button>
+        </div>
+    </form>
+</div>

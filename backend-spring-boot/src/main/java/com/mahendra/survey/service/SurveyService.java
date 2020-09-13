@@ -15,17 +15,22 @@ import com.mahendra.survey.entity.Respondant;
 import com.mahendra.survey.entity.SurveyHeader;
 import com.mahendra.survey.newresponse.AnswerSingleQuestion;
 import com.mahendra.survey.newresponse.SurveyUserResponse;
+import com.mahendra.survey.response.Headers;
 import com.mahendra.survey.response.Option;
 import com.mahendra.survey.response.Question;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.response.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +43,15 @@ public class SurveyService {
   @Autowired InputTypesRepository inputTypesRepository;
   @Autowired QuestionsOptionsRepository questionsOptionsRepository;
   @Autowired AdminRepository adminRepository;
+
+  public void deleteSurvey(Long id) {
+    Optional<SurveyHeader> surveyHeaderOptional = surveyHeaderRepository.findById(id);
+    if (surveyHeaderOptional.isPresent()) {
+      SurveyHeader surveyHeader = surveyHeaderOptional.get();
+      surveyHeader.setValidTill(new Date(System.currentTimeMillis()-24*60*60*1000));
+      surveyHeaderRepository.save(surveyHeader);
+    }
+  }
 
   public Admin verifyAdminLogin(Admin admin) {
     Admin adminRes = adminRepository.findByEmail(admin.getEmail());
@@ -158,7 +172,7 @@ public class SurveyService {
   }
 
   // save a new survey to database
-  public void saveSurvey(SurveyFull survey) {
+  public Headers saveSurvey(SurveyFull survey) {
     SurveyHeader surveyHeader = new SurveyHeader();
     surveyHeader.setSurveyName(survey.getName());
     surveyHeader.setCreated(survey.getCreated());
@@ -190,6 +204,8 @@ public class SurveyService {
       }
       //      System.out.println(surveyHeaderRepository.findById(savedHeader.getId()).get());
     }
+
+    return new Headers(savedHeader.getId(), savedHeader.getSurveyName());
   }
 
   private InputTypes getInputTypeObjectByName(String givenType) {
@@ -201,5 +217,27 @@ public class SurveyService {
       }
     }
     return null;
+  }
+
+  public List<Headers> getAllSurvey() {
+    List<SurveyHeader> surveyHeaders = surveyHeaderRepository.findAll();
+    List<Headers> dataToSend = new ArrayList<>();
+
+    // sort surveys by their expiry date
+    Collections.sort(surveyHeaders, Comparator.comparing(SurveyHeader::getValidTill));
+
+    // truncate time part
+    Date todayMidnight = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+    Date tomorrowMidnight = DateUtils.addDays(todayMidnight, 1);
+
+    for (SurveyHeader surveyHeader: surveyHeaders) {
+      if (surveyHeader.getValidTill().compareTo(todayMidnight) >= 0) {
+        dataToSend.add(new Headers(surveyHeader.getId(), surveyHeader.getSurveyName()));
+      }
+    }
+
+//    System.out.println(dataToSend);
+
+    return dataToSend;
   }
 }

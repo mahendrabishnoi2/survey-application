@@ -19,6 +19,11 @@ export class DbServiceService {
 
   constructor(private httpClient: HttpClient) { }
 
+  deleteSurvey(id: number): Observable<any> {
+    const url = `${this.baseUrl}surveys/delete`;
+    return this.httpClient.post(url, id);
+  }
+
   addAdmin(admin: Admin): Observable<Admin> {
     const url = `${this.baseUrl}admin/add`;
     return this.httpClient.post<Admin>(url, admin);
@@ -34,10 +39,14 @@ export class DbServiceService {
     return this.httpClient.post(`${this.baseUrl}respondant/new/${id}`, user);
   }
 
-  getSurveyList(): Observable<SurveyHeader[]> {
-    return this.httpClient.get<GetResponseSurveyList>(`${this.baseUrl}surveys`).pipe(
-      map(response => response._embedded.surveyHeader)
-    );
+  // getSurveyList(): Observable<SurveyHeader[]> {
+  //   return this.httpClient.get<GetResponseSurveyList>(`${this.baseUrl}surveys/getAll`).pipe(
+  //     map(response => response._embedded.surveyHeader)
+  //   );
+  // }
+
+  getSurveyList(): Observable<any> {
+    return this.httpClient.get(`${this.baseUrl}surveys/getAll`);
   }
 
   getSurvey(id: number): Observable<SurveyFull> {

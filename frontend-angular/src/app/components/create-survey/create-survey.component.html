@@ -1,51 +1,92 @@
-<p>create-survey works!</p>
-<ng-container *ngIf="getEnabledComponent()==='create-survey'">
-    <form [formGroup]="newSurveyForm">
-        <div>
-            <label>
-                Survey Name:
-                <input type="text" formControlName="surveyName">
+<div *ngIf="getEnabledComponent()==='create-survey'" class="container card width70">
+    <form [formGroup]="newSurveyForm" class="form-horizontal">
+
+        <div class="form-group">
+            <label for="surveyName">
+                Survey Name:<span style="color: red;">*</span>
             </label>
+            <input type="text" formControlName="surveyName" id="surveyName" class="form-control">
+            <div *ngIf="newSurveyForm.controls.surveyName.invalid && (newSurveyForm.controls.surveyName.touched || newSurveyForm.controls.surveyName.dirty)"
+                class="alert alert-danger">
+                This is a required field
+            </div>
         </div>
-        <div>
-            <label>
-                Valid Till:
-                <input type="date" formControlName="validTill" [attr.min]="minDate">
+
+        <div class="form-group">
+            <label for="validTill">
+                Valid Till:<span style="color: red;">*</span>
             </label>
+            <input type="date" formControlName="validTill" [attr.min]="minDate" id="validTill" class="form-control">
         </div>
-        <div>
-            <label>
-                Description:
-                <textarea formControlName="description" rows="4"></textarea>
+
+        <div class="form-group">
+            <label for="description">
+                Description:<span style="color: red;">*</span>
             </label>
+            <textarea formControlName="description" rows="4" id="description" class="form-control"></textarea>
+            <div *ngIf="newSurveyForm.controls.description.invalid && (newSurveyForm.controls.description.touched || newSurveyForm.controls.description.dirty)"
+                class="alert alert-danger">
+                This is a required field
+            </div>
         </div>
     </form>
 
     <!-- show added questions -->
-    <ng-container *ngIf="">
-        <table border="1">
-            <thead></thead>
-            <tbody></tbody>
-        </table>
-    </ng-container>
-    
+    <div class="card form-group">
+        <h4 class="text-center">Added Questions</h4>
+        <div *ngIf="surveyQuestionFormArray.length !== 0; else noQuestionsAdded">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Question</th>
+                        <th scope="col">Question Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let quesControl of surveyQuestionFormArray.controls; index as i">
+                        <th scope="row">{{ i+1 }}</th>
+                        <td> {{ quesControl.value.question }}</td>
+                        <td> {{ qTypeMap.get(quesControl.value.questionType) }} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #noQuestionsAdded>
+            <p class="text-center">
+                No questions to show. Please add a question.
+            </p>
+        </ng-template>
+    </div>
 
     <div>
-        <div>
-            <button (click)="addQuestion()" [disabled]="surveyQuestionFormArray.controls.length >= 5">Add New
+        <div class="row">
+            <button (click)="addQuestion()" [disabled]="surveyQuestionFormArray.controls.length >= 5"
+                class="btn btn-success offset-sm-1 col-sm-4">Add New
                 Question</button>
-        </div>
-        <div>
+
             <button (click)="submitSurvey()"
-                [disabled]="newSurveyForm.invalid || surveyQuestionFormArray.controls.length === 0">Create
+                [disabled]="newSurveyForm.invalid || surveyQuestionFormArray.controls.length === 0"
+                class="btn btn-success offset-sm-2 col-sm-4">Create
                 Survey</button>
         </div>
-        <div>
+        <p></p>
+        <!-- only used while developing form, to show formgroup in console -->
+        <!-- <div>
             <button (click)="showForm()">show form</button>
-        </div>
+        </div> -->
     </div>
-</ng-container>
+</div>
 <ng-container *ngIf="getEnabledComponent()==='add-question'">
     <app-add-question [surveyQuestionFormArray]="surveyQuestionFormArray" [qType]="qTypeMap" [valType]="validationMap">
     </app-add-question>
 </ng-container>
+<div class="container card width70" *ngIf="getEnabledComponent()==='survey-created'">
+    <p>
+        Successfully created survey with id: {{ submittedSurveyDetails?.id }}
+    </p>
+    <div class="form-group form-row">
+        <input type="text" class="form-control col-sm-8" [value]="surveyLink" id="copyText" #textToCopy disabled>
+        <button (click)="copyToClipboard()" class=".offset-sm-1 col-sm-2">Copy Link</button>
+    </div>
+</div>

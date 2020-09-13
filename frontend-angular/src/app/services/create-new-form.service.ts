@@ -17,6 +17,14 @@ export class CreateNewFormService {
     }
   }
 
+  reset(): void {
+    this.componentToShow = 'create-survey';
+  }
+
+  success(): void {
+    this.componentToShow = 'survey-created';
+  }
+
   enabledComponent(): string {
     return this.componentToShow;
   }

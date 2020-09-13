@@ -1,30 +1,34 @@
-<br>
-<div style="text-align:center;font-weight:bold; font-size: 25px;"> Surveys</div>
-<br>
-
-<div style="font-size: 130%; color: #dc3545;" *ngIf="surveyHeaders?.length === 0; else elseBlock">
-    <label scope="row">No surveys available.</label></div>
-<ng-template #elseBlock>
-<table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Survey Name</th>
-            <!-- <th scope="col">No. of Questions</th>
-            <th scope="col">Valid Till</th> -->
-            <th scope="col">Click To Proceed</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let surveyHeader of surveyHeaders;let i=index">
-                <th scope="row">{{i+1}}</th>
-                <td>{{surveyHeader.surveyName}}</td>
-                <!-- <td>{{survey.questions.length}}</td> -->
-                <!-- <td>{{survey.validTill | date : 'dd-MM-yyyy'}}</td> -->
-                <td>
-                    <a [routerLink]="['../takeSurvey/' + surveyHeader.id]">Click Here</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</ng-template>
+<div class="container">
+    <div *ngIf="surveyHeaders?.length === 0; else elseBlock">
+        <p></p>
+        <h4 style="color: red; padding: 30px; margin: 20px;" class="text-center font-weight-bold">
+            No surveys available
+        </h4>
+        <p></p>
+        <p style="padding: 30px; margin: 20px;" class="text-center font-weight-bold">
+            Click <a class="link" routerLink="/createSurvey">here</a> to create a new survey.
+        </p>
+    </div>
+    <ng-template #elseBlock>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Survey Name</th>
+                    <th scope="col">Copy Link</th>
+                    <th scope="col">Delete Survey</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let surveyHeader of surveyHeaders;let i=index">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{surveyHeader.surveyName}}</td>
+                    <td>
+                        <button (click)="copyToClipboard(surveyHeader.id)" class="btn btn-info">Click Here</button>
+                    </td>
+                    <td><button (click)="deleteSurvey(surveyHeader.id)" class="btn btn-danger">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-template>
+</div>

@@ -6,6 +6,7 @@ import { CreateNewFormService } from 'src/app/services/create-new-form.service';
 import { SurveyFull } from 'src/app/common/survey-full';
 import { Questions } from 'src/app/common/questions';
 import { DbServiceService } from 'src/app/services/db-service.service';
+import { SurveyHeader } from 'src/app/common/survey-header';
 
 
 @Component({
@@ -20,6 +21,9 @@ export class CreateSurveyComponent implements OnInit {
   minDate: string;
   maxDate: Date;
   componentToShow: string;
+  questionsForDisplay: any;
+  submittedSurveyDetails: SurveyHeader;
+  surveyLink: string = "";
 
   constructor(private fb: FormBuilder, private newFormService: CreateNewFormService, private dbService: DbServiceService) { }
 
@@ -28,9 +32,11 @@ export class CreateSurveyComponent implements OnInit {
 
   ngOnInit(): void {
     this.initMap();
+    this.newFormService.reset();
     this.minDate = this.getMinDate();
     this.formInit(new SurveyFull());
     this.componentToShow = "create-survey";
+    this.questionsForDisplay = this.newSurveyForm.value.questions.value as Array<any>;
   }
 
   formInit(survey: SurveyFull) {
@@ -53,7 +59,7 @@ export class CreateSurveyComponent implements OnInit {
       surveyName: [survey.name, [Validators.required]],
       questions: [this.surveyQuestionFormArray],
       created: [survey.created],
-      validTill: [survey.validTill],
+      validTill: [survey.validTill, [Validators.required]],
       description: [survey.description, [Validators.required]]
     });
   }
@@ -91,15 +97,23 @@ export class CreateSurveyComponent implements OnInit {
 
   submitSurvey(): void {
     let survey = this.createSurveyObjectFromForm();
-    this.dbService.saveNewSurvey(survey).subscribe();
+    this.dbService.saveNewSurvey(survey).subscribe(
+      data => {
+        this.submittedSurveyDetails = data;
+        this.surveyLink = "localhost:4200/takeSurvey/" + data.id;
+      }
+    );
+    this.newFormService.success();
   }
 
   addQuestion(): void {
     this.newFormService.toggleComponent();
+    this.questionsForDisplay = this.newSurveyForm.value.questions.value as Array<any>;
   }
 
   showForm() {
-    console.log(this.newSurveyForm.value);
+    // console.log(this.newSurveyForm.value);
+    console.log(this.surveyQuestionFormArray);
   }
 
   getEnabledComponent(): string {
@@ -137,5 +151,15 @@ export class CreateSurveyComponent implements OnInit {
     });
 
     return survey;
+  }
+
+  copyToClipboard() {
+    let item = this.surveyLink;
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      e.clipboardData.setData('text/plain', (item));
+      e.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
   }
 }

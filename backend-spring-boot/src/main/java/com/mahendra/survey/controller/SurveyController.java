@@ -3,9 +3,11 @@ package com.mahendra.survey.controller;
 import com.mahendra.survey.entity.Admin;
 import com.mahendra.survey.entity.Respondant;
 import com.mahendra.survey.newresponse.SurveyUserResponse;
+import com.mahendra.survey.response.Headers;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.service.AdminService;
 import com.mahendra.survey.service.SurveyService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,11 @@ public class SurveyController {
 
   @Autowired SurveyService surveyService;
   @Autowired AdminService adminService;
+
+  @PostMapping("/surveys/delete")
+  public void deleteSurvey(@RequestBody Object object) {
+    surveyService.deleteSurvey(Long.valueOf(object.toString()));
+  }
 
   @PostMapping("/login")
   public Admin verifyAdminLogin(@RequestBody Admin admin) {
@@ -46,13 +53,18 @@ public class SurveyController {
   }
 
   @PostMapping("/surveys/create")
-  public void createNewSurvey(@RequestBody SurveyFull survey) {
-    System.out.println(survey);
-    surveyService.saveSurvey(survey);
+  public Headers createNewSurvey(@RequestBody SurveyFull survey) {
+//    System.out.println(survey);
+    return surveyService.saveSurvey(survey);
   }
 
   @PostMapping("/admin/add")
   public Admin addAdmin(@RequestBody Admin admin) {
     return adminService.addAdmin(admin);
+  }
+
+  @GetMapping("/surveys/getAll")
+  public List<Headers> getAllSurvey() {
+    return surveyService.getAllSurvey();
   }
 }

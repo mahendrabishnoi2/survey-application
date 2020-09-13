@@ -1,34 +1,33 @@
-<p>add-question works!</p>
-<div>
+<div class="container card width70">
     <form [formGroup]="questionForm" (ngSubmit)="addQuestion()">
-        <div>
-            <label>
-                Enter Question:
-                <input type="text" formControlName="question">
+        <div class="form-group">
+            <label for="question">
+                Enter Question:<span style="color: red;">*</span>
             </label>
+            <input type="text" formControlName="question" id="question" class="form-control">
+
         </div>
 
-        <div>
-            <label>
-                Select Question Type:
-                <select formControlName="questionType">
-                    <option *ngFor="let type of qType | keyvalue" [value]="type.key">{{ type.value }}</option>
-                </select>
+        <div class="form-group">
+            <label for="questionType">
+                Select Question Type:<span style="color: red;">*</span>
             </label>
+            <select formControlName="questionType" id="questionType" class="form-control">
+                <option *ngFor="let type of qType | keyvalue" [value]="type.key">{{ type.value }}</option>
+            </select>
         </div>
 
-        <!-- take validation type from user if question needs text input from user -->
-        <!-- TODO: check issue while clicking checkboxes, DONE: using label instead of div works -->
         <ng-container
             *ngIf="questionForm.value.questionType === 'oneline' || questionForm.value.questionType === 'multiline'">
-            <div>
-                <label>
-                    Validation:
-                    <label *ngFor="let validation of valType | keyvalue">
-                        <input type="radio" formControlName="validation" [value]="validation.key">
+            Validation:
+            <div class="form-check">
+                <div *ngFor="let validation of valType | keyvalue">
+                    <input type="radio" formControlName="validation" [value]="validation.key" [id]="validation.value"
+                        class="form-check-input">
+                    <label [for]="validation.value" class="form-check-label">
                         {{ validation.value }}
                     </label>
-                </label>
+                </div>
             </div>
         </ng-container>
 
@@ -36,31 +35,48 @@
             *ngIf="questionForm.value.questionType === 'radio' || questionForm.value.questionType === 'checkbox_multiselect'">
 
             <!-- show added options -->
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>option</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let option of options; index as i">
-                        <th>{{ i+1 }} </th>
-                        <th>{{ option }}</th>
-                        <th><button (click)="deleteOption(i)">X</button></th>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="card form-group">
+                <h4 class="text-center">Added Options</h4>
+                <div *ngIf="options.length > 0; else noOptionAdded">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Option</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let option of options; index as i">
+                                <th scope="row">{{ i+1 }} </th>
+                                <td>{{ option }}</td>
+                                <td><button (click)="deleteOption(i)">X</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ng-template #noOptionAdded>
+                    <p class="text-center">
+                        No options to show. Please add an option.
+                    </p>
+                </ng-template>
+            </div>
+
 
             <!-- add option -->
-            <div>
+            <div class="form-group">
                 <form #optionForm="ngForm">
-                    <label>
+                    <label for="newOption">
                         Add option:
-                        <input type="text" [(ngModel)]="newOption" name="option">
                     </label>
-                    <button [disabled]="options.length>=4 || newOption.length === 0" (click)="addOption()">Add New
+                    <input type="text" [(ngModel)]="newOption" name="option" id="newOption" class="form-control">
+                    <p></p>
+                    <!-- <div class="alert alert-danger"
+                        *ngIf="newOption.length <= 0 && (optionForm.form.controls.option.touched || optionForm.form.controls.option.dirty)">
+                        This field is required.
+                    </div> -->
+                    <button [disabled]="options.length>=4 || newOption.length === 0" (click)="addOption()"
+                        class="btn btn-success">Add New
                         Option</button>
                     <ng-container *ngIf="isDuplicate == true">
                         {{ duplicateMessage }}
@@ -69,15 +85,17 @@
             </div>
         </ng-container>
 
-        <div>
-            <button [disabled]="questionForm.invalid" (click)="addQuestion()">Add</button>
+        <div class="form-group">
+            <button [disabled]="questionForm.invalid" (click)="addQuestion()" class="btn btn-block btn-success">Add
+                Question to Form</button>
         </div>
         <ng-container *ngIf="hasError">
             {{ errorMessage }}
         </ng-container>
 
-        <div>
+        <!-- only used while developing form, to show formgroup in console -->
+        <!-- <div>
             <button (click)="showForm()">Show</button>
-        </div>
+        </div> -->
     </form>
 </div>

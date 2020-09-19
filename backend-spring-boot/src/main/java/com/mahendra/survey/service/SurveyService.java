@@ -43,12 +43,13 @@ public class SurveyService {
   @Autowired InputTypesRepository inputTypesRepository;
   @Autowired QuestionsOptionsRepository questionsOptionsRepository;
   @Autowired AdminRepository adminRepository;
+  @Autowired EmailService emailService;
 
   public void deleteSurvey(Long id) {
     Optional<SurveyHeader> surveyHeaderOptional = surveyHeaderRepository.findById(id);
     if (surveyHeaderOptional.isPresent()) {
       SurveyHeader surveyHeader = surveyHeaderOptional.get();
-      surveyHeader.setValidTill(new Date(System.currentTimeMillis()-24*60*60*1000));
+      surveyHeader.setValidTill(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000));
       surveyHeaderRepository.save(surveyHeader);
     }
   }
@@ -148,6 +149,18 @@ public class SurveyService {
       respondant.setAnswers(answers);
 
       respondantRepository.save(respondant);
+
+      String to = surveyUserResponse.getEmail();
+      String subject = "Response recorded for survey: " + surveyHeader.getSurveyName();
+      String body =
+          "Hi "
+              + surveyUserResponse.getFullName()
+              + "Your response to survey: "
+              + surveyHeader.getSurveyName()
+              + " has been recorded successfully. Thanks for taking this survey.\n\n"
+              + "Thanks and Regards,\nCampaign Management System";
+
+      emailService.sendSimpleMessage(to, subject, body);
     } catch (NoSuchElementException e) {
       System.out.println("Exception: Response to a survey that does not exist");
     }
@@ -230,13 +243,13 @@ public class SurveyService {
     Date todayMidnight = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
     Date tomorrowMidnight = DateUtils.addDays(todayMidnight, 1);
 
-    for (SurveyHeader surveyHeader: surveyHeaders) {
+    for (SurveyHeader surveyHeader : surveyHeaders) {
       if (surveyHeader.getValidTill().compareTo(todayMidnight) >= 0) {
         dataToSend.add(new Headers(surveyHeader.getId(), surveyHeader.getSurveyName()));
       }
     }
 
-//    System.out.println(dataToSend);
+    //    System.out.println(dataToSend);
 
     return dataToSend;
   }

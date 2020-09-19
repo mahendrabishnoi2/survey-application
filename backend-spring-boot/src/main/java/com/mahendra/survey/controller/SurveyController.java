@@ -25,44 +25,52 @@ public class SurveyController {
   @Autowired SurveyService surveyService;
   @Autowired AdminService adminService;
 
+  // delete a survey
   @PostMapping("/surveys/delete")
   public void deleteSurvey(@RequestBody Object object) {
     surveyService.deleteSurvey(Long.valueOf(object.toString()));
   }
 
+  // validates admin login
   @PostMapping("/login")
   public Admin verifyAdminLogin(@RequestBody Admin admin) {
     return surveyService.verifyAdminLogin(admin);
   }
 
+  // provides a survey for rendering so that respondent can take survey
   @GetMapping("/surveys/{surveyId}")
   public SurveyFull getSurveyById(@PathVariable("surveyId") Long surveyId) {
     return surveyService.getSurvey(surveyId);
   }
 
+  // checks if a respondent has already completed a survey
   @PostMapping("/respondant/new/{surveyId}")
   public boolean verifyRespondant(
       @RequestBody Respondant respondant, @PathVariable("surveyId") Long surveyId) {
     return surveyService.verifyRespondant(respondant, surveyId);
   }
 
+  // save a response to survey
   @PostMapping("/surveys/response")
   public boolean saveSurveyResponse(@RequestBody SurveyUserResponse surveyUserResponse) {
     System.out.println(surveyUserResponse);
     return surveyService.saveSurveyResponse(surveyUserResponse);
   }
 
+  // create new survey
   @PostMapping("/surveys/create")
   public Headers createNewSurvey(@RequestBody SurveyFull survey) {
 //    System.out.println(survey);
     return surveyService.saveSurvey(survey);
   }
 
+  // adds new admin to database
   @PostMapping("/admin/add")
   public Admin addAdmin(@RequestBody Admin admin) {
     return adminService.addAdmin(admin);
   }
 
+  // returns a list of all active surveys, sorted by valid till date
   @GetMapping("/surveys/getAll")
   public List<Headers> getAllSurvey() {
     return surveyService.getAllSurvey();

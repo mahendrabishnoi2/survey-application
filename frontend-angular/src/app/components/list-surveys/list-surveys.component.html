@@ -16,7 +16,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Survey Name</th>
                     <th scope="col">Copy Link</th>
-                    <th scope="col">Delete Survey</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col"> Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +28,13 @@
                         <button (click)="copyToClipboard(surveyHeader.id)" class="btn btn-info">Click Here</button>
                     </td>
                     <td><button (click)="deleteSurvey(surveyHeader.id)" class="btn btn-danger">X</button></td>
+                    <td>
+                        <button class="btn btn-info" [routerLink]="['/surveyDetails/' + surveyHeader.id]">
+                            <!-- <a [routerLink]="['/surveyDetails/' + surveyHeader.id]"> -->
+                            Details
+                            <!-- </a> -->
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>

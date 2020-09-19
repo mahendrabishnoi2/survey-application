@@ -1,0 +1,35 @@
+<ngb-accordion [closeOthers]="true" activeIds="static-1">
+  <ngb-panel id="static-1" title="Survey Responses">
+    <ng-template ngbPanelContent>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Submission Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let respondent of respondents;let i=index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{respondent.fullName}}</td>
+            <td>{{respondent.takenOn | date}}</td> 
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id="static-2">
+    <ng-template ngbPanelTitle>
+      <span>&#9733; <b>Fancy</b> title &#9733;</span>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      Under Development
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id="static-3" title="Export Options">
+    <ng-template ngbPanelContent>
+      Under Development
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>

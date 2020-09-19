@@ -6,9 +6,11 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { TakeSurveyComponent } from './components/take-survey/take-survey.component';
 import { CreateSurveyComponent } from './components/create-survey/create-survey.component';
 import { AddAdminComponent } from './components/add-admin/add-admin.component';
+import { SurveyDetailsComponent } from './components/survey-details/survey-details.component';
 
 
 const routes: Routes = [
+  { path: 'surveyDetails/:id', component: SurveyDetailsComponent},
   { path: 'addAdmin', component: AddAdminComponent},
   { path: 'createSurvey', component: CreateSurveyComponent }, 
   { path: 'takeSurvey/:id', component:  TakeSurveyComponent},

@@ -17,6 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddQuestionComponent } from './components/add-question/add-question.component';
 import { AddOptionsComponent } from './components/add-options/add-options.component';
 import { AddAdminComponent } from './components/add-admin/add-admin.component';
+import { SurveyDetailsComponent } from './components/survey-details/survey-details.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -33,6 +35,7 @@ import { AddAdminComponent } from './components/add-admin/add-admin.component';
     AddQuestionComponent,
     AddOptionsComponent,
     AddAdminComponent,
+    SurveyDetailsComponent,
   ],
 
   imports: [
@@ -41,7 +44,8 @@ import { AddAdminComponent } from './components/add-admin/add-admin.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

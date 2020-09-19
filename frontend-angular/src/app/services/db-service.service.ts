@@ -9,11 +9,19 @@ import { QuestionsOptions } from '../common/questions-options';
 import { SurveyFull } from '../common/survey-full';
 import { SurveyResponse } from '../common/survey-response';
 import { Admin } from '../common/admin';
+import { Respondant } from '../common/respondant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbServiceService {
+
+  getSurveyRespondents(surveyId: number): Observable<Respondant[]> {
+    const url = `${this.baseUrl}surveys/${surveyId}/respondants`;
+    return this.httpClient.get<GetRespondents>(url).pipe(
+      map(data => data._embedded.respondants)
+    );
+  }
 
   baseUrl: string = "http://localhost:8080/api/";
 
@@ -55,8 +63,8 @@ export class DbServiceService {
 
   getSurveyHeaderById(id: number): Observable<SurveyHeader> {
     return this.httpClient.get<SurveyHeader>(`${this.baseUrl}surveys/${id}`)
-    // .pipe(map(response => response.surveyHeader))
-    ;
+      // .pipe(map(response => response.surveyHeader))
+      ;
   }
 
   getQuestions(id: number): Observable<Questions[]> {
@@ -87,7 +95,7 @@ export class DbServiceService {
 
   // save a new survey created by admin after logging in to application
   saveNewSurvey(survey: SurveyFull): Observable<any> {
-    const url =  `${this.baseUrl}/surveys/create`;
+    const url = `${this.baseUrl}/surveys/create`;
     return this.httpClient.post(url, survey);
   }
 }
@@ -115,5 +123,11 @@ interface GetQuestionsList {
 interface GetQuestionsOptionsList {
   _embedded: {
     questionsOptions: QuestionsOptions[];
+  }
+}
+
+interface GetRespondents {
+  _embedded: {
+    respondants: Respondant[];
   }
 }

@@ -33,6 +33,26 @@
   </ngb-panel>
   <ngb-panel id="static-2" title="Survey Responses">
     <ng-template ngbPanelContent>
+      <div>
+        <h6>Filter by Date</h6>
+        <div class="form-group">
+          <label for="startDate">
+            Start Date
+          </label>
+          <input type="date" id="startDate" class="form-control" [ngModel]="filterStart"
+            (ngModelChange)="filterStart = $event">
+        </div>
+        <div class="form-group">
+          <label for="endDate">
+            End Date
+          </label>
+          <input type="date" id="endDate" class="form-control" [ngModel]="filterEnd"
+            (ngModelChange)="filterEnd = $event">
+          <div class="form-group">
+            <button (click)="filterByDate()" class="btn btn-info">Filter</button>
+          </div>
+        </div>
+      </div>
       <table class="table">
         <thead>
           <tr>
@@ -45,7 +65,7 @@
           <tr *ngFor="let respondent of respondents;let i=index">
             <th scope="row">{{i+1}}</th>
             <td>{{respondent.fullName}}</td>
-            <td>{{respondent.takenOn | date}}</td>
+            <td>{{respondent.takenOn | date }}</td>
           </tr>
         </tbody>
       </table>

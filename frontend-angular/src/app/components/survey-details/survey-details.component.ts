@@ -21,6 +21,8 @@ export class SurveyDetailsComponent implements OnInit {
   respondents: Respondant[];
   initailRespondents: Respondant[];
   surveyDetails: SurveyFull;
+  filterStart: string;
+  filterEnd: string;
 
   constructor(private route: ActivatedRoute, private dbService: DbServiceService, private exportAsService: ExportAsService) { }
 
@@ -38,10 +40,31 @@ export class SurveyDetailsComponent implements OnInit {
         this.dbService.getSurvey(this.surveyId).subscribe(
           survey => {
             this.surveyDetails = survey;
+            this.filterStart = this.surveyDetails.created.toString().split('T')[0];
+            this.filterEnd = this.surveyDetails.validTill.toString().split('T')[0];
           }
         );
       }
     )
+  }
+
+  filterByDate() {
+    let updatedRespondents: Respondant[] = [];
+
+    let filterStartDate = new Date(this.filterStart);
+    let filterEndDate = new Date(this.filterEnd);
+
+    this.initailRespondents.forEach(
+      respondent => {
+        let toAdd = false;
+        let tempDate = new Date(respondent.takenOn.toString().split('T')[0]);
+        if (tempDate > filterStartDate && tempDate < filterEndDate) toAdd = true;
+        if (tempDate < filterStartDate === false && tempDate > filterStartDate === false) toAdd = true;
+        if (tempDate < filterEndDate === false && tempDate > filterEndDate === false) toAdd = true;
+        if (toAdd) updatedRespondents.push(respondent);
+      }
+    )
+    this.respondents = updatedRespondents;
   }
 
   // create json object for survey details
@@ -116,22 +139,8 @@ export class SurveyDetailsComponent implements OnInit {
   downloadCsv(field: string) {
     let ws = this.createXlsxWorkbook(field).Sheets[field];
     let csv = XLSX.utils.sheet_to_csv(ws);
-    var blob = new Blob([csv], {type: "text/csv"});
+    var blob = new Blob([csv], { type: "text/csv" });
     saveAs(blob, `${field}.csv`);
-  }
-
-  downloadDetailsCsv() {
-    var wb = XLSX.utils.book_new();
-    wb.Props = {
-      Title: "Survey Details",
-      CreatedDate: new Date()
-    };
-    wb.SheetNames.push("details");
-    var ws = XLSX.utils.json_to_sheet(this.getJsonDetails());
-    var csv = XLSX.utils.sheet_to_csv(ws);
-    // console.log(csv);
-    var blob = new Blob([csv], {type: "text/csv"});
-    saveAs(blob, "details.csv");
   }
 
   // convert into octet stream for saving into xlsx format

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SurveyHeader } from 'src/app/common/survey-header';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver/src/FileSaver';
 
 @Component({
   selector: 'app-list-surveys',

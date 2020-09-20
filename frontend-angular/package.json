@@ -24,8 +24,12 @@
     "@angular/router": "~9.1.11",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
     "bootstrap": "^4.5.0",
+    "file-saver": "^2.0.2",
+    "jspdf": "^1.4.1",
+    "ngx-export-as": "^1.4.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "xlsx": "^0.16.7",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

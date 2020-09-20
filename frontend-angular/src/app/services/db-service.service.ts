@@ -16,6 +16,11 @@ import { Respondant } from '../common/respondant';
 })
 export class DbServiceService {
 
+  baseUrl: string = "http://localhost:8080/api/";
+
+  constructor(private httpClient: HttpClient) {}
+
+  // gets an array of respondents to a particular survey
   getSurveyRespondents(surveyId: number): Observable<Respondant[]> {
     const url = `${this.baseUrl}surveys/${surveyId}/respondants`;
     return this.httpClient.get<GetRespondents>(url).pipe(
@@ -23,20 +28,19 @@ export class DbServiceService {
     );
   }
 
-  baseUrl: string = "http://localhost:8080/api/";
-
-  constructor(private httpClient: HttpClient) { }
-
+  // delete a survey by id
   deleteSurvey(id: number): Observable<any> {
     const url = `${this.baseUrl}surveys/delete`;
     return this.httpClient.post(url, id);
   }
 
+  // add another admin
   addAdmin(admin: Admin): Observable<Admin> {
     const url = `${this.baseUrl}admin/add`;
     return this.httpClient.post<Admin>(url, admin);
   }
 
+  // verify admin login
   verifyLogin(admin: Admin): Observable<any> {
     const url = `${this.baseUrl}/login`;
     return this.httpClient.post(url, admin);
@@ -53,20 +57,24 @@ export class DbServiceService {
   //   );
   // }
 
+  // get list of surveys (not expired)
   getSurveyList(): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}surveys/getAll`);
   }
 
+  // get a survey with questions and other details about survey
   getSurvey(id: number): Observable<SurveyFull> {
     return this.httpClient.get<SurveyFull>(`${this.baseUrl}/surveys/${id}`);
   }
 
+  // get survey details by id
   getSurveyHeaderById(id: number): Observable<SurveyHeader> {
     return this.httpClient.get<SurveyHeader>(`${this.baseUrl}surveys/${id}`)
       // .pipe(map(response => response.surveyHeader))
       ;
   }
 
+  // get questions of a survey by id
   getQuestions(id: number): Observable<Questions[]> {
     return this.httpClient.get<GetQuestionsList>(`${this.baseUrl}surveys/${id}/questions`).pipe(
       map(response => response._embedded.questions)

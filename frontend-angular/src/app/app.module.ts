@@ -19,6 +19,8 @@ import { AddOptionsComponent } from './components/add-options/add-options.compon
 import { AddAdminComponent } from './components/add-admin/add-admin.component';
 import { SurveyDetailsComponent } from './components/survey-details/survey-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ExportAsModule } from 'ngx-export-as';
+
 
 
 @NgModule({
@@ -45,7 +47,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    NgbModule
+    NgbModule,
+    ExportAsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,37 @@
 <ngb-accordion [closeOthers]="true" activeIds="static-1">
-  <ngb-panel id="static-1" title="Survey Responses">
+  <ngb-panel id="static-1" title="Survey Details">
+    <ng-template ngbPanelContent>
+      <table class="table" id="details">
+        <tbody>
+          <tr>
+            <th scope="row">Survey Name</th>
+            <td>{{ surveyDetails?.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Survey Description</th>
+            <td>{{ surveyDetails?.description }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Number of Questions</th>
+            <td>{{ surveyDetails?.questions.length }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Number of responses</th>
+            <td>{{ respondents?.length }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Created On</th>
+            <td>{{ surveyDetails?.created | date }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Valid Till</th>
+            <td>{{ surveyDetails?.validTill | date }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id="static-2" title="Survey Responses">
     <ng-template ngbPanelContent>
       <table class="table">
         <thead>
@@ -13,23 +45,29 @@
           <tr *ngFor="let respondent of respondents;let i=index">
             <th scope="row">{{i+1}}</th>
             <td>{{respondent.fullName}}</td>
-            <td>{{respondent.takenOn | date}}</td> 
+            <td>{{respondent.takenOn | date}}</td>
           </tr>
         </tbody>
       </table>
     </ng-template>
   </ngb-panel>
-  <ngb-panel id="static-2">
-    <ng-template ngbPanelTitle>
-      <span>&#9733; <b>Fancy</b> title &#9733;</span>
-    </ng-template>
-    <ng-template ngbPanelContent>
-      Under Development
-    </ng-template>
-  </ngb-panel>
   <ngb-panel id="static-3" title="Export Options">
     <ng-template ngbPanelContent>
-      Under Development
+      <h5>Survey Details</h5>
+      <div class="row">
+        <button class="btn btn-info col-sm-2" (click)="downloadCsv('details')">csv</button>
+        <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadXlsx('details')">excel</button>
+        <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadJson('details')">json</button>
+        <!-- <button class="btn btn-info col-sm-2 offset-sm-1">pdf</button> -->
+      </div>
+      <br>
+      <h5>Survey Responses</h5>
+      <div class="row">
+        <button class="btn btn-info col-sm-2" (click)="downloadCsv('respondents')">csv</button>
+        <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadXlsx('respondents')">excel</button>
+        <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadJson('respondents')">json</button>
+        <!-- <button class="btn btn-info col-sm-2 offset-sm-1">pdf</button> -->
+      </div>
     </ng-template>
   </ngb-panel>
 </ngb-accordion>

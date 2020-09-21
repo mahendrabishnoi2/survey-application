@@ -7,6 +7,9 @@ import { SurveyFull } from 'src/app/common/survey-full';
 import { Questions } from 'src/app/common/questions';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { SurveyHeader } from 'src/app/common/survey-header';
+import { AuthService } from 'src/app/services/auth.service';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -25,12 +28,14 @@ export class CreateSurveyComponent implements OnInit {
   submittedSurveyDetails: SurveyHeader;
   surveyLink: string = "";
 
-  constructor(private fb: FormBuilder, private newFormService: CreateNewFormService, private dbService: DbServiceService) { }
+  constructor(private fb: FormBuilder, private newFormService: CreateNewFormService, private dbService: DbServiceService,
+    private authService: AuthService, private router: Router) { }
 
   newSurveyForm: FormGroup;
   surveyQuestionFormArray: FormArray;
 
   ngOnInit(): void {
+    if (!this.isLoggedIn()) this.redirect();
     this.initMap();
     this.newFormService.reset();
     this.minDate = this.getMinDate();
@@ -123,7 +128,7 @@ export class CreateSurveyComponent implements OnInit {
   createSurveyObjectFromForm(): SurveyFull {
     let survey: SurveyFull = new SurveyFull();
     survey.created = new Date();
-    survey.name  = this.newSurveyForm.value.surveyName;
+    survey.name = this.newSurveyForm.value.surveyName;
     survey.description = this.newSurveyForm.value.description;
     survey.validTill = this.newSurveyForm.value.validTill;
     survey.questions = [];
@@ -161,5 +166,13 @@ export class CreateSurveyComponent implements OnInit {
       document.removeEventListener('copy', null);
     });
     document.execCommand('copy');
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.getIsLoggedIn();
+  }
+
+  redirect(): void {
+    this.router.navigate(['login']);
   }
 }

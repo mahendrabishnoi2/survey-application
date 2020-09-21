@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { Respondant } from 'src/app/common/respondant';
 import { SurveyFull } from 'src/app/common/survey-full';
@@ -7,6 +7,7 @@ import { SurveyFull } from 'src/app/common/survey-full';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { saveAs } from "file-saver/src/FileSaver";
 import * as XLSX from 'xlsx';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class SurveyDetailsComponent implements OnInit {
   filterStart: string;
   filterEnd: string;
 
-  constructor(private route: ActivatedRoute, private dbService: DbServiceService, private exportAsService: ExportAsService) { }
+  constructor(private route: ActivatedRoute, private dbService: DbServiceService, private exportAsService: ExportAsService,
+    private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.surveyId = +this.route.snapshot.paramMap.get('id');
@@ -149,6 +151,14 @@ export class SurveyDetailsComponent implements OnInit {
     var view = new Uint8Array(buf);  //create uint8array as viewer
     for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
     return buf;
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.getIsLoggedIn();
+  }
+
+  redirect(): void {
+    this.router.navigate(['login']);
   }
 
 }

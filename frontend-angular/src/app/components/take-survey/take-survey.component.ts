@@ -20,6 +20,7 @@ export class TakeSurveyComponent implements OnInit {
   inputPersonalDetails: boolean = true;
   message: string = "";
   questions: QuestionBase<string>[];
+  surveyExpired: Boolean;
 
   // headers: SurveyHeader;
   // questions: Questions[] = [];
@@ -51,9 +52,30 @@ export class TakeSurveyComponent implements OnInit {
     this.dbService.getSurvey(this.surveyId).subscribe(
       data => {
         this.survey = data;
+        this.surveyExpired = this.compareDate(data.validTill as Date);
         console.log(JSON.stringify(data));
       }
     )
+  }
+
+  compareDate(expire: any) {
+    let expiry: Date = new Date(expire.toString().split('T')[0]);
+    let today: Date = new Date();
+    let todayYear = today.getFullYear();
+    let todayMonth = today.getMonth() + 1;
+    let todayDate = today.getDate();
+    let expiryYear = expiry.getFullYear();
+    let expiryMonth = expiry.getMonth() + 1;
+    let expiryDate = expiry.getDate();
+    console.log(`${todayYear}-${todayMonth}-${todayDate}`);
+    if (todayYear > expiryYear) return true;
+    if (todayYear === expiryYear) {
+      if (todayMonth > expiryMonth) return true;
+      if (todayMonth === expiryMonth) {
+        if (todayDate > expiryDate) return true;
+      }
+    }
+    return false;
   }
 
 

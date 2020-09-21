@@ -1,3 +1,23 @@
+<ng-container *ngIf="!isLoggedIn()">{{ redirect() }}</ng-container>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <!-- relative url -->
+                <a class="nav-link" routerLink="/createSurvey">Create Survey</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/addAdmin">Add Admin</a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link">Survey Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">Survey Analysis</a>
+            </li> -->
+        </ul>
+    </div>
+</nav>
 <div *ngIf="!adminAdded; else addSuccess" class="container width70 card">
     <div>
         <h3 class="text-center">
@@ -10,28 +30,40 @@
                 First Name:
             </label>
             <input type="text" [(ngModel)]="newAdmin.firstName" name="firstName" id="firstName" required
-                autocomplete="given-name" class="form-control">
+                autocomplete="given-name" class="form-control" minlength="2" #firstName="ngModel">
+            <div *ngIf="firstName.invalid && firstName.touched" class="alert alert-danger">
+                First Name is required and it must be atleast 2 characters
+            </div>
         </div>
         <div class="form-group">
             <label for="lastName">
                 Last Name:
             </label>
             <input type="text" [(ngModel)]="newAdmin.lastName" name="lastName" id="lastName" required
-                autocomplete="family-name" class="form-control">
+                autocomplete="family-name" class="form-control" minlength="2" #lastName="ngModel">
+            <div *ngIf="lastName.invalid && lastName.touched" class="alert alert-danger">
+                Last Name is required and it must be atleast 2 characters
+            </div>
         </div>
         <div class="form-group">
             <label for="email">
                 Email:
             </label>
             <input type="email" [(ngModel)]="newAdmin.email" name="email" id="email" required autocomplete="username"
-                class="form-control">
+                class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" #email="ngModel" required>
+            <div *ngIf="email.invalid && email.touched" class="alert alert-danger">
+                Please check email
+            </div>
         </div>
         <div class="form-group">
             <label for="password">
                 Password:
             </label>
             <input type="password" [(ngModel)]="newAdmin.password" name="password" id="password" required
-                autocomplete="new-password" class="form-control">
+                autocomplete="new-password" class="form-control" minlength="6" maxlength="15" #password="ngModel">
+            <div *ngIf="password.invalid && password.touched" class="alert alert-danger">
+                Password must be between 6-15 characters
+            </div>
         </div>
         <div class="form-group">
             <button type="submit" [disabled]="!f.valid" class="btn btn-block btn-success">Add</button>

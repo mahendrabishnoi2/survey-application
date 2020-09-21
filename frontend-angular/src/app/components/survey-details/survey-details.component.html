@@ -1,3 +1,23 @@
+<ng-container *ngIf="!isLoggedIn()">{{ redirect() }}</ng-container>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <!-- relative url -->
+                <a class="nav-link" routerLink="/createSurvey">Create Survey</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/addAdmin">Add Admin</a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link">Survey Details</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">Survey Analysis</a>
+            </li> -->
+        </ul>
+    </div>
+</nav>
 <ngb-accordion [closeOthers]="true" activeIds="static-1">
   <ngb-panel id="static-1" title="Survey Details">
     <ng-template ngbPanelContent>

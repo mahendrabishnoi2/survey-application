@@ -57,8 +57,8 @@ public class SurveyService {
   public Admin verifyAdminLogin(Admin admin) {
     Admin adminRes = adminRepository.findByEmail(admin.getEmail());
 
-    if (adminRes != null) {
-      System.out.println(adminRes);
+    if (adminRes != null && admin.getPassword().equals(adminRes.getPassword())) {
+//      System.out.println(adminRes);
       return adminRes;
     }
 

@@ -64,7 +64,7 @@ export class DbServiceService {
 
   // get a survey with questions and other details about survey
   getSurvey(id: number): Observable<SurveyFull> {
-    return this.httpClient.get<SurveyFull>(`${this.baseUrl}/surveys/${id}`);
+    return this.httpClient.get<SurveyFull>(`${this.baseUrl}surveys/${id}`);
   }
 
   // get survey details by id
@@ -97,13 +97,13 @@ export class DbServiceService {
 
   // if a user has not already responded to given survey, then save survey response to DB
   saveSurveyResponse(surveyResponse: SurveyResponse): Observable<any> {
-    const url = `${this.baseUrl}/surveys/response`;
+    const url = `${this.baseUrl}surveys/response`;
     return this.httpClient.post(url, surveyResponse);
   }
 
   // save a new survey created by admin after logging in to application
   saveNewSurvey(survey: SurveyFull): Observable<any> {
-    const url = `${this.baseUrl}/surveys/create`;
+    const url = `${this.baseUrl}surveys/create`;
     return this.httpClient.post(url, survey);
   }
 }

@@ -43,7 +43,7 @@ export class TakeSurveyComponent implements OnInit {
   createForm(): void {
     this.details = this.fb.group({
       fullName: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       submitDate: ['']
     })
   }

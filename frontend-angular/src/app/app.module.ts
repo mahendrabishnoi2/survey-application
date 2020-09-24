@@ -19,6 +19,7 @@ import { AddOptionsComponent } from './components/add-options/add-options.compon
 import { AddAdminComponent } from './components/add-admin/add-admin.component';
 import { SurveyDetailsComponent } from './components/survey-details/survey-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GoogleChartsModule } from 'angular-google-charts';
 import { ExportAsModule } from 'ngx-export-as';
 
 
@@ -48,7 +49,8 @@ import { ExportAsModule } from 'ngx-export-as';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     NgbModule,
-    ExportAsModule
+    ExportAsModule,
+    GoogleChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -17,13 +17,20 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SurveyDetailsComponent implements OnInit {
 
-  @ViewChild('respondents', { static: false }) pdfRespondents: ElementRef;
   surveyId: number;
   respondents: Respondant[];
   initailRespondents: Respondant[];
   surveyDetails: SurveyFull;
   filterStart: string;
   filterEnd: string;
+
+  // for google charts library 
+  columnNames: ["Number of Questions", "Number of Responses"];
+  options = {
+    title: 'Survey Details'
+  };
+  type = "BarChart";
+  data = [];
 
   constructor(private route: ActivatedRoute, private dbService: DbServiceService, private exportAsService: ExportAsService,
     private authService: AuthService, private router: Router) { }
@@ -44,6 +51,8 @@ export class SurveyDetailsComponent implements OnInit {
             this.surveyDetails = survey;
             this.filterStart = this.surveyDetails.created.toString().split('T')[0];
             this.filterEnd = this.surveyDetails.validTill.toString().split('T')[0];
+            this.data.push(["Questions", this.surveyDetails.questions.length]);
+            this.data.push(["Resonses", this.respondents?.length]);
           }
         );
       }

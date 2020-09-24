@@ -1,22 +1,22 @@
 <ng-container *ngIf="!isLoggedIn()">{{ redirect() }}</ng-container>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <!-- relative url -->
-                <a class="nav-link" routerLink="/createSurvey">Create Survey</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/addAdmin">Add Admin</a>
-            </li>
-            <!-- <li class="nav-item">
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <!-- relative url -->
+        <a class="nav-link" routerLink="/createSurvey">Create Survey</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/addAdmin">Add Admin</a>
+      </li>
+      <!-- <li class="nav-item">
                 <a class="nav-link">Survey Details</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link">Survey Analysis</a>
             </li> -->
-        </ul>
-    </div>
+    </ul>
+  </div>
 </nav>
 <ngb-accordion [closeOthers]="true" activeIds="static-1">
   <ngb-panel id="static-1" title="Survey Details">
@@ -107,6 +107,15 @@
         <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadXlsx('respondents')">excel</button>
         <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadJson('respondents')">json</button>
         <!-- <button class="btn btn-info col-sm-2 offset-sm-1">pdf</button> -->
+      </div>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id="static-4" title="Charts">
+    <ng-template ngbPanelContent>
+      <div class="d-flex justify-content-center">
+        <google-chart #chart [type]="type" [data]="data" [options]="options">
+          <!-- [width]="width" [height]="height"> -->
+        </google-chart>
       </div>
     </ng-template>
   </ngb-panel>

@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
+    "angular-google-charts": "^1.1.6",
     "bootstrap": "^4.5.0",
     "file-saver": "^2.0.2",
     "jspdf": "^1.4.1",

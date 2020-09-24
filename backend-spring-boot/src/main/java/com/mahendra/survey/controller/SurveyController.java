@@ -4,6 +4,7 @@ import com.mahendra.survey.entity.Admin;
 import com.mahendra.survey.entity.Respondant;
 import com.mahendra.survey.newresponse.SurveyUserResponse;
 import com.mahendra.survey.response.Headers;
+import com.mahendra.survey.response.Response;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.service.AdminService;
 import com.mahendra.survey.service.SurveyService;
@@ -24,6 +25,11 @@ public class SurveyController {
 
   @Autowired SurveyService surveyService;
   @Autowired AdminService adminService;
+
+  @GetMapping("/surveys/responses/{surveyId}")
+  public List<Response> getSurveyResponses(@PathVariable("surveyId") Long surveyId) {
+    return surveyService.getSurveyResponses(surveyId);
+  }
 
   // delete a survey
   @PostMapping("/surveys/delete")

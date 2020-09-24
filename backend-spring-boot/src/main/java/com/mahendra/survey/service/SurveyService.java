@@ -18,6 +18,7 @@ import com.mahendra.survey.newresponse.SurveyUserResponse;
 import com.mahendra.survey.response.Headers;
 import com.mahendra.survey.response.Option;
 import com.mahendra.survey.response.Question;
+import com.mahendra.survey.response.Response;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.response.Type;
 import java.util.ArrayList;
@@ -252,5 +253,48 @@ public class SurveyService {
     //    System.out.println(dataToSend);
 
     return dataToSend;
+  }
+
+  public List<Response> getSurveyResponses(Long surveyId) {
+    SurveyHeader surveyHeader = surveyHeaderRepository.findById(surveyId).get();
+
+    Set<Respondant> respondantsSet = surveyHeader.getRespondants();
+    List<Respondant> respondants = new ArrayList<>();
+    respondants.addAll(respondantsSet);
+    Collections.sort(respondants, Comparator.comparing(Respondant::getId));
+
+    Set<Questions> questionsSet = surveyHeader.getQuestions();
+    List<Questions> questions = new ArrayList<>();
+    questions.addAll(questionsSet);
+    Collections.sort(questions, Comparator.comparingLong(Questions::getId));
+
+    List<Response> responses = new ArrayList<>();
+
+    for (Respondant respondant: respondants) {
+      Response response = new Response();
+      response.setId(respondant.getId());
+      response.setFullName(respondant.getFullName());
+      response.setEmail(respondant.getEmail());
+
+      List<String> ques = new ArrayList<>();
+      for (Questions question: questions) {
+        ques.add(question.getQuestionName());
+      }
+
+      Set<Answers> answersSet = respondant.getAnswers();
+      List<Answers> answers = new ArrayList<>();
+      answers.addAll(answersSet);
+      Collections.sort(answers, Comparator.comparing(a -> a.getQuestionId().getId()));
+
+      List<String> ans = new ArrayList<>();
+      for (Answers answer: answers) {
+        ans.add(answer.getAnswerText());
+      }
+
+      response.setQuestions(ques);
+      response.setAnswers(ans);
+      responses.add(response);
+    }
+    return responses;
   }
 }

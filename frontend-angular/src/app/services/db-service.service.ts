@@ -20,6 +20,12 @@ export class DbServiceService {
 
   constructor(private httpClient: HttpClient) {}
 
+  // gets responses to a survey
+  getSurveyResponses(surveyId: number): Observable<any> {
+    const url = `${this.baseUrl}surveys/responses/${surveyId}`;
+    return this.httpClient.get(url);
+  }
+
   // gets an array of respondents to a particular survey
   getSurveyRespondents(surveyId: number): Observable<Respondant[]> {
     const url = `${this.baseUrl}surveys/${surveyId}/respondants`;

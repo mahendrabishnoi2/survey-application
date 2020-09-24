@@ -8,6 +8,7 @@ import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { saveAs } from "file-saver/src/FileSaver";
 import * as XLSX from 'xlsx';
 import { AuthService } from 'src/app/services/auth.service';
+import { Response } from 'src/app/common/response';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class SurveyDetailsComponent implements OnInit {
   surveyDetails: SurveyFull;
   filterStart: string;
   filterEnd: string;
+  responses: Response[];
 
   // for google charts library 
   columnNames: ["Number of Questions", "Number of Responses"];
@@ -38,7 +40,16 @@ export class SurveyDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.surveyId = +this.route.snapshot.paramMap.get('id');
     this.getSurveyDetails();
+    this.getSurveyResponses();
     // console.log(this.surveyId);
+  }
+
+  getSurveyResponses() {
+    this.dbService.getSurveyResponses(this.surveyId).subscribe(
+      data => {
+        this.responses = data;
+      }
+    );
   }
 
   getSurveyDetails() {
@@ -106,6 +117,24 @@ export class SurveyDetailsComponent implements OnInit {
     return respondentsJson;
   }
 
+  getJsonResponses() {
+    let responsesJson = [];
+    this.responses?.forEach(
+      response => {
+        responsesJson.push({
+          "Name": response.fullName,
+          "Email": response.email,
+        });
+        for (let i = 0; i < response.questions.length; i++) {
+          let ques = response.questions[i];
+          let ans = response.answers[i];
+          responsesJson[responsesJson.length - 1][ques] = ans;
+        }
+      }
+    );
+    return responsesJson;
+  }
+
   // download data in json format
   downloadJson(field: string) {
     let jsonData = this.getJsonData(field);
@@ -119,8 +148,10 @@ export class SurveyDetailsComponent implements OnInit {
     let jsonData;
     if (field === "details") {
       jsonData = this.getJsonDetails();
-    } else {
+    } else if (field === "respondents") {
       jsonData = this.getJsonRespondents();
+    } else {
+      jsonData = this.getJsonResponses();
     }
     return jsonData;
   }

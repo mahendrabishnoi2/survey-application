@@ -101,11 +101,19 @@
         <!-- <button class="btn btn-info col-sm-2 offset-sm-1">pdf</button> -->
       </div>
       <br>
-      <h5>Survey Responses</h5>
+      <h5>Survey Respondents</h5>
       <div class="row">
         <button class="btn btn-info col-sm-2" (click)="downloadCsv('respondents')">csv</button>
         <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadXlsx('respondents')">excel</button>
         <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadJson('respondents')">json</button>
+        <!-- <button class="btn btn-info col-sm-2 offset-sm-1">pdf</button> -->
+      </div>
+      <br>
+      <h5>Survey Responses</h5>
+      <div class="row">
+        <button class="btn btn-info col-sm-2" (click)="downloadCsv('responses')">csv</button>
+        <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadXlsx('responses')">excel</button>
+        <button class="btn btn-info col-sm-2 offset-sm-1" (click)="downloadJson('responses')">json</button>
         <!-- <button class="btn btn-info col-sm-2 offset-sm-1">pdf</button> -->
       </div>
     </ng-template>

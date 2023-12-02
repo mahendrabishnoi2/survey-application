@@ -1,0 +1,289 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13/"
+     xml:base="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dbpedia.org#committedBy -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org#committedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://dbpedia.org#hasCommitted"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Crime"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/resource/classes#Perpetrator"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org#committedIn -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org#committedIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Crime"/>
+        <rdfs:range rdf:resource="http://dbpedia.org#Location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasCommitted -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org#hasCommitted">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/resource/classes#Perpetrator"/>
+        <rdfs:range rdf:resource="http://dbpedia.org#Crime"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasVictim -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org#hasVictim">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/resource/classes#Perpetrator"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/resource/classes#Victim"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org#used -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org#used">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://dbpedia.org#usedBy"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/resource/classes#Perpetrator"/>
+        <rdfs:range rdf:resource="http://dbpedia.org#Weapon"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://dbpedia.org#usedBy -->
+
+    <owl:ObjectProperty rdf:about="http://dbpedia.org#usedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Weapon"/>
+        <rdfs:range rdf:resource="http://dbpedia.org/resource/classes#Perpetrator"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#hasRace -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#hasRace">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/resource/classes#Person"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#Race"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dbpedia.org#crimeType -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#crimeType">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Crime"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasAge -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasAge">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/resource/classes#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasArea -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasArea">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Location"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasCrimeCode -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasCrimeCode">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Crime"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasGender -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasGender">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org/resource/classes#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasStreet -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasStreet">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Location"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasType -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasType">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Location"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasWeaponCode -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasWeaponCode">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Weapon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#hasWeaponDesc -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#hasWeaponDesc">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Weapon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://dbpedia.org#timeOccurred -->
+
+    <owl:DatatypeProperty rdf:about="http://dbpedia.org#timeOccurred">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://dbpedia.org#Crime"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#raceName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#raceName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#Race"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dbpedia.org#Crime -->
+
+    <owl:Class rdf:about="http://dbpedia.org#Crime"/>
+    
+
+
+    <!-- http://dbpedia.org#Location -->
+
+    <owl:Class rdf:about="http://dbpedia.org#Location"/>
+    
+
+
+    <!-- http://dbpedia.org#Weapon -->
+
+    <owl:Class rdf:about="http://dbpedia.org#Weapon">
+        <rdfs:subClassOf rdf:resource="http://dbpedia.org#Crime"/>
+    </owl:Class>
+    
+
+
+    <!-- http://dbpedia.org/resource/classes#Perpetrator -->
+
+    <owl:Class rdf:about="http://dbpedia.org/resource/classes#Perpetrator">
+        <rdfs:subClassOf rdf:resource="http://dbpedia.org/resource/classes#Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://dbpedia.org/resource/classes#Person -->
+
+    <owl:Class rdf:about="http://dbpedia.org/resource/classes#Person"/>
+    
+
+
+    <!-- http://dbpedia.org/resource/classes#Victim -->
+
+    <owl:Class rdf:about="http://dbpedia.org/resource/classes#Victim">
+        <rdfs:subClassOf rdf:resource="http://dbpedia.org/resource/classes#Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#Race -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ajink/ontologies/2023/10/untitled-ontology-13#Race"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi -->
+

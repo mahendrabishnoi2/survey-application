@@ -27,7 +27,7 @@
     "angular-google-charts": "^2.2.0",
     "bootstrap": "^5.3.0",
     "file-saver": "^2.0.2",
-    "jspdf": "^2.3.1",
+    "jspdf": "^4.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.6.2",
     "xlsx": "^0.16.7",

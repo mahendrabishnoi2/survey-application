@@ -1,42 +1,45 @@
 <div class="container">
-    <div *ngIf="surveyHeaders?.length === 0; else elseBlock">
-        <p></p>
-        <h4 style="color: red; padding: 30px; margin: 20px;" class="text-center font-weight-bold">
-            No surveys available
-        </h4>
-        <p></p>
-        <p style="padding: 30px; margin: 20px;" class="text-center font-weight-bold">
-            Click <a class="link" routerLink="/createSurvey">here</a> to create a new survey.
-        </p>
+  @if (surveyHeaders?.length === 0) {
+    <div>
+      <p></p>
+      <h4 style="color: red; padding: 30px; margin: 20px;" class="text-center font-weight-bold">
+        No surveys available
+      </h4>
+      <p></p>
+      <p style="padding: 30px; margin: 20px;" class="text-center font-weight-bold">
+        Click <a class="link" routerLink="/createSurvey">here</a> to create a new survey.
+      </p>
     </div>
-    <ng-template #elseBlock>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Survey Name</th>
-                    <th scope="col">Copy Link</th>
-                    <th scope="col">Delete</th>
-                    <th scope="col"> Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let surveyHeader of surveyHeaders;let i=index">
-                    <th scope="row">{{i+1}}</th>
-                    <td>{{surveyHeader.surveyName}}</td>
-                    <td>
-                        <button (click)="copyToClipboard(surveyHeader.id)" class="btn btn-info">Click Here</button>
-                    </td>
-                    <td><button (click)="deleteSurvey(surveyHeader.id)" class="btn btn-danger">X</button></td>
-                    <td>
-                        <button class="btn btn-info" [routerLink]="['/surveyDetails/' + surveyHeader.id]">
-                            <!-- <a [routerLink]="['/surveyDetails/' + surveyHeader.id]"> -->
-                            Details
-                            <!-- </a> -->
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </ng-template>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Survey Name</th>
+          <th scope="col">Copy Link</th>
+          <th scope="col">Delete</th>
+          <th scope="col"> Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (surveyHeader of surveyHeaders; track surveyHeader; let i = $index) {
+          <tr>
+            <th scope="row">{{i+1}}</th>
+            <td>{{surveyHeader.surveyName}}</td>
+            <td>
+              <button (click)="copyToClipboard(surveyHeader.id)" class="btn btn-info">Click Here</button>
+            </td>
+            <td><button (click)="deleteSurvey(surveyHeader.id)" class="btn btn-danger">X</button></td>
+            <td>
+              <button class="btn btn-info" [routerLink]="['/surveyDetails/' + surveyHeader.id]">
+                <!-- <a [routerLink]="['/surveyDetails/' + surveyHeader.id]"> -->
+                Details
+              <!-- </a> -->
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
 </div>

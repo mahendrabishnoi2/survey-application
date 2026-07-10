@@ -3,13 +3,14 @@
     <div class="pad-left font-weight-light">
       All questions marked with <span style="color: red;">*</span> are mandatory
     </div>
-    <div *ngFor="let question of questions; index as i">
-
-      <p></p>
-      <app-question [question]="question" [form]="form" [qNo]="i" class="card"></app-question>
-      <p></p>
-      <p></p>
-    </div>
+    @for (question of questions; track question; let i = $index) {
+      <div>
+        <p></p>
+        <app-question [question]="question" [form]="form" [qNo]="i" class="card"></app-question>
+        <p></p>
+        <p></p>
+      </div>
+    }
 
     <div class="form-group pad-left pad-right">
       <button type="submit" [disabled]="!form.valid" class="btn btn-block btn-success">Save</button>

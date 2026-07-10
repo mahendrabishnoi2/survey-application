@@ -10,11 +10,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "ES2022",
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "target": "ES2022"
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, Form } from '@angular/forms';
 import { QuestionsOptions } from 'src/app/common/questions-options';
 import { InputTypes } from 'src/app/common/input-types';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
     selector: 'app-create-survey',
     templateUrl: './create-survey.component.html',
     styleUrls: ['./create-survey.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CreateSurveyComponent implements OnInit {

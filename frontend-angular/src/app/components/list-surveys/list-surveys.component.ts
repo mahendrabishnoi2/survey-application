@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SurveyHeader } from 'src/app/common/survey-header';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { saveAs } from 'file-saver/src/FileSaver';
     selector: 'app-list-surveys',
     templateUrl: './list-surveys.component.html',
     styleUrls: ['./list-surveys.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListSurveysComponent implements OnInit {

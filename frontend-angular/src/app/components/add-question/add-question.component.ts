@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { InputTypes } from 'src/app/common/input-types';
 import { CreateNewFormService } from 'src/app/services/create-new-form.service';
@@ -9,6 +9,7 @@ import { Questions } from 'src/app/common/questions';
     selector: 'app-add-question',
     templateUrl: './add-question.component.html',
     styleUrls: ['./add-question.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddQuestionComponent implements OnInit {

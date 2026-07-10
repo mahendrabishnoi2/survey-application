@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { SurveyHeader } from 'src/app/common/survey-header';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
     selector: 'app-admin',
     templateUrl: './admin.component.html',
     styleUrls: ['./admin.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AdminComponent implements OnInit {

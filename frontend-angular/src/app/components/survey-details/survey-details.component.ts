@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { Respondant } from 'src/app/common/respondant';
@@ -15,6 +15,7 @@ import { Response } from 'src/app/common/response';
     selector: 'app-survey-details',
     templateUrl: './survey-details.component.html',
     styleUrls: ['./survey-details.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SurveyDetailsComponent implements OnInit {

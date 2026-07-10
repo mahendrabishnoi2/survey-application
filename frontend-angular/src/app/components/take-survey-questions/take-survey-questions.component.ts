@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { SurveyFull } from 'src/app/common/survey-full';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { QuestionBase } from 'src/app/common/question-base';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
     selector: 'app-take-survey-questions',
     templateUrl: './take-survey-questions.component.html',
     styleUrls: ['./take-survey-questions.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TakeSurveyQuestionsComponent implements OnInit {

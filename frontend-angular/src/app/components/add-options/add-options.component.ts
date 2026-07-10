@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { QuestionsOptions } from 'src/app/common/questions-options';
 
@@ -6,6 +6,7 @@ import { QuestionsOptions } from 'src/app/common/questions-options';
     selector: 'app-add-options',
     templateUrl: './add-options.component.html',
     styleUrls: ['./add-options.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddOptionsComponent implements OnInit {

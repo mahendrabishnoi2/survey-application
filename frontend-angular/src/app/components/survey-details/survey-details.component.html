@@ -43,11 +43,11 @@
         </tr>
         <tr>
           <th scope="row">Created On</th>
-          <td>{{ surveyDetails?.created | date }}</td>
+          <td>{{ $safeNavigationMigration(surveyDetails?.created) | date }}</td>
         </tr>
         <tr>
           <th scope="row">Valid Till</th>
-          <td>{{ surveyDetails?.validTill | date }}</td>
+          <td>{{ $safeNavigationMigration(surveyDetails?.validTill) | date }}</td>
         </tr>
       </tbody>
     </table>

@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { saveAs } from 'file-saver/src/FileSaver';
 
 @Component({
-  selector: 'app-list-surveys',
-  templateUrl: './list-surveys.component.html',
-  styleUrls: ['./list-surveys.component.css']
+    selector: 'app-list-surveys',
+    templateUrl: './list-surveys.component.html',
+    styleUrls: ['./list-surveys.component.css'],
+    standalone: false
 })
 export class ListSurveysComponent implements OnInit {
 

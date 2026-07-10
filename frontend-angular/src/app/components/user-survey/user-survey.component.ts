@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-user-survey',
-  templateUrl: './user-survey.component.html',
-  styleUrls: ['./user-survey.component.css']
+    selector: 'app-user-survey',
+    templateUrl: './user-survey.component.html',
+    styleUrls: ['./user-survey.component.css'],
+    standalone: false
 })
 export class UserSurveyComponent implements OnInit {
 

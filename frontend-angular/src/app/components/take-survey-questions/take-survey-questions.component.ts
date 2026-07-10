@@ -9,9 +9,10 @@ import { DbServiceService } from 'src/app/services/db-service.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-take-survey-questions',
-  templateUrl: './take-survey-questions.component.html',
-  styleUrls: ['./take-survey-questions.component.css']
+    selector: 'app-take-survey-questions',
+    templateUrl: './take-survey-questions.component.html',
+    styleUrls: ['./take-survey-questions.component.css'],
+    standalone: false
 })
 export class TakeSurveyQuestionsComponent implements OnInit {
 

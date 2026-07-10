@@ -9,9 +9,10 @@ import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
-  selector: 'app-take-survey',
-  templateUrl: './take-survey.component.html',
-  styleUrls: ['./take-survey.component.css']
+    selector: 'app-take-survey',
+    templateUrl: './take-survey.component.html',
+    styleUrls: ['./take-survey.component.css'],
+    standalone: false
 })
 export class TakeSurveyComponent implements OnInit {
 

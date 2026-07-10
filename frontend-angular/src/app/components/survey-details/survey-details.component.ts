@@ -12,9 +12,10 @@ import { Response } from 'src/app/common/response';
 
 
 @Component({
-  selector: 'app-survey-details',
-  templateUrl: './survey-details.component.html',
-  styleUrls: ['./survey-details.component.css']
+    selector: 'app-survey-details',
+    templateUrl: './survey-details.component.html',
+    styleUrls: ['./survey-details.component.css'],
+    standalone: false
 })
 export class SurveyDetailsComponent implements OnInit {
 

@@ -3,9 +3,10 @@ import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { QuestionsOptions } from 'src/app/common/questions-options';
 
 @Component({
-  selector: 'app-add-options',
-  templateUrl: './add-options.component.html',
-  styleUrls: ['./add-options.component.css']
+    selector: 'app-add-options',
+    templateUrl: './add-options.component.html',
+    styleUrls: ['./add-options.component.css'],
+    standalone: false
 })
 export class AddOptionsComponent implements OnInit {
 

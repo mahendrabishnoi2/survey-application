@@ -6,9 +6,10 @@ import { QuestionsOptions } from 'src/app/common/questions-options';
 import { Questions } from 'src/app/common/questions';
 
 @Component({
-  selector: 'app-add-question',
-  templateUrl: './add-question.component.html',
-  styleUrls: ['./add-question.component.css']
+    selector: 'app-add-question',
+    templateUrl: './add-question.component.html',
+    styleUrls: ['./add-question.component.css'],
+    standalone: false
 })
 export class AddQuestionComponent implements OnInit {
 

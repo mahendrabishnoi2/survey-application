@@ -6,9 +6,10 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-add-admin',
-  templateUrl: './add-admin.component.html',
-  styleUrls: ['./add-admin.component.css']
+    selector: 'app-add-admin',
+    templateUrl: './add-admin.component.html',
+    styleUrls: ['./add-admin.component.css'],
+    standalone: false
 })
 export class AddAdminComponent implements OnInit {
 

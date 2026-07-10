@@ -12,9 +12,10 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-create-survey',
-  templateUrl: './create-survey.component.html',
-  styleUrls: ['./create-survey.component.css']
+    selector: 'app-create-survey',
+    templateUrl: './create-survey.component.html',
+    styleUrls: ['./create-survey.component.css'],
+    standalone: false
 })
 export class CreateSurveyComponent implements OnInit {
 

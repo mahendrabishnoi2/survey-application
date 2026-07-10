@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,34 +25,26 @@ import { GoogleChartsModule } from 'angular-google-charts';
 
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    AdminLoginComponent,
-    UserSurveyComponent,
-    AdminComponent,
-    ListSurveysComponent,
-    TakeSurveyComponent,
-    TakeSurveyQuestionsComponent,
-    QuestionComponent,
-    CreateSurveyComponent,
-    AddQuestionComponent,
-    AddOptionsComponent,
-    AddAdminComponent,
-    SurveyDetailsComponent,
-  ],
-
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatExpansionModule,
-    GoogleChartsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        AdminLoginComponent,
+        UserSurveyComponent,
+        AdminComponent,
+        ListSurveysComponent,
+        TakeSurveyComponent,
+        TakeSurveyQuestionsComponent,
+        QuestionComponent,
+        CreateSurveyComponent,
+        AddQuestionComponent,
+        AddOptionsComponent,
+        AddAdminComponent,
+        SurveyDetailsComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatExpansionModule,
+        GoogleChartsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

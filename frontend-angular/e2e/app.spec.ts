@@ -4,6 +4,11 @@ test.describe('Survey Application Real E2E Integration Tests', () => {
   test.beforeEach(async ({ page }) => {
     page.on('console', msg => console.log('BROWSER LOG:', msg.text()));
     page.on('pageerror', err => console.error('BROWSER ERROR:', err.message));
+    page.on('response', resp => {
+      if (!resp.ok() && resp.url().includes('localhost:8080')) {
+        console.log(`HTTP ${resp.status()} ${resp.url()}`);
+      }
+    });
   });
 
   test('Survey list is displayed after login', async ({ page }) => {

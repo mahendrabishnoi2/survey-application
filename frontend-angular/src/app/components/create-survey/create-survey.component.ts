@@ -94,7 +94,7 @@ export class CreateSurveyComponent implements OnInit {
         this.surveyLink = `${window.location.origin}/#/takeSurvey/${data.id}`;
         this.newFormService.success();
       },
-      error: (_err: any) => {}
+      error: (err: any) => { console.error('Survey creation failed:', err?.status, err?.message); }
 
     });
   }

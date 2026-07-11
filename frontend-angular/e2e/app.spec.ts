@@ -58,8 +58,8 @@ test.describe('Survey Application Real E2E Integration Tests', () => {
     // Click "Create Survey"
     await page.click('button:has-text("Create Survey")');
 
-    // Verify success message is shown on the page
-    await expect(page.locator('text=Successfully created survey')).toBeVisible();
+    // Verify success message is shown on the page (allow up to 15s for backend round-trip in CI)
+    await expect(page.locator('text=Successfully created survey')).toBeVisible({ timeout: 15000 });
 
     // Go to admin page and verify the new survey is listed
     await page.goto('/#/admin');
@@ -80,7 +80,7 @@ test.describe('Survey Application Real E2E Integration Tests', () => {
     await page.locator('input[type="text"]').first().fill('Yes, it is amazing!');
     await page.click('button:has-text("Save")');
 
-    // Verify completion page is shown
-    await expect(page).toHaveURL(/.*surveycompleted/);
+    // Verify completion page is shown (allow up to 15s for backend round-trip in CI)
+    await expect(page).toHaveURL(/.*surveycompleted/, { timeout: 15000 });
   });
 });

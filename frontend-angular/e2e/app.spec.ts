@@ -78,8 +78,8 @@ test.describe('Survey Application Real E2E Integration Tests', () => {
     await page.fill('#email', 'jane@tester.com');
     await page.click('button:has-text("Next")');
 
-    // Fill answer to the first question
-    await page.locator('input[type="text"]').first().fill('Yes, it is amazing!');
+    // Fill answer to the first question (input type may be empty string, not "text")
+    await page.locator('app-question input.form-control').first().fill('Yes, it is amazing!');
     await page.click('button:has-text("Save")');
 
     // Verify completion page is shown (allow up to 15s for backend round-trip in CI)

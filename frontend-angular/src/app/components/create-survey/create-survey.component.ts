@@ -91,6 +91,7 @@ export class CreateSurveyComponent implements OnInit {
     const survey = this.createSurveyObjectFromForm();
     this.dbService.saveNewSurvey(survey).subscribe({
       next: (data: any) => {
+        console.log('Survey created successfully:', data?.id);
         this.submittedSurveyDetails = data;
         this.surveyLink = `${window.location.origin}/#/takeSurvey/${data.id}`;
         this.newFormService.success();

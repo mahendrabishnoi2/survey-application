@@ -11,6 +11,7 @@ import com.mahendra.survey.newresponse.SurveyUserResponse;
 import com.mahendra.survey.response.*;
 import com.mahendra.survey.service.EmailService;
 import com.mahendra.survey.service.SurveyService;
+import java.time.Instant;
 import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,8 +61,8 @@ class SurveyServiceTest {
         surveyHeader = new SurveyHeader();
         surveyHeader.setId(1L);
         surveyHeader.setSurveyName("Test Survey");
-        surveyHeader.setCreated(new Date());
-        surveyHeader.setValidTill(new Date(System.currentTimeMillis() + 86400000)); // Tomorrow
+        surveyHeader.setCreated(Instant.now());
+        surveyHeader.setValidTill(Instant.now().plusSeconds(86400)); // Tomorrow
         surveyHeader.setDescription("Test Description");
 
         admin = new Admin();
@@ -94,13 +95,13 @@ class SurveyServiceTest {
 
         // Setup for saveSurveyResponse
         AnswerSingleQuestion answer = new AnswerSingleQuestion(1L, "Question?", "radio", "Blue", "1");
-        surveyUserResponse = new SurveyUserResponse(1L, "John Doe", "john@example.com", new Date(), Collections.singletonList(answer));
+        surveyUserResponse = new SurveyUserResponse(1L, "John Doe", "john@example.com", Instant.now(), Collections.singletonList(answer));
 
         // Setup for saveSurvey
         surveyFull = new SurveyFull();
         surveyFull.setName("Test Survey");
-        surveyFull.setCreated(new Date());
-        surveyFull.setValidTill(new Date(System.currentTimeMillis() + 86400000));
+        surveyFull.setCreated(Instant.now());
+        surveyFull.setValidTill(Instant.now().plusSeconds(86400));
         surveyFull.setDescription("Test Description");
 
         Question q = new Question();
@@ -125,7 +126,7 @@ class SurveyServiceTest {
 
         verify(surveyHeaderRepository).findById(1L);
         verify(surveyHeaderRepository).save(surveyHeader);
-        assertTrue(surveyHeader.getValidTill().before(new Date()));
+        assertTrue(surveyHeader.getValidTill().isBefore(Instant.now()));
     }
 
     @Test

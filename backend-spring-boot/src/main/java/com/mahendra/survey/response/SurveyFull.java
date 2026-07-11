@@ -1,14 +1,14 @@
 package com.mahendra.survey.response;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 public class SurveyFull {
   long id;
   String name;
   List<Question> questions;
-  Date created;
-  Date validTill;
+  Instant created;
+  Instant validTill;
   String description;
 
   public SurveyFull() {}
@@ -17,8 +17,8 @@ public class SurveyFull {
       long id,
       String name,
       List<Question> questions,
-      Date created,
-      Date validTill,
+      Instant created,
+      Instant validTill,
       String description) {
     this.id = id;
     this.name = name;
@@ -52,19 +52,19 @@ public class SurveyFull {
     this.questions = questions;
   }
 
-  public Date getCreated() {
+  public Instant getCreated() {
     return created;
   }
 
-  public void setCreated(Date created) {
+  public void setCreated(Instant created) {
     this.created = created;
   }
 
-  public Date getValidTill() {
+  public Instant getValidTill() {
     return validTill;
   }
 
-  public void setValidTill(Date validTill) {
+  public void setValidTill(Instant validTill) {
     this.validTill = validTill;
   }
 

@@ -1,17 +1,17 @@
 package com.mahendra.survey.newresponse;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 public class SurveyUserResponse {
   Long id;
   String fullName;
   String email;
-  Date submitDate;
+  Instant submitDate;
   List<AnswerSingleQuestion> answers;
 
   public SurveyUserResponse(
-      Long id, String fullName, String email, Date submitDate, List<AnswerSingleQuestion> answers) {
+      Long id, String fullName, String email, Instant submitDate, List<AnswerSingleQuestion> answers) {
     this.id = id;
     this.fullName = fullName;
     this.email = email;
@@ -43,11 +43,11 @@ public class SurveyUserResponse {
     this.email = email;
   }
 
-  public Date getSubmitDate() {
+  public Instant getSubmitDate() {
     return submitDate;
   }
 
-  public void setSubmitDate(Date submitDate) {
+  public void setSubmitDate(Instant submitDate) {
     this.submitDate = submitDate;
   }
 

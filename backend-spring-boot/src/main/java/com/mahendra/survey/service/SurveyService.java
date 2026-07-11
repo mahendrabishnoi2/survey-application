@@ -21,17 +21,17 @@ import com.mahendra.survey.response.Question;
 import com.mahendra.survey.response.Response;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.response.Type;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class SurveyService {
     Optional<SurveyHeader> surveyHeaderOptional = surveyHeaderRepository.findById(id);
     if (surveyHeaderOptional.isPresent()) {
       SurveyHeader surveyHeader = surveyHeaderOptional.get();
-      surveyHeader.setValidTill(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000));
+      surveyHeader.setValidTill(Instant.now().minusSeconds(86400));
       surveyHeaderRepository.save(surveyHeader);
     }
   }
@@ -92,20 +92,20 @@ public class SurveyService {
     for (Questions questions1 : questions) {
       InputTypes inputTypes = questions1.getInputTypeId();
 
-      Type type = new Type();
+      Type type = new Type(); // NOPMD AvoidInstantiatingObjectsInLoops - one per question
       type.setId(inputTypes.getId());
       type.setTypeName(inputTypes.getInputTypeName());
 
-      Question question = new Question();
+      Question question = new Question(); // NOPMD AvoidInstantiatingObjectsInLoops
       question.setId(questions1.getId());
       question.setQuestion(questions1.getQuestionName());
       question.setType(type);
       question.setValidation(questions1.getValidation());
 
-      List<Option> options = new ArrayList<>();
+      List<Option> options = new ArrayList<>(); // NOPMD AvoidInstantiatingObjectsInLoops
       if (!type.getTypeName().contains("line")) {
         for (QuestionsOptions questionsOptions1 : questions1.getQuestionsOptions()) {
-          Option option = new Option();
+          Option option = new Option(); // NOPMD AvoidInstantiatingObjectsInLoops
           option.setId(questionsOptions1.getId());
           option.setName(questionsOptions1.getOptionName());
           options.add(option);
@@ -139,7 +139,7 @@ public class SurveyService {
       respondant.setSurveyHeader(surveyHeader);
       Set<Answers> answers = new HashSet<>();
       for (AnswerSingleQuestion answerSingleQuestion : answerSingleQuestionList) {
-        Answers newAnswer = new Answers();
+        Answers newAnswer = new Answers(); // NOPMD AvoidInstantiatingObjectsInLoops
         newAnswer.setRespondant(respondant);
         // for now leave question options id and add an string field - selectedOptions
         newAnswer.setSelectedOptions(answerSingleQuestion.getSelectedOptionIds());
@@ -201,7 +201,7 @@ public class SurveyService {
     SurveyHeader savedHeader = surveyHeaderRepository.save(surveyHeader);
 
     for (Question question : survey.getQuestions()) {
-      Questions newQuestion = new Questions();
+      Questions newQuestion = new Questions(); // NOPMD AvoidInstantiatingObjectsInLoops
       newQuestion.setSurveyHeader(savedHeader);
       InputTypes inputType = getInputTypeObjectByName(question.getType().getTypeName());
       if (inputType != null) {
@@ -215,7 +215,7 @@ public class SurveyService {
       // if question contains options - i.e. question of type checkbox or radio
       if (!question.getOptions().isEmpty()) {
         for (Option option : question.getOptions()) {
-          QuestionsOptions newOption = new QuestionsOptions();
+          QuestionsOptions newOption = new QuestionsOptions(); // NOPMD AvoidInstantiatingObjectsInLoops
           newOption.setOptionName(option.getName());
           newOption.setQuestionId(savedQuestion);
           questionsOptionsRepository.save(newOption);
@@ -245,11 +245,11 @@ public class SurveyService {
     // sort surveys by their expiry date
     Collections.sort(surveyHeaders, Comparator.comparing(SurveyHeader::getValidTill));
 
-    // truncate time part
-    Date todayMidnight = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+    LocalDate today = LocalDate.now(ZoneOffset.UTC);
 
     for (SurveyHeader surveyHeader : surveyHeaders) {
-      if (surveyHeader.getValidTill().compareTo(todayMidnight) >= 0) {
+      LocalDate validTill = surveyHeader.getValidTill().atZone(ZoneOffset.UTC).toLocalDate();
+      if (!validTill.isBefore(today)) {
         dataToSend.add(new Headers(surveyHeader.getId(), surveyHeader.getSurveyName()));
       }
     }
@@ -275,22 +275,22 @@ public class SurveyService {
     List<Response> responses = new ArrayList<>();
 
     for (Respondant respondant: respondants) {
-      Response response = new Response();
+      Response response = new Response(); // NOPMD AvoidInstantiatingObjectsInLoops
       response.setId(respondant.getId());
       response.setFullName(respondant.getFullName());
       response.setEmail(respondant.getEmail());
 
-      List<String> ques = new ArrayList<>();
+      List<String> ques = new ArrayList<>(); // NOPMD AvoidInstantiatingObjectsInLoops
       for (Questions question: questions) {
         ques.add(question.getQuestionName());
       }
 
       Set<Answers> answersSet = respondant.getAnswers();
-      List<Answers> answers = new ArrayList<>();
+      List<Answers> answers = new ArrayList<>(); // NOPMD AvoidInstantiatingObjectsInLoops
       answers.addAll(answersSet);
       Collections.sort(answers, Comparator.comparing(a -> a.getQuestionId().getId()));
 
-      List<String> ans = new ArrayList<>();
+      List<String> ans = new ArrayList<>(); // NOPMD AvoidInstantiatingObjectsInLoops
       for (Answers answer: answers) {
         ans.add(answer.getAnswerText());
       }

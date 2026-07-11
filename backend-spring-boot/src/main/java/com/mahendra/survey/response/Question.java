@@ -4,14 +4,14 @@ import java.util.List;
 
 public class Question {
   long id;
-  String question;
+  String text;
   Type type;
   List<Option> options;
   String validation;
 
-  public Question(long id, String question, Type type, List<Option> options, String validation) {
+  public Question(long id, String text, Type type, List<Option> options, String validation) {
     this.id = id;
-    this.question = question;
+    this.text = text;
     this.type = type;
     this.options = options;
     this.validation = validation;
@@ -28,11 +28,11 @@ public class Question {
   }
 
   public String getQuestion() {
-    return question;
+    return text;
   }
 
-  public void setQuestion(String question) {
-    this.question = question;
+  public void setQuestion(String text) {
+    this.text = text;
   }
 
   public Type getType() {
@@ -65,7 +65,7 @@ public class Question {
         + "id="
         + id
         + ", question='"
-        + question
+        + text
         + '\''
         + ", type="
         + type

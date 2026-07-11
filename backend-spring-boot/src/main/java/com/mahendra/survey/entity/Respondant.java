@@ -1,6 +1,6 @@
 package com.mahendra.survey.entity;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
@@ -24,7 +24,7 @@ public class Respondant {
 
   private String email;
   private String fullName;
-  private Date takenOn;
+  private Instant takenOn;
 
   @ManyToOne
   @JoinColumn(name = "survey_id")
@@ -33,11 +33,11 @@ public class Respondant {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "respondant", fetch = FetchType.EAGER)
   private Set<Answers> answers;
 
-  public Date getTakenOn() {
+  public Instant getTakenOn() {
     return takenOn;
   }
 
-  public void setTakenOn(Date takenOn) {
+  public void setTakenOn(Instant takenOn) {
     this.takenOn = takenOn;
   }
 

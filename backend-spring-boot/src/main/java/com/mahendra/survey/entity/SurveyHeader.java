@@ -1,6 +1,6 @@
 package com.mahendra.survey.entity;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,27 +24,27 @@ public class SurveyHeader {
   private String surveyName;
 
   @Column(name = "creation_date")
-  private Date created;
+  private Instant created;
 
   @Column(name = "valid_till")
-  private Date validTill;
+  private Instant validTill;
 
   @Column(name = "description")
   private String description;
 
-  public Date getCreated() {
+  public Instant getCreated() {
     return created;
   }
 
-  public void setCreated(Date created) {
+  public void setCreated(Instant created) {
     this.created = created;
   }
 
-  public Date getValidTill() {
+  public Instant getValidTill() {
     return validTill;
   }
 
-  public void setValidTill(Date validTill) {
+  public void setValidTill(Instant validTill) {
     this.validTill = validTill;
   }
 

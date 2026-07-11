@@ -19,9 +19,9 @@ import com.mahendra.survey.entity.Respondant;
 import com.mahendra.survey.entity.SurveyHeader;
 import com.mahendra.survey.response.SurveyFull;
 import com.mahendra.survey.service.SurveyService;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -179,8 +179,8 @@ class CampaignRegistrationManagementSystemApplicationTests {
   void testSaveNewSurvey() {
     SurveyHeader surveyHeader = new SurveyHeader();
     surveyHeader.setSurveyName("test survey");
-    surveyHeader.setCreated(new Date());
-    surveyHeader.setValidTill(new Date());
+    surveyHeader.setCreated(Instant.now());
+    surveyHeader.setValidTill(Instant.now());
     surveyHeader.setDescription("description of survey");
 
     SurveyHeader savedHeader = surveyHeaderRepository.save(surveyHeader);

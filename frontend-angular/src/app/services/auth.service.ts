@@ -6,10 +6,15 @@ import { Admin } from '../common/admin';
 })
 export class AuthService {
 
-  admin: Admin = new Admin();
-  isLoggedIn = false;
+  private admin: Admin = new Admin();
+  private isLoggedIn = false;
 
-  constructor() { }
+  constructor() {
+    this.isLoggedIn = localStorage.getItem('admin') !== null;
+    if (this.isLoggedIn) {
+      this.admin = Object.assign(new Admin(), JSON.parse(localStorage.getItem('admin')!));
+    }
+  }
 
   login(adminJSON: any) {
     this.admin = Object.assign(new Admin(), adminJSON);
@@ -17,13 +22,8 @@ export class AuthService {
     localStorage.setItem('admin', JSON.stringify(this.admin));
   }
 
-  getAdmin(): any {
-    const adminData = localStorage.getItem('admin');
-    if (adminData != null) {
-      this.admin = Object.assign(new Admin(), JSON.parse(adminData));
-      return this.admin;
-    }
-    return null;
+  getAdmin(): Admin | null {
+    return this.isLoggedIn ? this.admin : null;
   }
 
   logout(): void {
@@ -32,11 +32,7 @@ export class AuthService {
     localStorage.removeItem('admin');
   }
 
-  hasItem(item: string): boolean {
-    return localStorage.getItem(item) !== null;
-  }
-
   getIsLoggedIn(): boolean {
-    return !(this.getAdmin() === null);
+    return this.isLoggedIn;
   }
 }

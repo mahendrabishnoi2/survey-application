@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { QuestionBase } from 'src/app/common/question-base';
 import { FormGroup } from '@angular/forms';
 
@@ -6,7 +6,6 @@ import { FormGroup } from '@angular/forms';
     selector: 'app-question',
     templateUrl: './question.component.html',
     styleUrls: ['./question.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class QuestionComponent implements OnInit {

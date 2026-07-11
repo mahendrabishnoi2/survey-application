@@ -65,16 +65,19 @@ test.describe('Survey Application Real E2E Integration Tests', () => {
     await page.goto('/#/admin');
     await expect(page.locator('table')).toContainText('E2E Customer Feedback');
 
-    // 3. Navigate to Take Survey and submit response
-    await page.goto('/#/takeSurvey/1');
+    // 3. Navigate to Take Survey — capture ID from the survey link in the table
+    const surveyLinkCell = page.locator('table a[href*="takeSurvey"]').first();
+    const surveyHref = await surveyLinkCell.getAttribute('href') ?? '';
+    const surveyId = surveyHref.split('/').pop();
+    await page.goto(`/#/takeSurvey/${surveyId}`);
 
     // Fill personal details
     await page.fill('#fullName', 'Jane Tester');
     await page.fill('#email', 'jane@tester.com');
     await page.click('button:has-text("Next")');
 
-    // Fill answer to the question
-    await page.fill('input[id="1"]', 'Yes, it is amazing!');
+    // Fill answer to the first question
+    await page.locator('input[type="text"]').first().fill('Yes, it is amazing!');
     await page.click('button:has-text("Save")');
 
     // Verify completion page is shown

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Admin } from 'src/app/common/admin';
 import { DbServiceService } from 'src/app/services/db-service.service';
@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/services/auth.service';
     selector: 'app-admin-login',
     templateUrl: './admin-login.component.html',
     styleUrls: ['./admin-login.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AdminLoginComponent implements OnInit {
@@ -42,19 +41,16 @@ export class AdminLoginComponent implements OnInit {
 
     this.dbService.verifyLogin(admn).subscribe(
       data => {
-        console.log('Login response:', data);
         if (data && data.id != -1) {
           this.admin = Object.assign(new Admin(), data);
           this.errorMsg = "";
           this.authService.login(data);
-          console.log('Navigating to admin...');
           this.router.navigate(['admin']);
         } else {
           this.errorMsg = "Invalid User name or password";
         }
       },
       error => {
-        console.error('Login error:', error);
         this.errorMsg = "Login failed: " + (error.message || 'Unknown error');
       }
     );

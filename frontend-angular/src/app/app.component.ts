@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 
@@ -6,21 +6,15 @@ import { Router } from '@angular/router';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class AppComponent implements AfterViewInit, OnInit {
+export class AppComponent implements OnInit {
   title = 'Campaign Registration Management System';
 
-  constructor(private authService: AuthService, private router: Router, private elementRef: ElementRef) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    
   }
-
-  ngAfterViewInit(){
-    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'yourColor';
- }
 
   isLoggedIn(): boolean {
     return this.authService.getIsLoggedIn();

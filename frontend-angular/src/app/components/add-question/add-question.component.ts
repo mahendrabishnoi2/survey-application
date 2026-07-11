@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CreateNewFormService } from 'src/app/services/create-new-form.service';
 import { Questions } from 'src/app/common/questions';
@@ -7,7 +7,6 @@ import { Questions } from 'src/app/common/questions';
     selector: 'app-add-question',
     templateUrl: './add-question.component.html',
     styleUrls: ['./add-question.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddQuestionComponent implements OnInit {
@@ -52,10 +51,6 @@ export class AddQuestionComponent implements OnInit {
       options: [options],
       id: [question.id]
     });
-  }
-
-  showForm(): void {
-    console.log(this.questionForm);
   }
 
   addQuestion(): void {

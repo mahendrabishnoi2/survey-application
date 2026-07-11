@@ -1,11 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-user-survey',
     templateUrl: './user-survey.component.html',
     styleUrls: ['./user-survey.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UserSurveyComponent implements OnInit {

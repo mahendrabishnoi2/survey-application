@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SurveyFull } from 'src/app/common/survey-full';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { QuestionBase } from 'src/app/common/question-base';
@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
     selector: 'app-take-survey-questions',
     templateUrl: './take-survey-questions.component.html',
     styleUrls: ['./take-survey-questions.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TakeSurveyQuestionsComponent implements OnInit {
@@ -21,20 +20,15 @@ export class TakeSurveyQuestionsComponent implements OnInit {
   @Input() details!: FormGroup;
   @Input() questions!: QuestionBase<string>[];
   form!: FormGroup;
-  // payLoad = "";
   surveyResponse!: SurveyResponse;
-  // questions: QuestionBase<string>[];
 
   constructor(private fb: FormBuilder, private qcs: QuestionControlService,
     private dbService: DbServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    // this.questions = this.qcs.getQuestions(this.survey);
-    console.log(this.questions);
     this.form = this.qcs.toFormGroup(this.questions);
-    console.log(this.form);
-    console.log(this.details);
   }
+
 
   private createObject(): void {
     // create survey response object to send to backend 
@@ -95,43 +89,11 @@ export class TakeSurveyQuestionsComponent implements OnInit {
   }
 
   onSubmit() {
-    // log answers given by users
-    console.log(this.form.value);
-
-    // create an object from form values, will be sent to database
     this.createObject();
 
-    // use dbservice to save user's response
     this.dbService.saveSurveyResponse(this.surveyResponse).subscribe(
-      (data: any) => {
-        console.log(data);
-      }
-    )
-
-    // the object which we send to db service
-    // console.log(this.surveyResponse);
-
-    // after survey is completed, redirect to a new page
-    this.router.navigate(['surveycompleted']);
-
-    // can we create a new array of response to questions
-    // for each respondant
-    /*
-    {
-      fullName,
-      email,
-      submitDate,
-      answers[]
-    }
-  
-    // each answer
-    {
-      questionId
-      questionType
-      answer: // text for all types, for multiple choice answers we can save with some delimiter
-      selectedOptionIds: 
-    }
-    */
+      () => this.router.navigate(['surveycompleted'])
+    );
   }
 
   private getValueFromKey(options: { key: string, value: string }[], key: string): string {

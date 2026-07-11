@@ -4,7 +4,6 @@ import { SurveyHeader } from '../common/survey-header';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Questions } from '../common/questions';
-import { InputTypes } from '../common/input-types';
 import { QuestionsOptions } from '../common/questions-options';
 import { SurveyFull } from '../common/survey-full';
 import { SurveyResponse } from '../common/survey-response';
@@ -58,12 +57,6 @@ export class DbServiceService {
     return this.httpClient.post(`${this.baseUrl}respondant/new/${id}`, user);
   }
 
-  // getSurveyList(): Observable<SurveyHeader[]> {
-  //   return this.httpClient.get<GetResponseSurveyList>(`${this.baseUrl}surveys/getAll`).pipe(
-  //     map(response => response._embedded.surveyHeader)
-  //   );
-  // }
-
   // get list of surveys (not expired)
   getSurveyList(): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}surveys/getAll`);
@@ -76,9 +69,7 @@ export class DbServiceService {
 
   // get survey details by id
   getSurveyHeaderById(id: number): Observable<SurveyHeader> {
-    return this.httpClient.get<SurveyHeader>(`${this.baseUrl}surveys/${id}`)
-      // .pipe(map(response => response.surveyHeader))
-      ;
+    return this.httpClient.get<SurveyHeader>(`${this.baseUrl}surveys/${id}`);
   }
 
   // get questions of a survey by id
@@ -87,13 +78,6 @@ export class DbServiceService {
       map(response => response._embedded.questions)
     );
   }
-
-  // get input type of given question 
-  // getInputType(id: number): Observable<InputTypes> {
-  //   return this.httpClient.get<InputTypes>(`${this.baseUrl}questions/${id}/inputTypeId`)
-  //   // .pipe(map(response => response._embedded.inputTypes))
-  //   ;
-  // }
 
   // get options of a given question id
   getQuestionsOptions(id: number): Observable<QuestionsOptions[]> {
@@ -115,25 +99,11 @@ export class DbServiceService {
   }
 }
 
-interface GetResponseSurveyList {
-  _embedded: {
-    surveyHeader: SurveyHeader[];
-  }
-}
-
-// interface GetResponseSurveyHeader {
-//   surveyHeader: SurveyHeader;
-// }
-
 interface GetQuestionsList {
   _embedded: {
     questions: Questions[];
   }
 }
-
-// interface GetInputType {
-//   inputTypes: InputTypes;
-// }
 
 interface GetQuestionsOptionsList {
   _embedded: {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { SurveyFull } from 'src/app/common/survey-full';
@@ -11,7 +11,6 @@ import { AuthService } from 'src/app/services/auth.service';
     selector: 'app-take-survey',
     templateUrl: './take-survey.component.html',
     styleUrls: ['./take-survey.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TakeSurveyComponent implements OnInit {
@@ -49,7 +48,6 @@ export class TakeSurveyComponent implements OnInit {
       (data: any) => {
         this.survey = data;
         this.surveyExpired = this.compareDate(data.validTill as Date);
-        console.log(JSON.stringify(data));
       }
     )
   }
@@ -63,7 +61,6 @@ export class TakeSurveyComponent implements OnInit {
     const expiryYear = expiry.getFullYear();
     const expiryMonth = expiry.getMonth() + 1;
     const expiryDate = expiry.getDate();
-    console.log(`${todayYear}-${todayMonth}-${todayDate}`);
     if (todayYear > expiryYear) return true;
     if (todayYear === expiryYear) {
       if (todayMonth > expiryMonth) return true;
@@ -79,12 +76,10 @@ export class TakeSurveyComponent implements OnInit {
     this.dbService.verifyUser(this.surveyId, this.details.value).subscribe(
       (data: any) => {
         if (data) {
-          // already taken survey (data: boolean)
           this.message = "You have already taken this survey!";
         } else {
           this.inputPersonalDetails = false;
         }
-        console.log(data);
       }
     )
   }

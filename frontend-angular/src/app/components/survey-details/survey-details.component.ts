@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { Respondant } from 'src/app/common/respondant';
 import { SurveyFull } from 'src/app/common/survey-full';
@@ -12,10 +13,12 @@ import { Response } from 'src/app/common/response';
     selector: 'app-survey-details',
     templateUrl: './survey-details.component.html',
     styleUrls: ['./survey-details.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class SurveyDetailsComponent implements OnInit {
+export class SurveyDetailsComponent implements OnInit, AfterViewInit {
+
+  private chartsReady = false;
+  private viewReady = false;
 
   surveyId!: number;
   respondents: Respondant[] = [];
@@ -41,8 +44,16 @@ export class SurveyDetailsComponent implements OnInit {
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.surveyId = idParam ? +idParam : 0;
+    this.loadGoogleCharts();
     this.getSurveyDetails();
     this.getSurveyResponses();
+  }
+
+  ngAfterViewInit(): void {
+    this.viewReady = true;
+    if (this.chartsReady && this.data.length > 0) {
+      this.renderChart();
+    }
   }
 
   getSurveyResponses() {
@@ -54,51 +65,58 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   getSurveyDetails() {
-    this.dbService.getSurveyRespondents(this.surveyId).subscribe(
-      (data: any) => {
-        this.respondents = data;
-        this.initailRespondents = data;
-        this.dbService.getSurvey(this.surveyId).subscribe(
-          (survey: any) => {
-            this.surveyDetails = survey;
-            this.filterStart = this.surveyDetails.created.toString().split('T')[0];
-            this.filterEnd = this.surveyDetails.validTill.toString().split('T')[0];
-            this.data = [
-              ["Questions", this.surveyDetails.questions.length],
-              ["Responses", this.respondents?.length || 0]
-            ];
-            this.drawChart();
-          }
-        );
-      }
-    )
+    forkJoin({
+      respondents: this.dbService.getSurveyRespondents(this.surveyId),
+      survey: this.dbService.getSurvey(this.surveyId)
+    }).subscribe(({ respondents, survey }) => {
+      this.respondents = respondents;
+      this.initailRespondents = respondents;
+      this.surveyDetails = survey;
+      this.filterStart = survey.created.toString().split('T')[0];
+      this.filterEnd = survey.validTill.toString().split('T')[0];
+      this.data = [
+        ["Questions", survey.questions.length],
+        ["Responses", respondents?.length || 0]
+      ];
+      this.drawChart();
+    });
   }
 
-  drawChart() {
-    const draw = () => {
+  private loadGoogleCharts(): void {
+    if ((window as any).google?.charts) {
+      this.chartsReady = true;
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://www.gstatic.com/charts/loader.js';
+    script.type = 'text/javascript';
+    script.onload = () => {
       const g = (window as any).google;
-      if (!g || !g.charts) return;
       g.charts.load('current', { packages: ['corechart'] });
       g.charts.setOnLoadCallback(() => {
-        if (!this.chartContainer) return;
-        const dataTable = g.visualization.arrayToDataTable([
-          ['Metric', 'Count'],
-          ...this.data
-        ]);
-        const chart = new g.visualization.BarChart(this.chartContainer.nativeElement);
-        chart.draw(dataTable, this.options);
+        this.chartsReady = true;
+        if (this.viewReady && this.data.length > 0) {
+          this.renderChart();
+        }
       });
     };
+    document.head.appendChild(script);
+  }
 
-    if (!(window as any).google) {
-      const script = document.createElement('script');
-      script.src = 'https://www.gstatic.com/charts/loader.js';
-      script.type = 'text/javascript';
-      script.onload = draw;
-      document.head.appendChild(script);
-    } else {
-      draw();
+  drawChart(): void {
+    if (this.chartsReady && this.viewReady) {
+      this.renderChart();
     }
+  }
+
+  private renderChart(): void {
+    const g = (window as any).google;
+    const dataTable = g.visualization.arrayToDataTable([
+      ['Metric', 'Count'],
+      ...this.data
+    ]);
+    const chart = new g.visualization.BarChart(this.chartContainer.nativeElement);
+    chart.draw(dataTable, this.options);
   }
 
   filterByDate() {
@@ -111,9 +129,7 @@ export class SurveyDetailsComponent implements OnInit {
       respondent => {
         let toAdd = false;
         const tempDate = new Date(respondent.takenOn.toString().split('T')[0]);
-        if (tempDate > filterStartDate && tempDate < filterEndDate) toAdd = true;
-        if (tempDate < filterStartDate === false && tempDate > filterStartDate === false) toAdd = true;
-        if (tempDate < filterEndDate === false && tempDate > filterEndDate === false) toAdd = true;
+        if (tempDate.getTime() >= filterStartDate.getTime() && tempDate.getTime() <= filterEndDate.getTime()) toAdd = true;
         if (toAdd) updatedRespondents.push(respondent);
       }
     )

@@ -76,7 +76,7 @@ export class QuestionControlService {
         group[question.key] = new FormArray([]);
         this.addCheckboxes(question.options, group[question.key]);
       } else {
-        if (question.validation != "" || question.validation != null) {
+        if (question.validation != "" && question.validation != null) {
           if (question.validation === "alpha") {
             group[question.key] = new FormControl(question.value || "", [Validators.required, Validators.pattern('[a-zA-Z ]+')]);
           } else if (question.validation === "numeric") {

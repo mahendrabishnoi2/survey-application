@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { QuestionsOptions } from 'src/app/common/questions-options';
 import { InputTypes } from 'src/app/common/input-types';
@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
     selector: 'app-create-survey',
     templateUrl: './create-survey.component.html',
     styleUrls: ['./create-survey.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CreateSurveyComponent implements OnInit {
@@ -92,22 +91,17 @@ export class CreateSurveyComponent implements OnInit {
     this.dbService.saveNewSurvey(survey).subscribe({
       next: (data: any) => {
         this.submittedSurveyDetails = data;
-        this.surveyLink = "localhost:4200/takeSurvey/" + data.id;
+        this.surveyLink = `${window.location.origin}/#/takeSurvey/${data.id}`;
         this.newFormService.success();
       },
-      error: (err: any) => {
-        console.error("SAVE SURVEY FAILED:", JSON.stringify(err));
-      }
+      error: (_err: any) => {}
+
     });
   }
 
   addQuestion(): void {
     this.newFormService.toggleComponent();
     this.questionsForDisplay = this.newSurveyForm.value.questions.value as any[];
-  }
-
-  showForm() {
-    console.log(this.surveyQuestionFormArray);
   }
 
   getEnabledComponent(): string {
@@ -149,16 +143,7 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   copyToClipboard() {
-    const item = this.surveyLink;
-    const listener = (e: ClipboardEvent) => {
-      if (e.clipboardData) {
-        e.clipboardData.setData('text/plain', item);
-      }
-      e.preventDefault();
-      document.removeEventListener('copy', listener);
-    };
-    document.addEventListener('copy', listener);
-    document.execCommand('copy');
+    navigator.clipboard.writeText(this.surveyLink);
   }
 
   isLoggedIn(): boolean {

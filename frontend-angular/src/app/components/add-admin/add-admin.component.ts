@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Admin } from 'src/app/common/admin';
 import { DbServiceService } from 'src/app/services/db-service.service';
@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/services/auth.service';
     selector: 'app-add-admin',
     templateUrl: './add-admin.component.html',
     styleUrls: ['./add-admin.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddAdminComponent implements OnInit {
@@ -23,13 +22,8 @@ export class AddAdminComponent implements OnInit {
     this.newAdmin.initialize();
   }
 
-  addAdmin(f: any) {
-    this.dbService.addAdmin(this.newAdmin).subscribe(
-      data => {
-        console.log(data);
-      }
-    )
-    console.log(this.newAdmin);
+  addAdmin() {
+    this.dbService.addAdmin(this.newAdmin).subscribe();
     this.adminAdded = true;
   }
 

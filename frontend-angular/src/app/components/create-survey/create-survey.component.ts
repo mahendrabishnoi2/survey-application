@@ -87,6 +87,7 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   submitSurvey(): void {
+    console.log('submitSurvey called, form valid:', this.newSurveyForm.valid, 'questions:', this.surveyQuestionFormArray.controls.length);
     const survey = this.createSurveyObjectFromForm();
     this.dbService.saveNewSurvey(survey).subscribe({
       next: (data: any) => {

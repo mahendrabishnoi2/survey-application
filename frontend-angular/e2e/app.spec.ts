@@ -60,14 +60,15 @@ test.describe('Survey Application Real E2E Integration Tests', () => {
     // Verify success message is shown on the page (allow up to 15s for backend round-trip in CI)
     await expect(page.locator('text=Successfully created survey')).toBeVisible({ timeout: 15000 });
 
+    // Capture the survey link (contains the ID) from the success screen
+    const surveyLinkValue = await page.locator('#copyText').inputValue();
+    const surveyId = surveyLinkValue.split('/').pop();
+
     // Go to admin page and verify the new survey is listed
     await page.goto('/#/admin');
-    await expect(page.locator('table')).toContainText('E2E Customer Feedback');
+    await expect(page.locator('table')).toContainText('E2E Customer Feedback', { timeout: 10000 });
 
-    // 3. Navigate to Take Survey — capture ID from the survey link in the table
-    const surveyLinkCell = page.locator('table a[href*="takeSurvey"]').first();
-    const surveyHref = await surveyLinkCell.getAttribute('href') ?? '';
-    const surveyId = surveyHref.split('/').pop();
+    // 3. Navigate to Take Survey using the captured ID
     await page.goto(`/#/takeSurvey/${surveyId}`);
 
     // Fill personal details

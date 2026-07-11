@@ -1,4 +1,4 @@
 export class SurveyHeader {
-    id: number;
-    surveyName: string;
+    id!: number;
+    surveyName!: string;
 }

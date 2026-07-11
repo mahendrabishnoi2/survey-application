@@ -17,7 +17,7 @@ export class AdminLoginComponent implements OnInit {
   constructor(private fb: FormBuilder, private dbService: DbServiceService, private router: Router, private authService: AuthService) { }
 
   errorMsg = "";
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
   admin: Admin = new Admin();
 
   ngOnInit(): void {

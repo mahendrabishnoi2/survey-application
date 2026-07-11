@@ -18,8 +18,9 @@ export class AuthService {
   }
 
   getAdmin(): any {
-    if (localStorage.getItem('admin') != null) {
-      this.admin = Object.assign(new Admin(), JSON.parse(localStorage.getItem('admin')));
+    const adminData = localStorage.getItem('admin');
+    if (adminData != null) {
+      this.admin = Object.assign(new Admin(), JSON.parse(adminData));
       return this.admin;
     }
     return null;

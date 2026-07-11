@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators, Form } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { QuestionsOptions } from 'src/app/common/questions-options';
 import { InputTypes } from 'src/app/common/input-types';
 import { CreateNewFormService } from 'src/app/services/create-new-form.service';
@@ -10,7 +10,6 @@ import { SurveyHeader } from 'src/app/common/survey-header';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 
-
 @Component({
     selector: 'app-create-survey',
     templateUrl: './create-survey.component.html',
@@ -20,20 +19,20 @@ import { Router } from '@angular/router';
 })
 export class CreateSurveyComponent implements OnInit {
 
-  qTypeMap: Map<string, string>;
-  validationMap: Map<string, string>;
-  minDate: string;
-  maxDate: Date;
-  componentToShow: string;
+  qTypeMap!: Map<string, string>;
+  validationMap!: Map<string, string>;
+  minDate!: string;
+  maxDate!: Date;
+  componentToShow!: string;
   questionsForDisplay: any;
-  submittedSurveyDetails: SurveyHeader;
+  submittedSurveyDetails!: SurveyHeader;
   surveyLink = "";
 
   constructor(private fb: FormBuilder, private newFormService: CreateNewFormService, private dbService: DbServiceService,
     private authService: AuthService, private router: Router) { }
 
-  newSurveyForm: FormGroup;
-  surveyQuestionFormArray: FormArray;
+  newSurveyForm!: FormGroup;
+  surveyQuestionFormArray!: FormArray;
 
   ngOnInit(): void {
     if (!this.isLoggedIn()) this.redirect();
@@ -46,20 +45,7 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   formInit(survey: SurveyFull) {
-
-    this.surveyQuestionFormArray = new FormArray([]);
-
-    // this block is not required, remove it later, we are handling this in add-question component
-    // survey.questions?.forEach((question: Ques) => {
-    //   let questionForm = this.fb.group({
-    //     question: [question.question, [Validators.required]],
-    //     responseType: [question.type, [Validators.required]],
-    //     validation: [question.validation],
-    //     options: [question.options],
-    //     id: [question.id]
-    //   });
-    //   this.surveyQuestionFormArray.push(questionForm);
-    // });
+    this.surveyQuestionFormArray = this.fb.array([]);
 
     this.newSurveyForm = this.fb.group({
       surveyName: [survey.name, [Validators.required]],
@@ -103,13 +89,16 @@ export class CreateSurveyComponent implements OnInit {
 
   submitSurvey(): void {
     const survey = this.createSurveyObjectFromForm();
-    this.dbService.saveNewSurvey(survey).subscribe(
-      data => {
+    this.dbService.saveNewSurvey(survey).subscribe({
+      next: (data: any) => {
         this.submittedSurveyDetails = data;
         this.surveyLink = "localhost:4200/takeSurvey/" + data.id;
+        this.newFormService.success();
+      },
+      error: (err: any) => {
+        console.error("SAVE SURVEY FAILED:", JSON.stringify(err));
       }
-    );
-    this.newFormService.success();
+    });
   }
 
   addQuestion(): void {
@@ -118,7 +107,6 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   showForm() {
-    // console.log(this.newSurveyForm.value);
     console.log(this.surveyQuestionFormArray);
   }
 
@@ -128,15 +116,16 @@ export class CreateSurveyComponent implements OnInit {
 
   createSurveyObjectFromForm(): SurveyFull {
     const survey: SurveyFull = new SurveyFull();
+    survey.id = 0;
     survey.created = new Date();
     survey.name = this.newSurveyForm.value.surveyName;
     survey.description = this.newSurveyForm.value.description;
-    survey.validTill = this.newSurveyForm.value.validTill;
+    survey.validTill = new Date(this.newSurveyForm.value.validTill);
     survey.questions = [];
 
     const questionsArray = this.newSurveyForm.value.questions.value;
 
-    questionsArray.forEach((question, index) => {
+    questionsArray.forEach((question: any, index: number) => {
       const q: Questions = new Questions(index, question.question);
       const type: InputTypes = new InputTypes();
       type.id = 0;
@@ -146,7 +135,7 @@ export class CreateSurveyComponent implements OnInit {
       const optionArray = question.options.value;
       q.options = [];
 
-      optionArray.forEach((opt, id) => {
+      optionArray.forEach((opt: any, id: number) => {
         const o: QuestionsOptions = new QuestionsOptions();
         o.id = opt.id;
         o.name = opt.name;
@@ -161,11 +150,14 @@ export class CreateSurveyComponent implements OnInit {
 
   copyToClipboard() {
     const item = this.surveyLink;
-    document.addEventListener('copy', (e: ClipboardEvent) => {
-      e.clipboardData.setData('text/plain', (item));
+    const listener = (e: ClipboardEvent) => {
+      if (e.clipboardData) {
+        e.clipboardData.setData('text/plain', item);
+      }
       e.preventDefault();
-      document.removeEventListener('copy', null);
-    });
+      document.removeEventListener('copy', listener);
+    };
+    document.addEventListener('copy', listener);
     document.execCommand('copy');
   }
 

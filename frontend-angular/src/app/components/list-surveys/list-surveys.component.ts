@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SurveyHeader } from 'src/app/common/survey-header';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { Router } from '@angular/router';
-import { saveAs } from 'file-saver/src/FileSaver';
 
 @Component({
     selector: 'app-list-surveys',
@@ -13,7 +12,7 @@ import { saveAs } from 'file-saver/src/FileSaver';
 })
 export class ListSurveysComponent implements OnInit {
 
-  surveyHeaders: SurveyHeader[];
+  surveyHeaders: SurveyHeader[] = [];
   constructor(private dbService: DbServiceService, private router: Router) { }
 
   ngOnInit(): void {
@@ -22,7 +21,7 @@ export class ListSurveysComponent implements OnInit {
 
   listSurveys(): void {
     this.dbService.getSurveyList().subscribe(
-      data => {
+      (data: any) => {
         this.surveyHeaders = data;
       }
     );
@@ -33,13 +32,16 @@ export class ListSurveysComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
-  copyToClipboard(id) {
+  copyToClipboard(id: any) {
     const item = 'localhost:4200/takeSurvey/' + id;
-    document.addEventListener('copy', (e: ClipboardEvent) => {
-      e.clipboardData.setData('text/plain', (item));
+    const listener = (e: ClipboardEvent) => {
+      if (e.clipboardData) {
+        e.clipboardData.setData('text/plain', item);
+      }
       e.preventDefault();
-      document.removeEventListener('copy', null);
-    });
+      document.removeEventListener('copy', listener);
+    };
+    document.addEventListener('copy', listener);
     document.execCommand('copy');
     alert("Link copied to clipboard");
   }

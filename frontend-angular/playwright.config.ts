@@ -2,14 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
-  timeout: 30 * 1000,
-  expect: {
-    timeout: 5000
-  },
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1, // run tests sequentially to avoid database conflicts
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:4200',
@@ -21,10 +17,18 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: 'npm run start',
-    url: 'http://localhost:4200',
-    reuseExistingServer: true,
-    timeout: 120 * 1000,
-  },
+  webServer: [
+    {
+      command: 'npm run start',
+      url: 'http://localhost:4200',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
+    {
+      command: 'cd ../backend-spring-boot && ./mvnw spring-boot:run',
+      url: 'http://localhost:8080/api/surveys/getAll',
+      reuseExistingServer: !process.env.CI,
+      timeout: 180 * 1000,
+    }
+  ],
 });

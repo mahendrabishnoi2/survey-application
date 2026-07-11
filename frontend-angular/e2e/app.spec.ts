@@ -1,96 +1,67 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Survey Application E2E Tests', () => {
-  test('Unauthenticated access to /admin redirects to /login', async ({ page }) => {
+test.describe('Survey Application Real E2E Integration Tests', () => {
+  test('Full survey creation and take-survey flow', async ({ page }) => {
+    page.on('console', msg => console.log('BROWSER LOG:', msg.text()));
+    page.on('pageerror', err => console.error('BROWSER ERROR:', err.message));
+
+    // 1. Unauthenticated access redirects to login
     await page.goto('/#/admin');
     await expect(page).toHaveURL(/.*login/);
-  });
 
-  test('Admin login flow', async ({ page }) => {
-    // Mock the backend API responses for login and admin surveys
-    await page.route('**/api/login', async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ id: 1, email: 'admin@test.com', password: 'password', fullName: 'Test Admin' }),
-      });
-    });
-
-    await page.route('**/api/surveys', async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([
-          { id: 1, name: 'Customer Satisfaction', description: 'Help us improve', created: new Date(), validTill: new Date() }
-        ]),
-      });
-    });
-
-    await page.goto('/#/login');
-    await page.fill('#email', 'admin@test.com');
+    // 2. Perform Admin Login
+    await page.fill('#email', 'm@m.com');
     await page.fill('#password', 'password');
     await page.click('button[type="submit"]');
 
+    // Should redirect to admin home page
     await expect(page).toHaveURL(/.*admin/);
-  });
 
-  test('Take survey flow', async ({ page }) => {
-    // Mock the backend API for survey details, user verification, and submissions
+    // Should initially show "No surveys available"
+    await expect(page.locator('text=No surveys available')).toBeVisible();
+
+    // 3. Create a Survey
+    await page.click('a:has-text("Create Survey")');
+    await expect(page).toHaveURL(/.*createSurvey/);
+
+    await page.fill('input[formControlName="surveyName"]', 'E2E Customer Feedback');
+    await page.fill('textarea[formControlName="description"]', 'A real E2E integration survey');
+    
+    // Set expiry date to tomorrow
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
+    const dateStr = tomorrow.toISOString().split('T')[0];
+    await page.fill('input[formControlName="validTill"]', dateStr);
 
-    await page.route('**/api/surveys/1', async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          id: 1,
-          name: 'Customer Satisfaction',
-          description: 'Help us improve',
-          validTill: tomorrow.toISOString(),
-          questions: [
-            { id: 1, question: 'How is the app?', type: { typeName: 'oneline' }, validation: '', options: [] }
-          ]
-        }),
-      });
-    });
+    // Add a question
+    await page.click('button:has-text("Add New Question")');
+    await page.fill('#question', 'Do you love this app?');
+    await page.selectOption('#questionType', 'oneline');
+    await page.click('button:has-text("Add Question to Form")');
 
-    await page.route('**/api/verifyUser/**', async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(false), // has not taken survey yet
-      });
-    });
+    // Click "Create Survey"
+    await page.click('button:has-text("Create Survey")');
 
-    await page.route('**/api/respondant/new/1', async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(false),
-      });
-    });
+    // Verify success message is shown on the page
+    await expect(page.locator('text=Successfully created survey')).toBeVisible();
 
-    await page.route('**/api/surveys/response', async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ success: true }),
-      });
-    });
+    // Go to admin page and verify the new survey is listed
+    await page.goto('/#/admin');
+    await expect(page.locator('table')).toContainText('E2E Customer Feedback');
 
-    // Go to take survey page
+    // 4. Navigate to Take Survey and submit response
     await page.goto('/#/takeSurvey/1');
 
     // Fill personal details
-    await page.fill('#fullName', 'John Doe');
-    await page.fill('#email', 'john@example.com');
+    await page.fill('#fullName', 'Jane Tester');
+    await page.fill('#email', 'jane@tester.com');
     await page.click('button:has-text("Next")');
 
-    // Fill the survey response
-    await page.fill('input.form-control', 'It is great!');
+    // Fill answer to the question (using the dynamic question ID selector)
+    await page.fill('input[id="1"]', 'Yes, it is amazing!');
     await page.click('button:has-text("Save")');
 
+    // Verify completion page is shown
     await expect(page).toHaveURL(/.*surveycompleted/);
   });
 });

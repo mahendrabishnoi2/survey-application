@@ -1,12 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { SurveyFull } from 'src/app/common/survey-full';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuestionBase } from 'src/app/common/question-base';
 import { QuestionControlService } from 'src/app/services/question-control.service';
 import { AuthService } from 'src/app/services/auth.service';
-
 
 @Component({
     selector: 'app-take-survey',
@@ -17,19 +16,13 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class TakeSurveyComponent implements OnInit {
 
-  surveyId: number;
-  details: FormGroup;
+  surveyId!: number;
+  details!: FormGroup;
   inputPersonalDetails = true;
   message = "";
-  questions: QuestionBase<string>[];
-  surveyExpired: boolean;
-
-  // headers: SurveyHeader;
-  // questions: Questions[] = [];
-  // questionTypes: InputTypes[] = [];
-  // questionOptions: QuestionsOptions[][] = [];
-
-  survey: SurveyFull;
+  questions: QuestionBase<string>[] = [];
+  surveyExpired!: boolean;
+  survey!: SurveyFull;
 
   constructor(private route: ActivatedRoute, private dbService: DbServiceService,
     private fb: FormBuilder, private qcs: QuestionControlService, private auth: AuthService) {
@@ -37,7 +30,8 @@ export class TakeSurveyComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.logout();
-    this.surveyId = +this.route.snapshot.paramMap.get('id');
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.surveyId = idParam ? +idParam : 0;
     this.getSurvey();
     this.createForm();
   }
@@ -52,7 +46,7 @@ export class TakeSurveyComponent implements OnInit {
 
   getSurvey(): void {
     this.dbService.getSurvey(this.surveyId).subscribe(
-      data => {
+      (data: any) => {
         this.survey = data;
         this.surveyExpired = this.compareDate(data.validTill as Date);
         console.log(JSON.stringify(data));
@@ -80,11 +74,10 @@ export class TakeSurveyComponent implements OnInit {
     return false;
   }
 
-
   onSubmit(): void {
     this.questions = this.qcs.getQuestions(this.survey);
     this.dbService.verifyUser(this.surveyId, this.details.value).subscribe(
-      data => {
+      (data: any) => {
         if (data) {
           // already taken survey (data: boolean)
           this.message = "You have already taken this survey!";

@@ -3,6 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DbServiceService } from './db-service.service';
 import { Admin } from '../common/admin';
+import { environment } from 'src/environments/environment';
 
 describe('DbServiceService', () => {
   let service: DbServiceService;
@@ -34,7 +35,7 @@ describe('DbServiceService', () => {
       expect(res).toEqual(mockResponses);
     });
 
-    const req = httpTestingController.expectOne('http://localhost:8080/api/surveys/responses/1');
+    const req = httpTestingController.expectOne(`${environment.apiBaseUrl}surveys/responses/1`);
     expect(req.request.method).toBe('GET');
     req.flush(mockResponses);
   });
@@ -48,7 +49,7 @@ describe('DbServiceService', () => {
       expect(res).toEqual({ id: 1 });
     });
 
-    const req = httpTestingController.expectOne('http://localhost:8080/api/login');
+    const req = httpTestingController.expectOne(`${environment.apiBaseUrl}login`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(admin);
     req.flush({ id: 1 });

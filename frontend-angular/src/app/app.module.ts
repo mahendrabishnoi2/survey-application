@@ -20,11 +20,6 @@ import { AddOptionsComponent } from './components/add-options/add-options.compon
 import { AddAdminComponent } from './components/add-admin/add-admin.component';
 import { SurveyDetailsComponent } from './components/survey-details/survey-details.component';
 
-import { GoogleChartsModule } from 'angular-google-charts';
-
-
-
-
 @NgModule({ declarations: [
         AppComponent,
         AdminLoginComponent,
@@ -45,6 +40,5 @@ import { GoogleChartsModule } from 'angular-google-charts';
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        MatExpansionModule,
-        GoogleChartsModule], providers: [provideHttpClient(withXhr(), withInterceptorsFromDi())] })
+        MatExpansionModule], providers: [provideHttpClient(withXhr(), withInterceptorsFromDi())] })
 export class AppModule { }

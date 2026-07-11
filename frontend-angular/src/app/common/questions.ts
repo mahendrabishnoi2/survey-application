@@ -8,7 +8,7 @@ export class Questions {
     }
     id: number;
     question: string;
-    type: InputTypes;
-    options: QuestionsOptions[];
-    validation: string;
+    type!: InputTypes;
+    options!: QuestionsOptions[];
+    validation!: string;
 }

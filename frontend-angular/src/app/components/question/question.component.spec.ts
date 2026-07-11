@@ -39,4 +39,16 @@ describe('QuestionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should get control validity state via isValid', () => {
+    expect(component.isValid).toBeTrue();
+    component.form.get('q1')?.setErrors({ invalid: true });
+    expect(component.isValid).toBeFalse();
+  });
+
+  it('should get control dirty state via isDirty', () => {
+    expect(component.isDirty).toBeFalse();
+    component.form.get('q1')?.markAsDirty();
+    expect(component.isDirty).toBeTrue();
+  });
 });

@@ -1,10 +1,10 @@
 export class Admin {
-    id: number;
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    isPrimaryAdmin: number;
+    id!: number | null;
+    email!: string;
+    firstName!: string;
+    lastName!: string;
+    password!: string;
+    isPrimaryAdmin!: number;
 
     initialize() {
         this.id = null;

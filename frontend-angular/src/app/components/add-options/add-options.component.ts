@@ -32,7 +32,7 @@ export class AddOptionsComponent implements OnInit {
     console.log(this.isDuplicate);
   }
 
-  log(x) {
+  log(x: any) {
     console.log(x);
   }
 

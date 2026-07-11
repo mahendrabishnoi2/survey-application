@@ -3,13 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { Respondant } from 'src/app/common/respondant';
 import { SurveyFull } from 'src/app/common/survey-full';
-
-
 import { saveAs } from "file-saver";
 import * as XLSX from 'xlsx';
 import { AuthService } from 'src/app/services/auth.service';
 import { Response } from 'src/app/common/response';
-
 
 @Component({
     selector: 'app-survey-details',
@@ -20,13 +17,15 @@ import { Response } from 'src/app/common/response';
 })
 export class SurveyDetailsComponent implements OnInit {
 
-  surveyId: number;
-  respondents: Respondant[];
-  initailRespondents: Respondant[];
-  surveyDetails: SurveyFull;
-  filterStart: string;
-  filterEnd: string;
-  responses: Response[];
+  surveyId!: number;
+  respondents: Respondant[] = [];
+  initailRespondents: Respondant[] = [];
+  surveyDetails!: SurveyFull;
+  filterStart!: string;
+  filterEnd!: string;
+  responses: Response[] = [];
+
+  @ViewChild('chartContainer') chartContainer!: ElementRef;
 
   // for google charts library 
   columnNames: string[] = ["Number of Questions", "Number of Responses"];
@@ -34,21 +33,21 @@ export class SurveyDetailsComponent implements OnInit {
     title: 'Survey Details'
   };
   type = "BarChart";
-  data = [];
+  data: any[] = [];
 
   constructor(private route: ActivatedRoute, private dbService: DbServiceService,
     private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.surveyId = +this.route.snapshot.paramMap.get('id');
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.surveyId = idParam ? +idParam : 0;
     this.getSurveyDetails();
     this.getSurveyResponses();
-    // console.log(this.surveyId);
   }
 
   getSurveyResponses() {
     this.dbService.getSurveyResponses(this.surveyId).subscribe(
-      data => {
+      (data: any) => {
         this.responses = data;
       }
     );
@@ -56,20 +55,50 @@ export class SurveyDetailsComponent implements OnInit {
 
   getSurveyDetails() {
     this.dbService.getSurveyRespondents(this.surveyId).subscribe(
-      data => {
+      (data: any) => {
         this.respondents = data;
         this.initailRespondents = data;
         this.dbService.getSurvey(this.surveyId).subscribe(
-          survey => {
+          (survey: any) => {
             this.surveyDetails = survey;
             this.filterStart = this.surveyDetails.created.toString().split('T')[0];
             this.filterEnd = this.surveyDetails.validTill.toString().split('T')[0];
-            this.data.push(["Questions", this.surveyDetails.questions.length]);
-            this.data.push(["Resonses", this.respondents?.length]);
+            this.data = [
+              ["Questions", this.surveyDetails.questions.length],
+              ["Responses", this.respondents?.length || 0]
+            ];
+            this.drawChart();
           }
         );
       }
     )
+  }
+
+  drawChart() {
+    const draw = () => {
+      const g = (window as any).google;
+      if (!g || !g.charts) return;
+      g.charts.load('current', { packages: ['corechart'] });
+      g.charts.setOnLoadCallback(() => {
+        if (!this.chartContainer) return;
+        const dataTable = g.visualization.arrayToDataTable([
+          ['Metric', 'Count'],
+          ...this.data
+        ]);
+        const chart = new g.visualization.BarChart(this.chartContainer.nativeElement);
+        chart.draw(dataTable, this.options);
+      });
+    };
+
+    if (!(window as any).google) {
+      const script = document.createElement('script');
+      script.src = 'https://www.gstatic.com/charts/loader.js';
+      script.type = 'text/javascript';
+      script.onload = draw;
+      document.head.appendChild(script);
+    } else {
+      draw();
+    }
   }
 
   filterByDate() {
@@ -106,7 +135,7 @@ export class SurveyDetailsComponent implements OnInit {
 
   // create json object for respondents to survey
   getJsonRespondents() {
-    const respondentsJson = [];
+    const respondentsJson: any[] = [];
     this.respondents.forEach(
       respondent => {
         respondentsJson.push({
@@ -120,7 +149,7 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   getJsonResponses() {
-    const responsesJson = [];
+    const responsesJson: any[] = [];
     this.responses?.forEach(
       response => {
         responsesJson.push({
@@ -160,12 +189,7 @@ export class SurveyDetailsComponent implements OnInit {
 
   // create an xlsx workbook with an sheet
   private createXlsxWorkbook(field: string) {
-    // https://redstapler.co/sheetjs-tutorial-create-xlsx/
     const wb = XLSX.utils.book_new();
-    // wb.Props = {
-    //   Title: "Survey Details",
-    //   CreatedDate: new Date()
-    // };
     wb.SheetNames.push(field);
     const jsonData = this.getJsonData(field);
     const ws = XLSX.utils.json_to_sheet(jsonData);
@@ -188,7 +212,7 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   // convert into octet stream for saving into xlsx format
-  private s2ab(s) {
+  private s2ab(s: string) {
     const buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
     const view = new Uint8Array(buf);  //create uint8array as viewer
     for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet

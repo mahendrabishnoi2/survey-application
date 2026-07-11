@@ -88,7 +88,7 @@
   }
 
   <div class="form-group">
-    <button [disabled]="questionForm.invalid" (click)="addQuestion()" class="btn btn-block btn-success">Add
+    <button type="button" [disabled]="questionForm.invalid" (click)="addQuestion()" class="btn btn-block btn-success">Add
     Question to Form</button>
   </div>
   @if (hasError) {

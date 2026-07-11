@@ -1,4 +1,4 @@
 export class InputTypes {
-    id: number;
-    typeName: string;
+    id!: number;
+    typeName!: string;
 }

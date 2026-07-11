@@ -1,11 +1,4 @@
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
-
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -14,9 +7,31 @@ describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(AuthService);
+    localStorage.clear();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should log in admin, save to localStorage, and set isLoggedIn', () => {
+    const mockAdmin = { id: 1, email: 'admin@test.com', fullName: 'Test Admin' };
+    service.login(mockAdmin);
+
+    expect(service.isLoggedIn).toBeTrue();
+    expect(localStorage.getItem('admin')).toBeTruthy();
+    expect(service.getIsLoggedIn()).toBeTrue();
+    expect(service.getAdmin().email).toBe('admin@test.com');
+  });
+
+  it('should log out admin, clear localStorage, and reset status', () => {
+    const mockAdmin = { id: 1, email: 'admin@test.com', fullName: 'Test Admin' };
+    service.login(mockAdmin);
+    service.logout();
+
+    expect(service.isLoggedIn).toBeFalse();
+    expect(localStorage.getItem('admin')).toBeNull();
+    expect(service.getIsLoggedIn()).toBeFalse();
+    expect(service.getAdmin()).toBeNull();
   });
 });

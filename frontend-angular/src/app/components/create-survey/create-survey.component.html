@@ -83,10 +83,10 @@
     </div>
     <div>
       <div class="row">
-        <button (click)="addQuestion()" [disabled]="surveyQuestionFormArray.controls.length >= 5"
+        <button type="button" (click)="addQuestion()" [disabled]="surveyQuestionFormArray.controls.length >= 5"
           class="btn btn-success offset-sm-1 col-sm-4">Add New
         Question</button>
-        <button (click)="submitSurvey()"
+        <button type="button" (click)="submitSurvey()"
           [disabled]="newSurveyForm.invalid || surveyQuestionFormArray.controls.length === 0"
           class="btn btn-success offset-sm-2 col-sm-4">Create
         Survey</button>

@@ -43,11 +43,11 @@
         </tr>
         <tr>
           <th scope="row">Created On</th>
-          <td>{{ $safeNavigationMigration(surveyDetails?.created) | date }}</td>
+          <td>{{ surveyDetails?.created | date }}</td>
         </tr>
         <tr>
           <th scope="row">Valid Till</th>
-          <td>{{ $safeNavigationMigration(surveyDetails?.validTill) | date }}</td>
+          <td>{{ surveyDetails?.validTill | date }}</td>
         </tr>
       </tbody>
     </table>
@@ -128,9 +128,7 @@
           <mat-panel-title>Charts</mat-panel-title>
         </mat-expansion-panel-header>
         <div class="d-flex justify-content-center">
-          <google-chart #chart [type]="type" [data]="data" [options]="options">
-            <!-- [width]="width" [height]="height"> -->
-          </google-chart>
+          <div #chartContainer style="width: 500px; height: 300px;"></div>
         </div>
       </mat-expansion-panel>
     </mat-accordion>

@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter, Router } from '@angular/router';
+import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AuthService } from './services/auth.service';
-import { Router } from '@angular/router';
-import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -15,9 +14,9 @@ describe('AppComponent', () => {
     const aSpy = jasmine.createSpyObj('AuthService', ['getIsLoggedIn', 'logout']);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([])],
       declarations: [AppComponent],
       providers: [
+        provideRouter([]),
         { provide: AuthService, useValue: aSpy },
         {
           provide: ElementRef,

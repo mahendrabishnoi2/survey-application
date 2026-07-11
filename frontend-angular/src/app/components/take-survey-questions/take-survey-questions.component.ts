@@ -17,12 +17,12 @@ import { Router } from '@angular/router';
 })
 export class TakeSurveyQuestionsComponent implements OnInit {
 
-  @Input() survey: SurveyFull;
-  @Input() details: FormGroup;
-  @Input() questions: QuestionBase<string>[];
-  form: FormGroup;
+  @Input() survey!: SurveyFull;
+  @Input() details!: FormGroup;
+  @Input() questions!: QuestionBase<string>[];
+  form!: FormGroup;
   // payLoad = "";
-  surveyResponse: SurveyResponse;
+  surveyResponse!: SurveyResponse;
   // questions: QuestionBase<string>[];
 
   constructor(private fb: FormBuilder, private qcs: QuestionControlService,
@@ -48,35 +48,38 @@ export class TakeSurveyQuestionsComponent implements OnInit {
       const qTypeText: string = question.controlType;
       let selectedOptionIds = "";
       let answerText = "";
-      if (qTypeText === "radio") {  // working
-        // form contains option id, get id of selected option from form and use that
-        // id to get text of option
-        selectedOptionIds = this.form.get(id).value;
-        const options = question.options;
-        answerText = this.getValueFromKey(options, selectedOptionIds);
-      } else if (qTypeText === "checkbox") {  // working
-        // form contains an array of boolean
-        const isChecked: boolean[] = this.form.get(id).value;
-        const options = question.options;
-        const selectedOptions: number[] = [];  // array of id of selected options
-        for (let i = 0; i < options.length; i++) {
-          if (isChecked[i]) {
-            selectedOptions.push(+options[i].key);
+      const formControl = this.form.get(id);
+      if (formControl) {
+        if (qTypeText === "radio") {  // working
+          // form contains option id, get id of selected option from form and use that
+          // id to get text of option
+          selectedOptionIds = formControl.value;
+          const options = question.options;
+          answerText = this.getValueFromKey(options, selectedOptionIds);
+        } else if (qTypeText === "checkbox") {  // working
+          // form contains an array of boolean
+          const isChecked: boolean[] = formControl.value;
+          const options = question.options;
+          const selectedOptions: number[] = [];  // array of id of selected options
+          for (let i = 0; i < options.length; i++) {
+            if (isChecked[i]) {
+              selectedOptions.push(+options[i].key);
+            }
           }
-        }
 
-        // if one or more checkbox selected, do further processing
-        if (selectedOptions.length > 0) {
-          selectedOptionIds = selectedOptions[0].toString();
-          answerText = this.getValueFromKey(options, selectedOptions[0].toString());
+          // if one or more checkbox selected, do further processing
+          if (selectedOptions.length > 0) {
+            selectedOptionIds = selectedOptions[0].toString();
+            answerText = this.getValueFromKey(options, selectedOptions[0].toString());
 
-          for (let i = 1; i < selectedOptions.length; i++) {
-            selectedOptionIds += " " + selectedOptions[i];
-            answerText += " | " + this.getValueFromKey(options, selectedOptions[i].toString());
+            for (let i = 1; i < selectedOptions.length; i++) {
+              selectedOptionIds += " " + selectedOptions[i];
+              answerText += " | " + this.getValueFromKey(options, selectedOptions[i].toString());
+            }
           }
+        } else { // working
+          answerText = formControl.value;
         }
-      } else { // working
-        answerText = this.form.get(id).value;
       }
 
       answers.push(new Answer(qId, qText, qTypeText, answerText, selectedOptionIds));
@@ -84,8 +87,8 @@ export class TakeSurveyQuestionsComponent implements OnInit {
 
     this.surveyResponse = {
       id: this.survey.id,
-      fullName: this.details.controls.fullName.value,
-      email: this.details.controls.email.value,
+      fullName: this.details.get('fullName')?.value || '',
+      email: this.details.get('email')?.value || '',
       submitDate: new Date(),
       answers: answers
     }
@@ -100,7 +103,7 @@ export class TakeSurveyQuestionsComponent implements OnInit {
 
     // use dbservice to save user's response
     this.dbService.saveSurveyResponse(this.surveyResponse).subscribe(
-      data => {
+      (data: any) => {
         console.log(data);
       }
     )

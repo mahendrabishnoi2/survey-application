@@ -16,7 +16,7 @@ export class QuestionControlService {
   constructor() { }
 
   getQuestions(SurveyFull: SurveyFull): QuestionBase<string>[] {
-    const questionsTemp = [];
+    const questionsTemp: QuestionBase<string>[] = [];
     const temp = SurveyFull.questions;
     temp.forEach(q => {
       let ques;
@@ -51,13 +51,15 @@ export class QuestionControlService {
           options: this.getOptions(q.options)
         })
       }
-      questionsTemp.push(ques);
+      if (ques) {
+        questionsTemp.push(ques);
+      }
     });
     return questionsTemp;
   }
 
   getOptions(options: QuestionsOptions[]): { key: string, value: string }[] {
-    const out = [];
+    const out: { key: string, value: string }[] = [];
     options.forEach(option => {
       out.push({key:option.id.toString(), value: option.name});
     })

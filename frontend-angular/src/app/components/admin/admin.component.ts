@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AdminComponent implements OnInit {
 
-  surveyHeaders: SurveyHeader[];
+  surveyHeaders: SurveyHeader[] = [];
   constructor(private dbService: DbServiceService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
@@ -24,7 +24,7 @@ export class AdminComponent implements OnInit {
 
   listSurveys(): void {
     this.dbService.getSurveyList().subscribe(
-      data => {
+      (data: any) => {
         this.surveyHeaders = data;
       }
     );

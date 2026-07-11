@@ -11,9 +11,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class QuestionComponent implements OnInit {
 
-  @Input() question: QuestionBase<string>;
-  @Input() form: FormGroup;
-  @Input() qNo: number;
+  @Input() question!: QuestionBase<string>;
+  @Input() form!: FormGroup;
+  @Input() qNo!: number;
   constructor() { }
 
   ngOnInit(): void {

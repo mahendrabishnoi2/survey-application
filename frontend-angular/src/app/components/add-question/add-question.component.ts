@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { InputTypes } from 'src/app/common/input-types';
 import { CreateNewFormService } from 'src/app/services/create-new-form.service';
-import { QuestionsOptions } from 'src/app/common/questions-options';
 import { Questions } from 'src/app/common/questions';
 
 @Component({
@@ -14,13 +12,12 @@ import { Questions } from 'src/app/common/questions';
 })
 export class AddQuestionComponent implements OnInit {
 
-  @Input() surveyQuestionFormArray: FormArray;
-  @Input() qType: Map<string, string>;
-  @Input() valType: Map<string, string>;
-  // @Output() questionFormOut = new EventEmitter<FormGroup>();
+  @Input() surveyQuestionFormArray!: FormArray;
+  @Input() qType!: Map<string, string>;
+  @Input() valType!: Map<string, string>;
 
   errorMessage = "";
-  questionForm: FormGroup;
+  questionForm!: FormGroup;
 
   // for adding new options
   options: string[] = [];
@@ -47,7 +44,7 @@ export class AddQuestionComponent implements OnInit {
   }
 
   formInit(question: Questions) {
-    const options = new FormArray([]);
+    const options = this.fb.array([]);
     this.questionForm = this.fb.group({
       question: [question.question, [Validators.required]],
       questionType: [question.type, [Validators.required]],
@@ -80,7 +77,7 @@ export class AddQuestionComponent implements OnInit {
   }
 
   private addOptionsToForm() {
-    const optionsFormArray: FormArray = new FormArray([]);
+    const optionsFormArray = new FormArray<any>([]);
 
     // for each option create a form group and add it to form array
     this.options.forEach((option, index) => {
@@ -90,7 +87,7 @@ export class AddQuestionComponent implements OnInit {
       }));
     });
 
-    this.questionForm.controls.options.setValue(optionsFormArray);
+    this.questionForm.get('options')?.setValue(optionsFormArray);
   }
 
   private clearFields() {
@@ -102,11 +99,11 @@ export class AddQuestionComponent implements OnInit {
   }
 
   private clearValidation() {
-    this.questionForm.controls.validation.setValue("");
+    this.questionForm.get('validation')?.setValue("");
   }
 
   private clearOptions() {
-    this.questionForm.controls.options.setValue(new FormArray([]));
+    this.questionForm.get('options')?.setValue(this.fb.array([]));
   }
 
   deleteOption(index: number) {

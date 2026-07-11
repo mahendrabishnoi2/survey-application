@@ -95,6 +95,7 @@ export class CreateSurveyComponent implements OnInit {
         this.submittedSurveyDetails = data;
         this.surveyLink = `${window.location.origin}/#/takeSurvey/${data.id}`;
         this.newFormService.success();
+        console.log('After success(), enabledComponent:', this.newFormService.enabledComponent());
       },
       error: (err: any) => { console.error('Survey creation failed:', err?.status, err?.message); }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SurveyHeader } from 'src/app/common/survey-header';
 import { DbServiceService } from 'src/app/services/db-service.service';
 
@@ -11,7 +11,7 @@ import { DbServiceService } from 'src/app/services/db-service.service';
 export class ListSurveysComponent implements OnInit {
 
   surveyHeaders: SurveyHeader[] = [];
-  constructor(private dbService: DbServiceService) { }
+  constructor(private dbService: DbServiceService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.listSurveys();
@@ -21,6 +21,7 @@ export class ListSurveysComponent implements OnInit {
     this.dbService.getSurveyList().subscribe(
       (data: any) => {
         this.surveyHeaders = data;
+        this.cdr.detectChanges();
       }
     );
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { SurveyFull } from 'src/app/common/survey-full';
@@ -24,7 +24,8 @@ export class TakeSurveyComponent implements OnInit {
   survey!: SurveyFull;
 
   constructor(private route: ActivatedRoute, private dbService: DbServiceService,
-    private fb: FormBuilder, private qcs: QuestionControlService, private auth: AuthService) {
+    private fb: FormBuilder, private qcs: QuestionControlService, private auth: AuthService,
+    private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -48,6 +49,7 @@ export class TakeSurveyComponent implements OnInit {
       (data: any) => {
         this.survey = data;
         this.surveyExpired = this.compareDate(data.validTill as Date);
+        this.cdr.detectChanges();
       }
     )
   }
@@ -80,6 +82,7 @@ export class TakeSurveyComponent implements OnInit {
         } else {
           this.inputPersonalDetails = false;
         }
+        this.cdr.detectChanges();
       }
     )
   }

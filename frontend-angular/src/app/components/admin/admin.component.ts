@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { SurveyHeader } from 'src/app/common/survey-header';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class AdminComponent implements OnInit {
 
   surveyHeaders: SurveyHeader[] = [];
-  constructor(private dbService: DbServiceService, private authService: AuthService, private router: Router) { }
+  constructor(private dbService: DbServiceService, private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.listSurveys();
@@ -23,6 +23,7 @@ export class AdminComponent implements OnInit {
     this.dbService.getSurveyList().subscribe(
       (data: any) => {
         this.surveyHeaders = data;
+        this.cdr.detectChanges();
       }
     );
   }

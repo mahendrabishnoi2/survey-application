@@ -57,7 +57,7 @@ describe('AddAdminComponent', () => {
 
   it('should call dbService.addAdmin and set adminAdded to true on submit', () => {
     dbServiceSpy.addAdmin.and.returnValue(of(new Admin()));
-    component.addAdmin({});
+    component.addAdmin();
 
     expect(dbServiceSpy.addAdmin).toHaveBeenCalledWith(component.newAdmin);
     expect(component.adminAdded).toBeTrue();

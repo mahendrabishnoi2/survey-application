@@ -9,6 +9,7 @@ import { AdminComponent } from './admin.component';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SurveyHeader } from 'src/app/common/survey-header';
+import { Admin } from 'src/app/common/admin';
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
@@ -43,7 +44,9 @@ describe('AdminComponent', () => {
   beforeEach(() => {
     const mockHeaders: SurveyHeader[] = [{ id: 1, surveyName: 'Feedback Survey' }];
     dbServiceSpy.getSurveyList.and.returnValue(of(mockHeaders));
-    authServiceSpy.getAdmin.and.returnValue({ id: 1 });
+    const mockAdmin = new Admin();
+    mockAdmin.id = 1;
+    authServiceSpy.getAdmin.and.returnValue(mockAdmin);
 
     fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;

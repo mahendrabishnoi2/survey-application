@@ -18,10 +18,9 @@ describe('AuthService', () => {
     const mockAdmin = { id: 1, email: 'admin@test.com', fullName: 'Test Admin' };
     service.login(mockAdmin);
 
-    expect(service.isLoggedIn).toBeTrue();
-    expect(localStorage.getItem('admin')).toBeTruthy();
     expect(service.getIsLoggedIn()).toBeTrue();
-    expect(service.getAdmin().email).toBe('admin@test.com');
+    expect(localStorage.getItem('admin')).toBeTruthy();
+    expect(service.getAdmin()?.email).toBe('admin@test.com');
   });
 
   it('should log out admin, clear localStorage, and reset status', () => {
@@ -29,9 +28,8 @@ describe('AuthService', () => {
     service.login(mockAdmin);
     service.logout();
 
-    expect(service.isLoggedIn).toBeFalse();
-    expect(localStorage.getItem('admin')).toBeNull();
     expect(service.getIsLoggedIn()).toBeFalse();
+    expect(localStorage.getItem('admin')).toBeNull();
     expect(service.getAdmin()).toBeNull();
   });
 });

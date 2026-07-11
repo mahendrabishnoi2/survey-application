@@ -32,11 +32,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SurveyService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SurveyService.class);
 
   @Autowired SurveyHeaderRepository surveyHeaderRepository;
   @Autowired RespondantRepository respondantRepository;
@@ -56,15 +60,10 @@ public class SurveyService {
   }
 
   public Admin verifyAdminLogin(Admin admin) {
-    System.out.println("Login attempt for email: " + admin.getEmail());
     Admin adminRes = adminRepository.findByEmail(admin.getEmail());
-    System.out.println("Found admin: " + adminRes);
-
     if (adminRes != null && admin.getPassword().equals(adminRes.getPassword())) {
-      System.out.println("Password matched, returning: " + adminRes);
       return adminRes;
     }
-
     Admin fake = new Admin();
     fake.setId(-1L);
     fake.setEmail("");
@@ -72,7 +71,6 @@ public class SurveyService {
     fake.setLastName("");
     fake.setPassword("");
     fake.setIsPrimaryAdmin((short) 0);
-    System.out.println("Login failed, returning fake admin: " + fake);
     return fake;
   }
 
@@ -92,7 +90,6 @@ public class SurveyService {
 
     Set<Questions> questions = surveyHeader.getQuestions();
     for (Questions questions1 : questions) {
-      Set<QuestionsOptions> questionsOptions = questions1.getQuestionsOptions();
       InputTypes inputTypes = questions1.getInputTypeId();
 
       Type type = new Type();
@@ -171,7 +168,7 @@ public class SurveyService {
 
       emailService.sendSimpleMessage(to, subject, body);
     } catch (NoSuchElementException e) {
-      System.out.println("Exception: Response to a survey that does not exist");
+      LOGGER.warn("Response to a survey that does not exist: {}", e.getMessage());
     }
 
     return true;
@@ -216,7 +213,7 @@ public class SurveyService {
       Questions savedQuestion = questionsRepository.save(newQuestion);
 
       // if question contains options - i.e. question of type checkbox or radio
-      if (question.getOptions().size() > 0) {
+      if (!question.getOptions().isEmpty()) {
         for (Option option : question.getOptions()) {
           QuestionsOptions newOption = new QuestionsOptions();
           newOption.setOptionName(option.getName());
@@ -250,7 +247,6 @@ public class SurveyService {
 
     // truncate time part
     Date todayMidnight = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
-    Date tomorrowMidnight = DateUtils.addDays(todayMidnight, 1);
 
     for (SurveyHeader surveyHeader : surveyHeaders) {
       if (surveyHeader.getValidTill().compareTo(todayMidnight) >= 0) {

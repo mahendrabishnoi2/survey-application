@@ -29,6 +29,16 @@ jobs:
           cd backend-spring-boot
           ./mvnw clean compile -q
 
+      - name: SpotBugs
+        run: |
+          cd backend-spring-boot
+          ./mvnw spotbugs:check -q
+
+      - name: PMD
+        run: |
+          cd backend-spring-boot
+          ./mvnw pmd:check -q
+
   backend-test:
     runs-on: ubuntu-latest
     steps:

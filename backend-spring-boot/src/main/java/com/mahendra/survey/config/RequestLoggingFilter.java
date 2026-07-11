@@ -72,21 +72,21 @@ public class RequestLoggingFilter implements Filter {
     private String buildLogMessage(HttpServletRequest request, CachedRequestWrapper requestWrapper,
                                    CachedResponseWrapper responseWrapper, int status, long duration) {
         StringBuilder sb = new StringBuilder();
-        sb.append(request.getMethod()).append(" ").append(request.getRequestURI());
+        sb.append(request.getMethod()).append(' ').append(request.getRequestURI());
 
         // Query params
         String queryString = request.getQueryString();
         if (queryString != null) {
-            sb.append("?").append(queryString);
+            sb.append('?').append(queryString);
         }
 
         sb.append(" - Status: ").append(status).append(" - Duration: ").append(duration).append("ms");
 
         if (status >= 400) {
             // Add extra details for errors
-            sb.append(" - Headers: ").append(getHeadersAsString(request));
-            sb.append(" - Request Body: ").append(requestWrapper.getBody());
-            sb.append(" - Response Body: ").append(responseWrapper.getBody());
+            sb.append(" - Headers: ").append(getHeadersAsString(request))
+              .append(" - Request Body: ").append(requestWrapper.getBody())
+              .append(" - Response Body: ").append(responseWrapper.getBody());
         }
 
         return sb.toString();
@@ -137,13 +137,14 @@ public class RequestLoggingFilter implements Filter {
 
         @Override
         public PrintWriter getWriter() throws IOException {
-            return new PrintWriter(outputStream);
+            return new PrintWriter(new java.io.OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
         }
 
         public String getBody() {
             return outputStream.getBody();
         }
 
+        @Override
         public int getStatus() {
             return super.getStatus();
         }

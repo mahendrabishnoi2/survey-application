@@ -48,7 +48,6 @@ public class SurveyController {
   @PostMapping("/login")
   public ResponseEntity<Admin> verifyAdminLogin(@RequestBody Admin admin) {
     Admin result = surveyService.verifyAdminLogin(admin);
-    System.out.println("Controller returning: " + result);
     return ResponseEntity.ok(result);
   }
 
@@ -68,7 +67,6 @@ public class SurveyController {
   // save a response to survey
   @PostMapping("/surveys/response")
   public boolean saveSurveyResponse(@RequestBody SurveyUserResponse surveyUserResponse) {
-    System.out.println(surveyUserResponse);
     return surveyService.saveSurveyResponse(surveyUserResponse);
   }
 

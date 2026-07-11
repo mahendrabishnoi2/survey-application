@@ -14,6 +14,7 @@
     <exclude name="LiteralsFirstInComparisons"/>
     <exclude name="UnusedPrivateMethod"/>
     <exclude name="AvoidReassigningParameters"/>
+    <exclude name="ImplicitFunctionalInterface"/>
   </rule>
 
   <!-- Error-prone -->
@@ -25,6 +26,8 @@
     <exclude name="AvoidLiteralsInIfCondition"/>
     <exclude name="AssignmentInOperand"/>
     <exclude name="TestClassWithoutTestCases"/>
+    <exclude name="AvoidFieldNameMatchingTypeName"/>
+    <exclude name="ReplaceJavaUtilDate"/>
   </rule>
 
   <!-- Code style (only the most impactful, compatible with PMD 7) -->
@@ -34,10 +37,11 @@
   <rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName"/>
   <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop"/>
 
-  <!-- Performance -->
+  <!-- Performance: exclude AvoidInstantiatingObjectsInLoops (unavoidable in JPA mapping code) -->
   <rule ref="category/java/performance.xml">
     <exclude name="InsufficientStringBufferDeclaration"/>
     <exclude name="ConsecutiveLiteralAppends"/>
+    <exclude name="AvoidInstantiatingObjectsInLoops"/>
   </rule>
 
   <!-- Security -->

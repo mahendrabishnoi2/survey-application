@@ -5,13 +5,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
-import jakarta.servlet.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +26,7 @@ import java.util.Map;
 @Component
 public class RequestLoggingFilter implements Filter {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestLoggingFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestLoggingFilter.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -51,9 +58,9 @@ public class RequestLoggingFilter implements Filter {
             String logMessage = buildLogMessage(httpRequest, requestWrapper, responseWrapper, status, duration);
 
             if (status >= 400) {
-                logger.error(logMessage);
+                LOGGER.error(logMessage);
             } else {
-                logger.info(logMessage);
+                LOGGER.info(logMessage);
             }
 
             // Write the cached response body to the actual response

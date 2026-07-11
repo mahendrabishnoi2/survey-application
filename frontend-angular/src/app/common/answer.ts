@@ -5,7 +5,7 @@ export class Answer {
     answerText: string;
     selectedOptionIds: string;
 
-    constructor(qId: number = 0, qText: string = "", qTypeText: string = "", ansText: string = "", selOptionIds: string = "") {
+    constructor(qId = 0, qText = "", qTypeText = "", ansText = "", selOptionIds = "") {
         this.questionId = qId;
         this.questionText = qText;
         this.questionTypeText = qTypeText;

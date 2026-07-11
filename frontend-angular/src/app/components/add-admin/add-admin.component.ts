@@ -15,7 +15,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class AddAdminComponent implements OnInit {
 
   newAdmin: Admin = new Admin();
-  adminAdded: boolean = false;
+  adminAdded = false;
 
   constructor(private dbService: DbServiceService, private router: Router, private authService: AuthService) { }
 

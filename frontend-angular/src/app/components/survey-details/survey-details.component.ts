@@ -29,7 +29,7 @@ export class SurveyDetailsComponent implements OnInit {
   responses: Response[];
 
   // for google charts library 
-  columnNames: ["Number of Questions", "Number of Responses"];
+  columnNames: string[] = ["Number of Questions", "Number of Responses"];
   options = {
     title: 'Survey Details'
   };
@@ -73,15 +73,15 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   filterByDate() {
-    let updatedRespondents: Respondant[] = [];
+    const updatedRespondents: Respondant[] = [];
 
-    let filterStartDate = new Date(this.filterStart);
-    let filterEndDate = new Date(this.filterEnd);
+    const filterStartDate = new Date(this.filterStart);
+    const filterEndDate = new Date(this.filterEnd);
 
     this.initailRespondents.forEach(
       respondent => {
         let toAdd = false;
-        let tempDate = new Date(respondent.takenOn.toString().split('T')[0]);
+        const tempDate = new Date(respondent.takenOn.toString().split('T')[0]);
         if (tempDate > filterStartDate && tempDate < filterEndDate) toAdd = true;
         if (tempDate < filterStartDate === false && tempDate > filterStartDate === false) toAdd = true;
         if (tempDate < filterEndDate === false && tempDate > filterEndDate === false) toAdd = true;
@@ -93,7 +93,7 @@ export class SurveyDetailsComponent implements OnInit {
 
   // create json object for survey details
   getJsonDetails() {
-    let detailsJson = [{
+    const detailsJson = [{
       "Survey Name": this.surveyDetails?.name,
       "Survey Description": this.surveyDetails?.description,
       "Number of Questions": this.surveyDetails?.questions.length,
@@ -106,7 +106,7 @@ export class SurveyDetailsComponent implements OnInit {
 
   // create json object for respondents to survey
   getJsonRespondents() {
-    let respondentsJson = [];
+    const respondentsJson = [];
     this.respondents.forEach(
       respondent => {
         respondentsJson.push({
@@ -120,7 +120,7 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   getJsonResponses() {
-    let responsesJson = [];
+    const responsesJson = [];
     this.responses?.forEach(
       response => {
         responsesJson.push({
@@ -128,8 +128,8 @@ export class SurveyDetailsComponent implements OnInit {
           "Email": response.email,
         });
         for (let i = 0; i < response.questions.length; i++) {
-          let ques = response.questions[i];
-          let ans = response.answers[i];
+          const ques = response.questions[i];
+          const ans = response.answers[i];
           responsesJson[responsesJson.length - 1][ques] = ans;
         }
       }
@@ -139,9 +139,9 @@ export class SurveyDetailsComponent implements OnInit {
 
   // download data in json format
   downloadJson(field: string) {
-    let jsonData = this.getJsonData(field);
-    var blob = new Blob([JSON.stringify(jsonData)], { type: "application/json" });
-    var fileName = `${field}.json`;
+    const jsonData = this.getJsonData(field);
+    const blob = new Blob([JSON.stringify(jsonData)], { type: "application/json" });
+    const fileName = `${field}.json`;
     saveAs(blob, fileName);
   }
 
@@ -161,37 +161,37 @@ export class SurveyDetailsComponent implements OnInit {
   // create an xlsx workbook with an sheet
   private createXlsxWorkbook(field: string) {
     // https://redstapler.co/sheetjs-tutorial-create-xlsx/
-    var wb = XLSX.utils.book_new();
+    const wb = XLSX.utils.book_new();
     // wb.Props = {
     //   Title: "Survey Details",
     //   CreatedDate: new Date()
     // };
     wb.SheetNames.push(field);
-    let jsonData = this.getJsonData(field);
-    var ws = XLSX.utils.json_to_sheet(jsonData);
+    const jsonData = this.getJsonData(field);
+    const ws = XLSX.utils.json_to_sheet(jsonData);
     wb.Sheets[field] = ws;
     return wb;
   }
 
   // download data in excel format
   downloadXlsx(field: string) {
-    var wb = this.createXlsxWorkbook(field);
-    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    const wb = this.createXlsxWorkbook(field);
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
     saveAs(new Blob([this.s2ab(wbout)], { type: "application/octet-stream" }), `${field}.xlsx`);
   }
 
   downloadCsv(field: string) {
-    let ws = this.createXlsxWorkbook(field).Sheets[field];
-    let csv = XLSX.utils.sheet_to_csv(ws);
-    var blob = new Blob([csv], { type: "text/csv" });
+    const ws = this.createXlsxWorkbook(field).Sheets[field];
+    const csv = XLSX.utils.sheet_to_csv(ws);
+    const blob = new Blob([csv], { type: "text/csv" });
     saveAs(blob, `${field}.csv`);
   }
 
   // convert into octet stream for saving into xlsx format
   private s2ab(s) {
-    var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
-    var view = new Uint8Array(buf);  //create uint8array as viewer
-    for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+    const buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+    const view = new Uint8Array(buf);  //create uint8array as viewer
+    for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
     return buf;
   }
 

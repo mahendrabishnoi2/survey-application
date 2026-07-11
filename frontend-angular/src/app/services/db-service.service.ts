@@ -10,13 +10,14 @@ import { SurveyFull } from '../common/survey-full';
 import { SurveyResponse } from '../common/survey-response';
 import { Admin } from '../common/admin';
 import { Respondant } from '../common/respondant';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbServiceService {
 
-  baseUrl: string = "http://localhost:8080/api/";
+  baseUrl: string = environment.apiBaseUrl;
 
   constructor(private httpClient: HttpClient) {}
 

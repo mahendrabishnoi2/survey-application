@@ -19,15 +19,15 @@ export class AddQuestionComponent implements OnInit {
   @Input() valType: Map<string, string>;
   // @Output() questionFormOut = new EventEmitter<FormGroup>();
 
-  errorMessage: string = "";
+  errorMessage = "";
   questionForm: FormGroup;
 
   // for adding new options
-  options: Array<string> = [];
-  newOption: string = "";
-  isDuplicate: boolean = false;
-  duplicateMessage: string = "This option is already present."
-  hasError: boolean = false;
+  options: string[] = [];
+  newOption = "";
+  isDuplicate = false;
+  duplicateMessage = "This option is already present."
+  hasError = false;
 
   constructor(private fb: FormBuilder, private newFormService: CreateNewFormService) { }
 
@@ -47,7 +47,7 @@ export class AddQuestionComponent implements OnInit {
   }
 
   formInit(question: Questions) {
-    let options = new FormArray([]);
+    const options = new FormArray([]);
     this.questionForm = this.fb.group({
       question: [question.question, [Validators.required]],
       questionType: [question.type, [Validators.required]],
@@ -65,7 +65,7 @@ export class AddQuestionComponent implements OnInit {
     this.hasError = false;
     this.clearFields();
     this.addOptionsToForm();
-    let hasOptions = !(this.questionForm.value.questionType == "oneline" ||
+    const hasOptions = !(this.questionForm.value.questionType == "oneline" ||
       this.questionForm.value.questionType == "multiline");
 
     // if type is radio or checkbox, then make sure at-least 2 options are present
@@ -80,7 +80,7 @@ export class AddQuestionComponent implements OnInit {
   }
 
   private addOptionsToForm() {
-    let optionsFormArray: FormArray = new FormArray([]);
+    const optionsFormArray: FormArray = new FormArray([]);
 
     // for each option create a form group and add it to form array
     this.options.forEach((option, index) => {

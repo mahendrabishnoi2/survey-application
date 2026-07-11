@@ -7,15 +7,15 @@ import { TakeSurveyComponent } from './components/take-survey/take-survey.compon
 import { CreateSurveyComponent } from './components/create-survey/create-survey.component';
 import { AddAdminComponent } from './components/add-admin/add-admin.component';
 import { SurveyDetailsComponent } from './components/survey-details/survey-details.component';
-import { AuthGuard } from './auth.guard';
+import { authGuard } from './auth.guard';
 
 const routes: Routes = [
-  { path: 'surveyDetails/:id', component: SurveyDetailsComponent, canActivate: [AuthGuard]},
-  { path: 'addAdmin', component: AddAdminComponent, canActivate: [AuthGuard]},
-  { path: 'createSurvey', component: CreateSurveyComponent, canActivate: [AuthGuard]},
+  { path: 'surveyDetails/:id', component: SurveyDetailsComponent, canActivate: [authGuard]},
+  { path: 'addAdmin', component: AddAdminComponent, canActivate: [authGuard]},
+  { path: 'createSurvey', component: CreateSurveyComponent, canActivate: [authGuard]},
   { path: 'takeSurvey/:id', component:  TakeSurveyComponent},
   { path: 'login', component: AdminLoginComponent},
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
   { path: 'surveycompleted', component: UserSurveyComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }

@@ -7,7 +7,7 @@ import { Admin } from '../common/admin';
 export class AuthService {
 
   admin: Admin = new Admin();
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
 
   constructor() { }
 

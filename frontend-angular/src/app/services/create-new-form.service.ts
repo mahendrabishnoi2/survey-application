@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class CreateNewFormService {
 
-  componentToShow: string = 'create-survey';
+  componentToShow = 'create-survey';
 
   constructor() { }
 

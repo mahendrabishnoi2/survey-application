@@ -11,10 +11,10 @@ import { QuestionsOptions } from 'src/app/common/questions-options';
 })
 export class AddOptionsComponent implements OnInit {
 
-  options: Array<string> = [];
-  newOption: string = "";
-  isDuplicate: boolean = false;
-  duplicateMessage: string = "This option is already present."
+  options: string[] = [];
+  newOption = "";
+  isDuplicate = false;
+  duplicateMessage = "This option is already present."
 
   constructor() { }
 

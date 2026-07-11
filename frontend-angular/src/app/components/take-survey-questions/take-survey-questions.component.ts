@@ -39,15 +39,15 @@ export class TakeSurveyQuestionsComponent implements OnInit {
   private createObject(): void {
     // create survey response object to send to backend 
     const answers: Answer[] = [];
-    var answer: Answer;
+    let answer: Answer;
     // we need to find selected ids and labels in case of checkbox question
     this.questions.forEach(question => {
       const id = question.key;
       const qId: number = +question.key;
       const qText: string = question.label;
       const qTypeText: string = question.controlType;
-      let selectedOptionIds: string = "";
-      let answerText: string = "";
+      let selectedOptionIds = "";
+      let answerText = "";
       if (qTypeText === "radio") {  // working
         // form contains option id, get id of selected option from form and use that
         // id to get text of option
@@ -56,9 +56,9 @@ export class TakeSurveyQuestionsComponent implements OnInit {
         answerText = this.getValueFromKey(options, selectedOptionIds);
       } else if (qTypeText === "checkbox") {  // working
         // form contains an array of boolean
-        const isChecked: Array<boolean> = this.form.get(id).value;
+        const isChecked: boolean[] = this.form.get(id).value;
         const options = question.options;
-        let selectedOptions: Array<number> = [];  // array of id of selected options
+        const selectedOptions: number[] = [];  // array of id of selected options
         for (let i = 0; i < options.length; i++) {
           if (isChecked[i]) {
             selectedOptions.push(+options[i].key);

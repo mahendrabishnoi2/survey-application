@@ -44,3 +44,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Playwright and scratch scripts
+/playwright-report
+/test-results
+/scratch

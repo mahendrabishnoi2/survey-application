@@ -19,10 +19,10 @@ export class TakeSurveyComponent implements OnInit {
 
   surveyId: number;
   details: FormGroup;
-  inputPersonalDetails: boolean = true;
-  message: string = "";
+  inputPersonalDetails = true;
+  message = "";
   questions: QuestionBase<string>[];
-  surveyExpired: Boolean;
+  surveyExpired: boolean;
 
   // headers: SurveyHeader;
   // questions: Questions[] = [];
@@ -61,14 +61,14 @@ export class TakeSurveyComponent implements OnInit {
   }
 
   compareDate(expire: any) {
-    let expiry: Date = new Date(expire.toString().split('T')[0]);
-    let today: Date = new Date();
-    let todayYear = today.getFullYear();
-    let todayMonth = today.getMonth() + 1;
-    let todayDate = today.getDate();
-    let expiryYear = expiry.getFullYear();
-    let expiryMonth = expiry.getMonth() + 1;
-    let expiryDate = expiry.getDate();
+    const expiry: Date = new Date(expire.toString().split('T')[0]);
+    const today: Date = new Date();
+    const todayYear = today.getFullYear();
+    const todayMonth = today.getMonth() + 1;
+    const todayDate = today.getDate();
+    const expiryYear = expiry.getFullYear();
+    const expiryMonth = expiry.getMonth() + 1;
+    const expiryDate = expiry.getDate();
     console.log(`${todayYear}-${todayMonth}-${todayDate}`);
     if (todayYear > expiryYear) return true;
     if (todayYear === expiryYear) {

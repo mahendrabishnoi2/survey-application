@@ -16,7 +16,7 @@ export class AdminLoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private dbService: DbServiceService, private router: Router, private authService: AuthService) { }
 
-  errorMsg: string = "";
+  errorMsg = "";
   loginForm: FormGroup;
   admin: Admin = new Admin();
 
@@ -36,7 +36,7 @@ export class AdminLoginComponent implements OnInit {
   }
 
   login(): void {
-    let admn = new Admin();
+    const admn = new Admin();
     admn.email = this.loginForm.value.email;
     admn.password = this.loginForm.value.password;
 

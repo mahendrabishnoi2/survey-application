@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnInit {
   title = 'Campaign Registration Management System';
 
   constructor(private authService: AuthService, private router: Router, private elementRef: ElementRef) {}

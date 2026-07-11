@@ -27,7 +27,7 @@ export class CreateSurveyComponent implements OnInit {
   componentToShow: string;
   questionsForDisplay: any;
   submittedSurveyDetails: SurveyHeader;
-  surveyLink: string = "";
+  surveyLink = "";
 
   constructor(private fb: FormBuilder, private newFormService: CreateNewFormService, private dbService: DbServiceService,
     private authService: AuthService, private router: Router) { }
@@ -42,7 +42,7 @@ export class CreateSurveyComponent implements OnInit {
     this.minDate = this.getMinDate();
     this.formInit(new SurveyFull());
     this.componentToShow = "create-survey";
-    this.questionsForDisplay = this.newSurveyForm.value.questions.value as Array<any>;
+    this.questionsForDisplay = this.newSurveyForm.value.questions.value as any[];
   }
 
   formInit(survey: SurveyFull) {
@@ -89,7 +89,7 @@ export class CreateSurveyComponent implements OnInit {
     const _month = new Date().getMonth() + 1;
     const _date = new Date().getDate();
 
-    let year: string = _year.toString();
+    const year: string = _year.toString();
     let month: string = _month.toString();
     let date: string = _date.toString();
     if (_month < 10) {
@@ -102,7 +102,7 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   submitSurvey(): void {
-    let survey = this.createSurveyObjectFromForm();
+    const survey = this.createSurveyObjectFromForm();
     this.dbService.saveNewSurvey(survey).subscribe(
       data => {
         this.submittedSurveyDetails = data;
@@ -114,7 +114,7 @@ export class CreateSurveyComponent implements OnInit {
 
   addQuestion(): void {
     this.newFormService.toggleComponent();
-    this.questionsForDisplay = this.newSurveyForm.value.questions.value as Array<any>;
+    this.questionsForDisplay = this.newSurveyForm.value.questions.value as any[];
   }
 
   showForm() {
@@ -127,27 +127,27 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   createSurveyObjectFromForm(): SurveyFull {
-    let survey: SurveyFull = new SurveyFull();
+    const survey: SurveyFull = new SurveyFull();
     survey.created = new Date();
     survey.name = this.newSurveyForm.value.surveyName;
     survey.description = this.newSurveyForm.value.description;
     survey.validTill = this.newSurveyForm.value.validTill;
     survey.questions = [];
 
-    let questionsArray = this.newSurveyForm.value.questions.value;
+    const questionsArray = this.newSurveyForm.value.questions.value;
 
     questionsArray.forEach((question, index) => {
-      let q: Questions = new Questions(index, question.question);
-      let type: InputTypes = new InputTypes();
+      const q: Questions = new Questions(index, question.question);
+      const type: InputTypes = new InputTypes();
       type.id = 0;
       type.typeName = question.questionType
       q.type = type;
       q.validation = question.validation;
-      let optionArray = question.options.value;
+      const optionArray = question.options.value;
       q.options = [];
 
       optionArray.forEach((opt, id) => {
-        let o: QuestionsOptions = new QuestionsOptions();
+        const o: QuestionsOptions = new QuestionsOptions();
         o.id = opt.id;
         o.name = opt.name;
         q.options.push(o);
@@ -160,7 +160,7 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   copyToClipboard() {
-    let item = this.surveyLink;
+    const item = this.surveyLink;
     document.addEventListener('copy', (e: ClipboardEvent) => {
       e.clipboardData.setData('text/plain', (item));
       e.preventDefault();

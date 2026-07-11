@@ -66,10 +66,12 @@ test.describe('Survey Application Real E2E Integration Tests', () => {
 
     // Go to admin page and verify the new survey is listed
     await page.goto('/#/admin');
+    await page.waitForLoadState('networkidle');
     await expect(page.locator('table')).toContainText('E2E Customer Feedback', { timeout: 10000 });
 
     // 3. Navigate to Take Survey using the captured ID
     await page.goto(`/#/takeSurvey/${surveyId}`);
+    await page.waitForLoadState('networkidle');
 
     // Fill personal details
     await page.fill('#fullName', 'Jane Tester');

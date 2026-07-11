@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 
 import { ListSurveysComponent } from './list-surveys.component';
@@ -13,7 +13,6 @@ describe('ListSurveysComponent', () => {
   let component: ListSurveysComponent;
   let fixture: ComponentFixture<ListSurveysComponent>;
   let dbServiceSpy: jasmine.SpyObj<DbServiceService>;
-  let router: Router;
 
   beforeEach(waitForAsync(() => {
     const dbSpy = jasmine.createSpyObj('DbServiceService', ['getSurveyList', 'deleteSurvey']);
@@ -31,8 +30,6 @@ describe('ListSurveysComponent', () => {
     .compileComponents();
 
     dbServiceSpy = TestBed.inject(DbServiceService) as jasmine.SpyObj<DbServiceService>;
-    router = TestBed.inject(Router);
-    spyOn(router, 'navigate');
   }));
 
   beforeEach(() => {
@@ -53,11 +50,11 @@ describe('ListSurveysComponent', () => {
     expect(component.surveyHeaders[0].surveyName).toBe('Test Survey');
   });
 
-  it('should delete survey and navigate to login/refresh', () => {
+  it('should delete survey and refresh the list', () => {
     dbServiceSpy.deleteSurvey.and.returnValue(of({}));
     component.deleteSurvey(1);
 
     expect(dbServiceSpy.deleteSurvey).toHaveBeenCalledWith(1);
-    expect(router.navigate).toHaveBeenCalledWith(['login']);
+    expect(dbServiceSpy.getSurveyList).toHaveBeenCalledTimes(2);
   });
 });

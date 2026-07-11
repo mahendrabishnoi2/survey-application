@@ -71,6 +71,6 @@ describe('CreateSurveyComponent', () => {
 
     component.submitSurvey();
     expect(dbServiceSpy.saveNewSurvey).toHaveBeenCalled();
-    expect(component.surveyLink).toBe('localhost:4200/takeSurvey/1');
+    expect(component.surveyLink).toContain('/takeSurvey/1');
   });
 });

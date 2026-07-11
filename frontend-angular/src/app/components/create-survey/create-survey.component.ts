@@ -95,7 +95,8 @@ export class CreateSurveyComponent implements OnInit {
         this.submittedSurveyDetails = data;
         this.surveyLink = `${window.location.origin}/#/takeSurvey/${data.id}`;
         this.newFormService.success();
-        console.log('After success(), enabledComponent:', this.newFormService.enabledComponent());
+        this.componentToShow = this.newFormService.enabledComponent();
+        console.log('After success(), componentToShow:', this.componentToShow);
       },
       error: (err: any) => { console.error('Survey creation failed:', err?.status, err?.message); }
 
@@ -104,11 +105,8 @@ export class CreateSurveyComponent implements OnInit {
 
   addQuestion(): void {
     this.newFormService.toggleComponent();
+    this.componentToShow = this.newFormService.enabledComponent();
     this.questionsForDisplay = this.newSurveyForm.value.questions.value as any[];
-  }
-
-  getEnabledComponent(): string {
-    return this.newFormService.enabledComponent();
   }
 
   createSurveyObjectFromForm(): SurveyFull {

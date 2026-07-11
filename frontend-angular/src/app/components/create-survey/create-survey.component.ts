@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { QuestionsOptions } from 'src/app/common/questions-options';
 import { InputTypes } from 'src/app/common/input-types';
@@ -22,13 +22,12 @@ export class CreateSurveyComponent implements OnInit {
   validationMap!: Map<string, string>;
   minDate!: string;
   maxDate!: Date;
-  componentToShow!: string;
   questionsForDisplay: any;
   submittedSurveyDetails!: SurveyHeader;
   surveyLink = "";
 
   constructor(private fb: FormBuilder, private newFormService: CreateNewFormService, private dbService: DbServiceService,
-    private authService: AuthService, private router: Router) { }
+    private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   newSurveyForm!: FormGroup;
   surveyQuestionFormArray!: FormArray;
@@ -39,7 +38,6 @@ export class CreateSurveyComponent implements OnInit {
     this.newFormService.reset();
     this.minDate = this.getMinDate();
     this.formInit(new SurveyFull());
-    this.componentToShow = "create-survey";
     this.questionsForDisplay = this.newSurveyForm.value.questions.value as any[];
   }
 
@@ -87,7 +85,6 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   submitSurvey(): void {
-    console.log('submitSurvey called, form valid:', this.newSurveyForm.valid, 'questions:', this.surveyQuestionFormArray.controls.length);
     const survey = this.createSurveyObjectFromForm();
     this.dbService.saveNewSurvey(survey).subscribe({
       next: (data: any) => {
@@ -95,8 +92,7 @@ export class CreateSurveyComponent implements OnInit {
         this.submittedSurveyDetails = data;
         this.surveyLink = `${window.location.origin}/#/takeSurvey/${data.id}`;
         this.newFormService.success();
-        this.componentToShow = this.newFormService.enabledComponent();
-        console.log('After success(), componentToShow:', this.componentToShow);
+        this.cdr.detectChanges();
       },
       error: (err: any) => { console.error('Survey creation failed:', err?.status, err?.message); }
 
@@ -105,8 +101,11 @@ export class CreateSurveyComponent implements OnInit {
 
   addQuestion(): void {
     this.newFormService.toggleComponent();
-    this.componentToShow = this.newFormService.enabledComponent();
     this.questionsForDisplay = this.newSurveyForm.value.questions.value as any[];
+  }
+
+  getEnabledComponent(): string {
+    return this.newFormService.enabledComponent();
   }
 
   createSurveyObjectFromForm(): SurveyFull {

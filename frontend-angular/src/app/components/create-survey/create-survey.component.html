@@ -17,7 +17,7 @@
   </ul>
 </div>
 </nav>
-@if (componentToShow==='create-survey') {
+@if (getEnabledComponent()==='create-survey') {
   <div class="container card width70">
     <form [formGroup]="newSurveyForm" class="form-horizontal">
       <div class="form-group">
@@ -99,11 +99,11 @@
   </div>
 </div>
 }
-@if (componentToShow==='add-question') {
+@if (getEnabledComponent()==='add-question') {
   <app-add-question [surveyQuestionFormArray]="surveyQuestionFormArray" [qType]="qTypeMap" [valType]="validationMap">
   </app-add-question>
 }
-@if (componentToShow==='survey-created') {
+@if (getEnabledComponent()==='survey-created') {
   <div class="container card width70">
     <p>
       Successfully created survey with id: {{ submittedSurveyDetails?.id }}

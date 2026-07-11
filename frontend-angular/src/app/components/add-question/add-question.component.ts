@@ -68,7 +68,6 @@ export class AddQuestionComponent implements OnInit {
     if (!this.hasError) {
       this.newFormService.toggleComponent();
       this.surveyQuestionFormArray.push(this.questionForm);
-      console.log('Question added, array length:', this.surveyQuestionFormArray.length);
     }
   }
 
